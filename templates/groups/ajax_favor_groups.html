@@ -1,0 +1,33 @@
+{% for favor in favorites %}
+    <a href="javascript:void(0);">
+        <div class="row m-0 div_filter_row">
+            
+            <div class="col-11 favor_row p-0" data-url="{% url 'favor-groups' favor.id %}">
+                <h4 class="mb-0">{{ favor.name }}</h4>
+            </div>
+
+            <div class="col-1 p-0">
+                <i class="fas fa-trash-alt btn_favor_delete" data-id="{{ favor.id }}"></i>
+            </div>
+        </div>
+    </a>
+{% endfor %}
+<script type="text/javascript">
+    $(".btn_favor_delete").on('click', function(e){
+        console.log();
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-delete-group-favorite" %}',
+            data: {
+                'id': $(this).data("id"),
+            },
+            type: 'POST',
+            success: function (data) {
+                location.href = "{% url 'groups' %}"
+            }
+        });
+    });
+    $(".favor_row").on('click', function(e){
+        location.href = $(this).data("url");
+    });    
+</script>

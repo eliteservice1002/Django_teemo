@@ -1,0 +1,50 @@
+{% load i18n %}
+<style type="text/css">
+    .small-card {
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border-radius: 0.25rem;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        position: relative;
+        padding:5px;
+    }
+</style>
+<div class="card">
+    <div class="card-body">
+    <div class="row">
+        <div class="col-12 col-md-12 pb-3">
+			<span class="mr-auto badge badge-primary pt-2 pb-2 pr-3 pl-3">{{select_product_name}}</span>
+		</div>
+        {% for contact in contacts %}
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-12 p-1">
+            <div class="small-card">
+                <div class="row m-0">
+                    <div class="col-12 p-2">
+                        <div class="col-12 pl-1">
+                            <span><strong>{{ contact.name }}{% if contact.parent %}&nbsp;&nbsp;( {{ contact.parent.name }} ){% endif %}</strong></span>
+                        </div>
+                        <div class="col-12 pl-1">
+                            <span style="font-size: 80%;color:#00a09d;">{{ contact.email|default_if_none:"" }}</span>
+                        </div>
+                        <div class="col-12 pl-1">
+                            <span style="font-size: 80%;">{% blocktrans %}Telephone{% endblocktrans %}: {{ contact.telephone|default_if_none:"" }}</span>
+                        </div>
+                        <div class="col-12 pl-1">
+                            <span style="font-size: 90%;">{% blocktrans %}Country{% endblocktrans %}: {% if LANGUAGE_CODE == 'en' %}{{ contact.country.name }}{% else %}{{ contact.country.alternate_names }}{% endif %}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+    </div>
+</div>

@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/icheck/skins/all.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/icheck/icheck.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	.card-child{
+        height: 165px;
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        margin-bottom: 15px;
+    }
+    h2{
+		margin-bottom: 0px;
+	}
+
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-5">
+			<h2 class="mr-auto"><a href="{% url 'pickings' %}">{% blocktrans %}Orders{% endblocktrans %}</a> / {{ outcome.name }}</h2>
+		</div>
+		<div class="col-12 col-md-5">
+			{% if outcome.finished %}
+				<span class="badge badge-success pt-2 pb-2 pl-4 pr-4" style="font-size: 85%">{% blocktrans %}Finished{% endblocktrans %}</span>
+			{% endif %}
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+	            	<div class="row m-0">
+	            		<div class="col-12 col-md-3">
+	            			<div class="form-group">
+			                	<div class="col-11 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+									<div class="col-4 pl-1 pr-1">
+										<span>{% blocktrans %}Client{% endblocktrans %}:</span>
+									</div>
+									<div class="col-8 pl-0 pr-1">
+										<span style="color:#000;">{{ outcome.client.name }}</span>
+									</div>
+								</div>
+		                    </div>
+				            <div class="form-group">
+			                	<div class="col-11 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+									<div class="col-4 pl-1 pr-1">
+										<span>{% blocktrans %}Date{% endblocktrans %}:</span>
+									</div>
+									<div class="col-8 pl-0 pr-1">
+										<span style="color:#000;">{{ outcome.order_date }}</span>
+									</div>
+								</div>
+		                    </div>
+	            		</div>
+	            		<div class="col-12 col-md-3">
+	            			<div class="form-group">
+			                	<div class="col-11 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+									<div class="col-4 pl-1 pr-1">
+										<span>{% blocktrans %}Email{% endblocktrans %}:</span>
+									</div>
+									<div class="col-8 pl-0 pr-1">
+										<span style="color:#000;">{{ outcome.client.email }}</span>
+									</div>
+								</div>
+		                    </div>
+				            <div class="form-group">
+			                	<div class="col-11 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+									<div class="col-4 pl-1 pr-1">
+										<span>{% blocktrans %}Telephone{% endblocktrans %}:</span>
+									</div>
+									<div class="col-8 pl-0 pr-1">
+										<span style="color:#000;">{{ outcome.telephone }}</span>
+									</div>
+								</div>
+		                    </div>
+	            		</div>
+	            		<div class="col-12 col-md-2">
+	            			<div class="form-group">
+			                	<div class="col-11 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+									<div class="col-4 pl-1 pr-1">
+										<span>{% blocktrans %}Country{% endblocktrans %}:</span>
+									</div>
+									<div class="col-8 pl-0 pr-1">
+										<span style="color:#000;">{{ outcome.client.country }}</span>
+									</div>
+								</div>
+		                    </div>
+				        </div>
+	            		<div class="col-12 col-md-3">
+	            			<div class="form-group">
+			                	<div class="col-11 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+									<div class="col-5 pl-1 pr-1">
+										<span>{% blocktrans %}Cube{% endblocktrans %}:</span>
+									</div>
+									<div class="col-7 pl-0 pr-1">
+										<span style="color:#000;" id="span_cube">{{ outcome.cube|default_if_none:"0" }} mm<sup>3</sup></span>
+									</div>
+								</div>
+		                    </div>
+				            <div class="form-group">
+			                	<div class="col-11 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+									<div class="col-5 pl-1 pr-1">
+										<span>{% blocktrans %}Sum of Weight{% endblocktrans %}:</span>
+									</div>
+									<div class="col-7 pl-0 pr-1">
+										<span style="color:#000;" id="span_sum_weight">{{ outcome.sum_weight|default_if_none:"0" }} g</span>
+									</div>
+								</div>
+		                    </div>
+	            		</div>
+		            </div>
+	            	<div class="row m-0">
+	            		<div class="col-12 p-0">
+							<div class="card">
+								<div class="row m-0">
+									<div class="col-12 pb-2">
+										<h2 class="mr-auto">{% blocktrans %}Order Items{% endblocktrans %}</h2>
+									</div>
+								</div>
+								<div class="row m-0">
+									{% for item in order_items %}
+								        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-12">
+								            <div class="card card-child">
+								                <div class="row m-0 pt-1">
+								                    <div class="col-10">
+								                        <span class="font-weight-bold text-primary" style="font-size: 120%">{{ item.stock.name }}</span>
+								                    </div>
+								                    <div class="col-2 p-1 text-center">
+								                    	<input type="checkbox" class="check" {% if outcome.finished %}checked{% endif %}>
+								                    </div>
+								                </div>
+								                <div class="row m-0">
+								                    <div class="col-5 pl-2 pr-2">
+								                        {% if item.stock.picture %}
+								                            <img src="{{item.stock.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 78px;"/>
+								                        {% else %}
+								                            <i class="far fa-5x fa-image" ></i>
+								                        {% endif %}
+								                    </div>
+								                    <div class="col-7 pl-0 pr-0">
+								                    	<div class="row m-0">
+										                    <div class="col-5 pl-0 pr-1">
+										                        <span style="font-size: 90%;">{% blocktrans %}Ref{% endblocktrans %}:</span>
+										                    </div>
+										                    <div class="col-7 pl-0 pr-1">
+										                        <span class="bold-span" style="font-size: 90%;">{{ item.stock.reference }}</span>
+										                    </div>
+										                </div>
+								                       	<div class="row m-0">
+										                    <div class="col-5 pl-0 pr-1">
+										                        <span style="font-size: 90%;">{% blocktrans %}Ordered Qt{% endblocktrans %}:</span>
+										                    </div>
+										                    <div class="col-7 pl-0 pr-1">
+										                        <span class="bold-span" style="font-weight: 700;">{{ item.order_quantity }} pcs</span>
+										                    </div>
+										                </div>
+								                       
+								                        <div class="row m-0">
+										                    <div class="col-5 pl-0 pr-1">
+										                        <span style="font-size: 90%;">{% blocktrans %}Size{% endblocktrans %}:</span>
+										                    </div>
+										                    <div class="col-7 pl-0 pr-1">
+										                        <span class="bold-span" style="font-size: 90%;">{{ item.stock.width }} * {{ item.stock.height }} * {{ item.stock.depth }} mm<sup>3</sup></span>
+										                    </div>
+										                </div>
+										                <div class="row m-0">
+										                    <div class="col-5 pl-0 pr-1">
+										                        <span style="font-size: 90%;">{% blocktrans %}Weight{% endblocktrans %}:</span>
+										                    </div>
+										                    <div class="col-7 pl-0 pr-1">
+										                        <span class="bold-span" style="font-size: 90%;">{{ item.stock.weight }} g</span>
+										                    </div>
+										                </div>
+								                    </div>
+								                </div>
+								                <div class="row ml-0 mr-0 mt-1">
+								                    <div class="col-3 pr-0 pl-2">
+								                        <span style="font-size: 90%;">{% blocktrans %}Location{% endblocktrans %}:</span>
+								                    </div>
+								                    <div class="col-9 pr-0 pl-1">
+								                        <span class="bold-span" style="font-size: 90%;">{% if item.stock.location %}{{ item.stock.location.name }}{% endif %}</span>
+								                    </div>
+								                </div>
+								                
+								            </div>
+								        </div>
+								    {% endfor%}
+								</div>
+								<div class="row m-0">
+									<div class="col-12 pb-2">
+										<h2 class="mr-auto">{% blocktrans %}Available Box Container{% endblocktrans %}</h2>
+									</div>
+								</div>
+								{% if outcome.finished is False %}
+								<div class="row m-0">
+									<div class="col-12 pb-2 text-center">
+										<button class="btn_finish btn btn-primary waves-effect waves-light text-uppercase">{% blocktrans %}Finished{% endblocktrans %}</button>
+									</div>
+								</div>
+								{% endif %}
+						    </div>
+						</div>
+					</div>
+	            </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% blocktrans %}Finish Order{% endblocktrans %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<p>{% blocktrans %}Are you sure you want to finish this order?{% endblocktrans %}</p>
+        	<input type="hidden" id="outcome_id" value="{{ outcome.id }}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}No{% endblocktrans %}</button>
+        <button id="btn_confirm" type="button" class="btn btn-primary">{% blocktrans %}Yes{% endblocktrans %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'plugins/icheck/icheck.init.js' %}"></script>
+<script type="text/javascript">
+	
+	$(".btn_finish").on('click', function(event){
+    	$("#confirmModal").modal();
+    });
+    $("#btn_confirm").on('click', function(event){
+    	$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-finish-picking" %}',
+			data: {
+				'outcome_id': $("#outcome_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				location.reload();
+			}
+		});
+    	$('#confirmModal').modal('hide')
+    });
+</script>
+{% endblock %}

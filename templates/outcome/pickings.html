@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/icheck/skins/all.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/icheck/icheck.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	.child-card{
+        /*height: 100px;*/
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        margin-bottom: 15px;
+    }
+    .card-child{
+        height: 160px;
+        border: 1px solid #554ce4 !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        margin-bottom: 15px;
+        padding: 2px 5px;
+    }
+    h2{
+		margin-bottom: 0px;
+	}
+	.bold-span{
+		color: #000;
+	}
+
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-4">
+			<h2 class="mr-auto">{% blocktrans %}Picking{% endblocktrans %}</h2>
+		</div>
+		<div class="d-flex">
+			<form id="selForm" method="POST">
+				{% csrf_token %}
+				<input type="text" class="form-control" id="sel_date" name="sel_date" required="" value="{{ sel_date|date:'yy-m-d' }}">
+			</form>
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+		        	<div class="row m-0">
+	            		<div class="col-12 pb-2">
+	            			<h2 class="mr-auto">{% blocktrans %}Today Orders{% endblocktrans %}</h2>
+	            		</div>
+	            	</div>
+	            	<div class="m-0" id="div_content">
+	            	</div>
+	            	
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="head_title">{% blocktrans %}Add Order Item{% endblocktrans %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<form novalidate="" id="myForm">
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Name{% endblocktrans %}</label>
+						<select  class="selectpicker form-control" id="stock" name="stock" required data-live-search="true">
+	                    	{% for stock in stocks %}
+	                    		<option value="{{ stock.id }}">{{ stock.name }}</option>
+	                    	{% endfor %}
+	                    </select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Quantity{% endblocktrans %}</label>
+						<input type="number" class="form-control" id="quantity" name="quantity" step="1" min="1">
+					</div>
+				</div>
+				<input type="hidden" id="outcome_id" value="{{ outcome.id }}">
+				<input type="hidden" id="add_id" value="-1">
+			</form>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_save" class="btn btn-primary mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+		<button id="btn_cancel" class="btn btn-light ml-2">{% blocktrans %}Cancel{% endblocktrans %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+	        	<h5 class="modal-title">{% blocktrans %}Edit Outcome{% endblocktrans %}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<div class="modal-body p-3">
+	      		<form class="pt-3 pb-3" novalidate id="editForm" method="POST">
+	      			<div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="name">{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+		                    <input type="text" class="form-control" id="name" name="name" value="{{ outcome.name }}" required>
+                            <div class="invalid-feedback">
+						        {% blocktrans %}This field is required.{% endblocktrans %}
+						    </div>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="category">{% blocktrans %}Client{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+		                    <select  class="selectpicker form-control" id="client" name="client" required data-live-search="true">
+	                    	{% for supp in clients %}
+	                    		<option value="{{ supp.id }}">{{ supp.name }}</option>
+	                    	{% endfor %}
+	                    </select>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="date">{% blocktrans %}Date{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					        <input type="text" class="form-control" id="date" name="date" required="" value="{{ outcome.order_date|date:'yy-m-d' }}">
+                        </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="description">{% blocktrans %}Description{% endblocktrans %}</label>
+		                    <textarea  class="form-control" id="description" name="description" row="5">{{ outcome.description }}</textarea>
+                        </div>
+		            </div>
+		            
+		        </form>
+	      	</div>
+
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+		        <button id="edit_confirm" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+<script type="text/javascript">
+	var date = new Date();
+	var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+ 	function formatDate(date) {
+	    var d = new Date(date),
+	        month = '' + (d.getMonth() + 1),
+	        day = '' + d.getDate(),
+	        year = d.getFullYear();
+
+	    if (month.length < 2) 
+	        month = '0' + month;
+	    if (day.length < 2) 
+	        day = '0' + day;
+
+	    return [year, month, day].join('-');
+	}
+	$("#sel_date").datepicker({
+		format: "yyyy-mm-dd",
+		todayHighlight: true,
+		autoclose: true
+	}).on('changeDate', function(e) {
+        get_data();
+    });
+	
+	$("#sel_date").datepicker('setDate', formatDate(today));
+	get_data();
+	function get_data(){
+		console.log($("#sel_date").val());
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-get-pickings" %}',
+			data: {
+				'sel_date': $("#sel_date").val() ,
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+			}
+		});
+	}
+	
+</script>
+{% endblock %}

@@ -1,0 +1,122 @@
+#myStickHeader{
+	background: #f2f7f8;
+}
+.dropdown-item.active{
+	color:#fff !important;
+}
+.dropdown-item.active:hover{
+	color:#000 !important;
+}
+.daterangepicker td.start-date{
+	border-radius: 12px 0 0 12px !important;
+}
+.daterangepicker td.end-date{
+	border-radius: 0 12px 12px 0 !important;
+}
+.app-search input{
+	width: 100%;
+    border-radius: 100px;
+    font-size: 14px;
+    -webkit-transition: 0.5s ease-in;
+    -o-transition: 0.5s ease-in;
+    transition: 0.5s ease-in;
+}
+.btn-new{
+	color: #fff;
+	background: #875a7b;
+    border: 1px solid #875a7b;
+    padding-left: 25px;
+    padding-right: 25px;
+    font-weight: 600;
+}
+.btn-new:hover{
+	background: #c199b6;
+    color: #009efb;
+}
+
+.btn-import{
+	color: #875a7b;
+	background: #fff;
+    border: 1px solid #875a7b;
+    padding-left: 25px;
+    padding-right: 25px;
+    font-weight: 600;
+}
+.btn-import:hover{
+	background: #f5efef;
+    color: #009efb;
+}
+.search_tool{
+	display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.search_tool span{
+	color: #fff;
+	cursor: pointer;
+}
+.search_tool span:hover{
+	color: #6abdbd;
+}
+.search_tool .active{
+	color: #0ff;
+}
+.card_tool span{
+	color: #000;
+	cursor: pointer;
+}
+.card_tool span:hover{
+	color: #3bb4fc;
+}
+.card_tool .active{
+	color: #0875ee;
+}
+.card-child{
+    /*height: 100px;*/
+    border: 1px solid !important;
+    -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+}
+.img_upload{
+	cursor: pointer;
+}
+.pdf_upload{
+	cursor: pointer;
+}
+
+.img_upload img{
+	max-width: 260px;
+	max-height: 260px;
+	padding: 3px;
+	border: 1px solid;
+}
+.img-clear {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+.card-no-border .sidebar-nav > ul > li > ul > li > a.active {
+    background: #f2f7f8;
+    color: #007bff;
+}
+.table{
+	max-width: 99%;
+	width: 99%;
+}
+.table th{
+	color: #009efb;
+}
+.table td{
+	vertical-align: middle;
+}
+@media (max-width: 768px) {
+	.container-fluid {
+	    padding: 3px 5px;
+	}
+	.container{
+		padding: 0px 0px;
+	}
+	.card-body{
+		padding: 0px;
+	}
+}

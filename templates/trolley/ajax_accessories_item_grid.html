@@ -1,0 +1,105 @@
+{% load i18n %}
+<style type="text/css">
+    .card-child{
+        height: 175px;
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+</style>
+<div class="row">
+    {% for item in items %}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-12">
+            <div class="card card-child">
+                <div class="row m-0 pt-1">
+                    <div class="col-12 pr-0">
+                        <a href="javascript:void(0);">
+                            <span class='btn_edit' data-id='{{item.id}}' data-stock='{{item.stock.id}}' data-description='{{item.description}}' data-direction='{{item.direction}}' data-packaging='{{item.packaging}}' data-quantity='{{item.quantity}}'>{{ item.stock.name }}</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-2">
+                        {% if item.stock.picture %}
+                            <img src="{{item.stock.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 65px;"/>
+                        {% else %}
+                            <i class="far fa-3x fa-image" ></i>
+                        {% endif %}
+                    </div>
+                    <div class="col-8 pl-0 pr-0">
+                        <div class="col-12 pl-0 pr-0">
+                            <span style="font-size: 90%;">{% blocktrans %}Ref{% endblocktrans %}:  {{ item.stock.reference }}</span>
+                        </div>
+                        <div class="col-12 pl-0 pr-0">
+                            <span style="font-size: 90%;">{% blocktrans %}Qt{% endblocktrans %}:  {{ item.quantity }} pcs</span>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-7 pl-0 pr-0">
+                                <span style="font-size: 90%;">{% blocktrans %}Direction{% endblocktrans %}:</span>
+                            </div>
+                            <div class="col-5 pl-0 pr-0">
+                                <span style="font-size: 90%;">{{ item.direction }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ml-0 mr-0 mt-1">
+                    <div class="col-4 pr-0 pl-2">
+                        <span style="font-size: 90%;">{% blocktrans %}Location{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-8 pr-0 pl-1">
+                        <span style="font-size: 90%;">{% if item.stock.location %}{{ item.stock.location.name }}{% endif %}</span>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-1">
+                        <span style="font-size: 90%;">{% blocktrans %}Size{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-8 pl-2 pr-1">
+                        <span style="font-size: 90%;">{{ item.stock.width }} * {{ item.stock.height }} * {{ item.stock.depth }} mm<sup>3</sup></span>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-1">
+                        <span style="font-size: 90%;">{% blocktrans %}Packaging{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-8 pl-2 pr-1">
+                        <span style="font-size: 90%;">{{ item.packaging }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor%}
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+    {% endif %}
+    <script type="text/javascript">
+        $('[data-toggle="tooltip"]').tooltip();
+        $(".page_link").on('click', function(){
+            $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                url: '{% url "ajax-grid-accessories-item" %}',
+                data: {
+                    'trolley_item_id': $("#trolley_item_id").val(),
+                    'page': $(this).data("id"),
+                },
+                type: 'POST',
+                success: function (data) {
+                    $("#div_content").html(data);
+                    
+                }
+            });
+        });
+        $(".btn_edit").on('click', function(event){
+            $("#head_title").html('{% blocktrans %}Edit Accessories{% endblocktrans %}');
+            $("#add_id").val($(this).data('id'));
+            $("#access_stock").val($(this).data('stock'));
+            $("#access_stock").selectpicker('refresh');
+            $("#access_description").val($(this).data('description'));
+            $("#direction").val($(this).data('direction'));
+            $("#packaging").val($(this).data('packaging'));
+            $("#quantity").val($(this).data('quantity'));
+            $("#addAccessModal").modal();
+        });
+    </script>
+</div>

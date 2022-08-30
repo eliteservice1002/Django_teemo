@@ -1,0 +1,633 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% load mathfilters %}
+{% block content %}
+
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+
+<script src="{% static 'js/html2canvas.min.js' %}"></script>
+<script src="{% static 'js/jspdf.debug.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 5px;
+	}
+	
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-7">
+			<h2 class="mr-auto"><a href="{% url 'commands' %}">{% blocktrans %}Commands{% endblocktrans %}</a> / {{ command.name }}</h2>
+		</div>
+		<div class="col-12 col-md-5">
+			{% if command.finished != 3 %}
+				<a href="{% url 'update-command' command.id %}" class="btn btn-primary">{% blocktrans %}EDIT{% endblocktrans %}</a>
+			{% else %}
+				<button id="btn_pdf_download" class="btn btn-primary pl-3 pr-3"><i class="fas fa-download mr-2"></i>{% blocktrans %}PDF{% endblocktrans %}</button>
+			{% endif %}
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+		        	<div class="form-group row">
+			        	<div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 col-12">
+			        		<div class="col-10 row m-0 p-0" style="border-bottom: 1px solid">
+								<div class="col-6 pl-1 pr-1">
+									<span>{% blocktrans %}Name{% endblocktrans %}:</span>
+								</div>
+								<div class="col-6 pl-0 pr-1">
+									<span style="color:#000;">{{ command.name }}</span>
+								</div>
+							</div>
+				            <div style="border:1px solid; border-radius: 20px;" class="mt-2 p-2">
+						        <div class="row m-0 pb-3 pt-2">
+					            	<div class="col-6">
+				                        <span >{% blocktrans %}Product Name{% endblocktrans %}:</span>
+				                    </div>
+				                    <div class="col-6">
+				                        <a href="javascript: void(0);">
+						                    <span>{{ command.group.name }}</span>
+						                </a>
+				                    </div>
+						            
+						        </div>
+						        <div class="row m-0">
+						            <div class="col-12 text-center">
+						                {% if command.group.picture %}
+						                    <img src="{{command.group.picture.url}}" alt="" style="max-width: 99%;max-height: 90px;"/>
+						                {% else %}
+						                    <i class="far fa-6x fa-image" ></i>
+						                {% endif %}
+						            </div>
+						            <div class="col-12 pt-4">
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Ref{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.group.reference }}</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Quantity{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.quantity }} pcs</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Category{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.group.category.name }}</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Worker{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.worker }}</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Date{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.date }}</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}PDF{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        {% if command.stock.pdf %}
+					                                <a href="{{ command.stock.pdf.url}}" download>
+					                                  	<span class="">{{ command.stock.filename }}</span>
+					                                  	<i class="fas fa-file-download"></i>
+					                                </a>
+				                              	{% endif %}
+						                    </div>
+						                </div>
+						                
+						            </div>
+						        </div>
+						    </div>
+						</div>
+						<div class="col-lg-1">
+						</div>
+						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 col-12">
+						    <div class="table-responsive">
+						        <table class="table table-bordered table-striped">
+						            <thead>
+						                <tr>
+						                    <th width="10%">{% blocktrans %}Picture{% endblocktrans %}</th>
+						                    <th width="15%">{% blocktrans %}Ref{% endblocktrans %}</th>
+						                    <th width="20%">{% blocktrans %}Name{% endblocktrans %}</th>
+						                    <th width="12%">{% blocktrans %}Required{% endblocktrans %}</th>
+						                    <th width="18%">{% blocktrans %}Location{% endblocktrans %}</th>
+						                    <th width="20%">{% blocktrans %}Category{% endblocktrans %}</th>
+						                </tr>
+						            </thead>
+						            <tbody>
+						                {% for item in items %}
+						                    <tr>
+						                        <td class="text-center p-2">
+						                            {% if item.stock.picture %}
+						                            <img src="{{item.stock.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+						                        {% else %}
+						                            <i class="far fa-4x fa-image pl-2 pr-2" ></i>
+						                        {% endif %}
+						                        </td>
+						                        <td>{{ item.stock.reference }}</td>
+						                        <td style="font-size: 95%;">{{ item.stock.name }}</td>
+						                        <td>
+						                            <span>{{ item.quantity|mul:command.quantity }} pcs</span>
+						                        </td>
+						                        <td style="font-size: 90%;">{% if item.stock.location %}{{ item.stock.location.name }}{% endif %}</td>
+						                        <td style="font-size: 90%;">{{ item.stock.category.name }}</td>
+						                        
+						                    </tr>
+						                {% endfor %}
+						            </tbody>
+						        </table>
+						    </div>
+						</div>
+					</div>
+					<div class="row m-0">
+						<div class="mt-4">
+							<h3>{% blocktrans %}Work History{% endblocktrans %}</h3>
+						</div>
+					</div>
+					<div class="row m-0">
+						<div class="col-12 col-md-4 p-0">
+							{% if command.finished == 1%}
+								<button id="btn_start" class="btn btn-primary waves-effect waves-light mr-3 ml-1"><i class="fas fa-pause mr-2"></i>{% blocktrans %}Pause{% endblocktrans %}</button>
+								<button id="btn_stop" class="btn btn-primary waves-effect waves-light mr-3 ml-3"><i class="fas fa-stop mr-2"></i>{% blocktrans %}Stop{% endblocktrans %}</button>
+								<span id="span_status" class="badge badge-info ml-4 pt-2 pb-2 pl-4 pr-4">{% blocktrans %}In Progress{% endblocktrans %}</span>
+							{% elif command.finished == 2 %}
+								<button id="btn_start" class="btn btn-primary waves-effect waves-light mr-3 ml-1"><i class="fas fa-play mr-2"></i>{% blocktrans %}Resume{% endblocktrans %}</button>
+								<button id="btn_stop" class="btn btn-primary waves-effect waves-light mr-3 ml-1"><i class="fas fa-stop mr-2"></i>{% blocktrans %}Stop{% endblocktrans %}</button>
+								<span id="span_status" class="badge badge-danger ml-4 pt-2 pb-2 pl-4 pr-4">{% blocktrans %}Paused{% endblocktrans %}</span>
+							{% elif command.finished == 3 %}
+								<button id="btn_start" class="btn btn-disabled waves-effect waves-light mr-3 ml-3" disabled=""><i class="fas fa-play mr-2"></i>{% blocktrans %}Resume{% endblocktrans %}</button>
+								<button id="btn_stop" class="btn btn-disabled waves-effect waves-light mr-3 ml-1" disabled><i class="fas fa-stop mr-2"></i>{% blocktrans %}Stop{% endblocktrans %}</button>
+								<span id="span_status" class="badge badge-success ml-4 pt-2 pb-2 pl-4 pr-4">{% blocktrans %}Finished{% endblocktrans %}</span>
+							{% else %}
+								<button id="btn_start" class="btn btn-primary waves-effect waves-light mr-3 ml-1"><i class="fas fa-play mr-2"></i>{% blocktrans %}Start{% endblocktrans %}</button>
+								<button id="btn_stop" class="btn btn-disabled waves-effect waves-light mr-3 ml-3" disabled><i class="fas fa-stop mr-2"></i>{% blocktrans %}Stop{% endblocktrans %}</button>
+								<span id="span_status" class="badge badge-info ml-4 pt-2 pb-2 pl-4 pr-4"></span>
+							{% endif %}
+							
+							<input type="hidden" id="status" value="{{ command.finished }}">
+							<input type="hidden" id="comm_id" value="{{ command.id }}">
+						</div>
+						<div class="col-12 col-md-8 row m-0">
+							<div class="col-8">
+								<span> {% blocktrans %}Working Time{% endblocktrans %}:</span>
+								<span id="span_start">{{ command.start|date:'yy-m-d h:m:s'}}</span> ~
+								<span id="span_end">{{ command.end|date:'yy-m-d h:m:s'}}</span>
+							</div>
+							<div class="col-4">
+								<span> {% blocktrans %}Break Duration{% endblocktrans %}:</span>
+								<span id="span_break">{{ break_duration }}</span>
+							</div>
+							<div class="col-12 pt-2">
+								<span style="color: blue;"> {% blocktrans %}Working Duration{% endblocktrans %}:</span>
+								<span id="span_working" style="color: blue;">{{ working_duration }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="row m-0">
+						<div class="table-responsive tb_history">
+							<table class="table table-bordered table-striped">
+					            <thead>
+					                <tr>
+					                    <th width="10%">{% blocktrans %}From{% endblocktrans %}</th>
+					                    <th width="10%">{% blocktrans %}To{% endblocktrans %}</th>
+					                    <th width="20%">{% blocktrans %}Description{% endblocktrans %}</th>
+					                    <th width="10%">{% blocktrans %}Duaration{% endblocktrans %}</th>
+					                </tr>
+					            </thead>
+					            <tbody>
+					                {% for item1 in workhistory %}
+					                    <tr>
+					                        <td>{{ item1.start|date:'yy-m-d h:m:s' }}</td>
+					                        <td>{{ item1.end|date:'yy-m-d h:m:s' }}</td>
+					                        <td>{{ item1.description }}</td>
+					                        <td>
+					                        	{{ item1.get_time_diff }}
+					                        </td>
+					                    </tr>
+					                {% endfor %}
+					            </tbody>
+					        </table>
+						</div>
+					</div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-9">
+			<div class="card hide" id="div_pdf_area">
+		        <div class="card-body">
+		        	<div class="form-group row">
+			        	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-12">
+			        		<div class="col-10 row m-0 p-0" style="border-bottom: 1px solid">
+								<div class="col-6 pl-1 pr-1">
+									<span>{% blocktrans %}Name{% endblocktrans %}:</span>
+								</div>
+								<div class="col-6 pl-0 pr-1">
+									<span style="color:#000;">{{ command.name }}</span>
+								</div>
+							</div>
+				            <div style="border:1px solid; border-radius: 20px;" class="mt-2 p-2">
+						        <div class="row m-0 pb-3 pt-2">
+					            	<div class="col-6">
+				                        <span >{% blocktrans %}Product Name{% endblocktrans %}:</span>
+				                    </div>
+				                    <div class="col-6">
+				                        <a href="javascript: void(0);">
+						                    <span>{{ command.group.name }}</span>
+						                </a>
+				                    </div>
+						            
+						        </div>
+						        <div class="row m-0">
+						            <div class="col-12 text-center">
+						                {% if command.group.picture %}
+						                    <img src="{{command.group.picture.url}}" alt="" style="max-width: 99%;max-height: 90px;"/>
+						                {% else %}
+						                    <i class="far fa-6x fa-image" ></i>
+						                {% endif %}
+						            </div>
+						            <div class="col-12 pt-4">
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Ref{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.group.reference }}</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Quantity{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.quantity }} pcs</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Category{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.group.category.name }}</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Worker{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.worker }}</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}Date{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        <span style="color:blue;">{{ command.date }}</span>
+						                    </div>
+						                </div>
+						                <div class="form-group row">
+						                    <div class="col-6 pr-0">
+						                        <span >{% blocktrans %}PDF{% endblocktrans %}:</span>
+						                    </div>
+						                    <div class="col-6 pr-0">
+						                        {% if command.stock.pdf %}
+					                                <a href="{{ command.stock.pdf.url}}" download>
+					                                  	<span class="">{{ command.stock.filename }}</span>
+					                                  	<i class="fas fa-file-download"></i>
+					                                </a>
+				                              	{% endif %}
+						                    </div>
+						                </div>
+						                
+						            </div>
+						        </div>
+						    </div>
+						</div>
+						<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 col-12">
+						    <div class="table-responsive">
+						        <table class="table table-bordered table-striped">
+						            <thead>
+						                <tr>
+						                    <th width="10%">{% blocktrans %}Picture{% endblocktrans %}</th>
+						                    <th width="15%">{% blocktrans %}Ref{% endblocktrans %}</th>
+						                    <th width="20%">{% blocktrans %}Name{% endblocktrans %}</th>
+						                    <th width="12%">{% blocktrans %}Required{% endblocktrans %}</th>
+						                    <th width="18%">{% blocktrans %}Location{% endblocktrans %}</th>
+						                    <th width="20%">{% blocktrans %}Category{% endblocktrans %}</th>
+						                </tr>
+						            </thead>
+						            <tbody>
+						                {% for item in items %}
+						                    <tr>
+						                        <td class="text-center p-2">
+						                            {% if item.stock.picture %}
+						                            <img src="{{item.stock.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+						                        {% else %}
+						                            <i class="far fa-4x fa-image pl-2 pr-2" ></i>
+						                        {% endif %}
+						                        </td>
+						                        <td>{{ item.stock.reference }}</td>
+						                        <td style="font-size: 95%;">{{ item.stock.name }}</td>
+						                        <td>
+						                            <span>{{ item.quantity|mul:command.quantity }} pcs</span>
+						                        </td>
+						                        <td style="font-size: 90%;">{% if item.stock.location %}{{ item.stock.location.name }}{% endif %}</td>
+						                        <td style="font-size: 90%;">{{ item.stock.category.name }}</td>
+						                        
+						                    </tr>
+						                {% endfor %}
+						            </tbody>
+						        </table>
+						    </div>
+						</div>
+					</div>
+					<div class="row m-0">
+						<div class="mt-4">
+							<h3>{% blocktrans %}Work History{% endblocktrans %}</h3>
+						</div>
+					</div>
+					<div class="row m-0">
+						<div class="col-8 p-0">
+							<div class="col-12">
+								<span>{% blocktrans %}Working Time{% endblocktrans %}:</span>
+								<span>{{ command.start|date:'yy-m-d h:m:s'}}</span> ~
+								<span>{{ command.end|date:'yy-m-d h:m:s'}}</span>
+							</div>
+							<div class="col-12 pt-2">
+								<span style="color: blue;"> {% blocktrans %}Working Duration{% endblocktrans %}:</span>
+								<span id="span_working" style="color: blue;">{{ working_duration }}</span>
+							</div>
+						</div>
+						<div class="col-4">
+							<span> {% blocktrans %}Break Duration{% endblocktrans %}:</span>
+							<span id="span_break">{{ break_duration }}</span>
+						</div>
+					</div>
+					{% if workhistory %}
+					<div class="row m-0">
+						<div class="mt-4">
+							<h3>{% blocktrans %}Broken History{% endblocktrans %}</h3>
+						</div>
+					</div>
+					<div class="row m-0">
+						<div class="table-responsive tb_history">
+							<table class="table table-bordered table-striped">
+					            <thead>
+					                <tr>
+					                    <th width="10%">{% blocktrans %}From{% endblocktrans %}</th>
+					                    <th width="10%">{% blocktrans %}To{% endblocktrans %}</th>
+					                    <th width="20%">{% blocktrans %}Description{% endblocktrans %}</th>
+					                    <th width="10%">{% blocktrans %}Duaration{% endblocktrans %}</th>
+					                </tr>
+					            </thead>
+					            <tbody>
+					                {% for item1 in workhistory %}
+					                    <tr>
+					                        <td>{{ item1.start|date:'yy-m-d h:m:s' }}</td>
+					                        <td>{{ item1.end|date:'yy-m-d h:m:s' }}</td>
+					                        <td>{{ item1.description }}</td>
+					                        <td>
+					                        	{{ item1.get_time_diff }}
+					                        </td>
+					                    </tr>
+					                {% endfor %}
+					            </tbody>
+					        </table>
+						</div>
+					</div>
+					{% endif %}
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      	<div class="modal-header">
+	        	<h5 class="modal-title" id="exampleModalLabel">{% blocktrans %}ADD CATEGORY{% endblocktrans %}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<div class="modal-body">
+	      		<form novalidate="" id="addForm">
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label>{% blocktrans %}Description{% endblocktrans %}</label>
+							<textarea class="form-control" name="description" id="description"></textarea>
+						</div>
+					</div>
+				</form>
+	        	
+	      	</div>
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+		        <button id="add_confirm" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+<script type="text/javascript">
+	
+	var b_status = false;
+	$("#btn_start").on('click', function(){
+		
+		if($("#status").val() == 0){
+			record_date_time();
+			
+		}else if($("#status").val() == 1){
+			$("#addModal").modal();
+		}else{
+			record_date_time();
+		}
+		if(b_status == false){
+			$("#btn_start").html('<i class="fas fa-pause mr-2"></i>{% blocktrans %}Pause{% endblocktrans %}');	
+			$("#span_status").html("{% blocktrans %}In Progress{% endblocktrans %}");
+			$("#span_status").removeClass('badge-danger');
+			$("#span_status").addClass('badge-info');
+			$("#status").val("1");
+			b_status = true;
+		}
+		
+		$("#btn_stop").removeAttr('disabled');
+		$("#btn_stop").removeClass('btn-disabled');
+		$("#btn_stop").addClass('btn-primary');
+		
+	});
+	$("#btn_stop").on('click', function(){
+		$("#btn_start").html('<i class="fas fa-play mr-2"></i>{% blocktrans %}Start{% endblocktrans %}');
+		$("#btn_start").attr('disabled','true');
+		$("#btn_start").removeClass('btn-primary');
+		$("#btn_start").addClass('btn-disabled');
+		$("#btn_stop").removeClass('btn-primary');
+		$("#btn_stop").addClass('btn-disabled');
+		$("#btn_stop").attr('disabled','true');
+		$("#span_status").html("{% blocktrans %}Finished{% endblocktrans %}");
+		$("#span_status").removeClass('badge-danger');
+		$("#span_status").removeClass('badge-info');
+		$("#span_status").addClass('badge-success');
+		$("#status").val("3");
+		record_date_time();
+
+	});
+	$("#add_confirm").on('click', function(event){
+		var form = $("#addForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		record_date_time();
+		$("#addModal").modal('hide');
+		$("#btn_start").html('<i class="fas fa-play mr-2"></i>Resume');
+		$("#span_status").html("{% blocktrans %}Paused{% endblocktrans %}");
+		$("#span_status").removeClass('badge-info');
+		$("#span_status").addClass('badge-danger');
+		$("#status").val("2");
+		b_status = false;
+	});
+	function record_date_time(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-command-record-datetime" %}',
+			data: {
+				'comm_id': $("#comm_id").val(),
+				'status': $("#status").val(),
+				'current_datetime': NOW(),
+				'description': $("#description").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#description").val("");
+				if (data.err_code == 1){
+					$("#span_start").html(data.start_time);
+				}else if(data.err_code == 3){
+					$("#span_break").html(data.break_duration);
+					$("#span_working").html(data.working_duration);
+					$("#span_end").html(data.end_time);
+				}else{
+					$(".tb_history").html(data);
+				}
+			}	
+		});
+	}
+	function get_detail_view(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-command-new-detail" %}',
+			data: {
+				'group_id': $("#group").val(),
+				'quantity': $("#quantity").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_detail").html(data);
+				var errors_count = $('.quantiy_error').length;
+				console.log(errors_count);
+				if (errors_count > 0){
+					$(".div_quantity_error").show();
+				}else{
+					$(".div_quantity_error").hide();
+				}
+			}	
+		});
+	}
+	function NOW() {
+
+	    var date = new Date();
+	    var aaaa = date.getFullYear();
+	    var gg = date.getDate();
+	    var mm = (date.getMonth() + 1);
+
+	    if (gg < 10)
+	        gg = "0" + gg;
+
+	    if (mm < 10)
+	        mm = "0" + mm;
+
+	    var cur_day = aaaa + "-" + mm + "-" + gg;
+
+	    var hours = date.getHours()
+	    var minutes = date.getMinutes()
+	    var seconds = date.getSeconds();
+
+	    if (hours < 10)
+	        hours = "0" + hours;
+
+	    if (minutes < 10)
+	        minutes = "0" + minutes;
+
+	    if (seconds < 10)
+	        seconds = "0" + seconds;
+
+	    return cur_day + " " + hours + ":" + minutes + ":" + seconds;
+	}
+	$("#btn_pdf_download").on('click', function(){
+        print_pdf();
+    });
+    // print html ===> pdf 
+    function print_pdf(){
+    	$("#div_pdf_area").show();
+        var test = $("#div_pdf_area").get(0);
+        html2canvas(test, {scale: 2}).then(function (canvas) {
+            var imgData = canvas.toDataURL('image/png', 1);
+            var imgWidth = 200; 
+            var pageHeight = 295;  
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+            var doc = new jsPDF('p', 'mm');
+            var position = 5;
+
+            doc.addImage(imgData, 'PNG', 5, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', 5, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            doc.save( '{{ command.name }}' + "_" + "{{ command.date }}" +'.pdf');
+            $("#div_pdf_area").hide();
+        });
+
+    }
+</script>
+{% endblock %}

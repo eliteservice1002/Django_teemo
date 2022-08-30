@@ -1,0 +1,190 @@
+{% extends 'dash.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% block content %}
+<div class="menu-index" style="background-color: #6f5468;">
+	<div class="container">
+		<div class="row mt-1">
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'suppliers' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-address-book p-3" style="background:#6d7094 !important;border-radius: 5px;"></i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Suppliers{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+				
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'leads' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="far fa-3x fa-comment p-3" style="background:#c9c07e !important;border-radius: 5px;"></i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Leads{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'mailings' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-paper-plane p-3" style="background:#676967 !important;border-radius: 5px;"></i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Mail Marketing{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'stocks' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-id-card p-3" style="background:#d78d60 !important;border-radius: 5px;"></i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Products{% endblocktrans %}</h4>
+						</div>
+					</div>
+					
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'groups' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-cubes p-3" style="background:#cb6483 !important;border-radius: 5px;"></i>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Groups{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'commands' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-wrench p-3" style="background:#238c8f !important;border-radius: 5px;"></i>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Command{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'outcomes' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-cube p-3" style="background:#c9c07e !important;border-radius: 5px;"></i>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Orders{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'purchases' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-credit-card p-3" style="background:#7da9c0 !important;border-radius: 5px;"></i>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Purchase{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'transports' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-truck p-3" style="background:#6d7094 !important;border-radius: 5px;"></i>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Transport{% endblocktrans %}</h4>
+						</div>
+					</div>
+
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'category' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-layer-group p-3" style="background:#974d4d !important;border-radius: 5px;"></i>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="container text-center">
+							<h4 class="text-new">{% blocktrans %}Category{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'jobs' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-user-circle p-3" style="background:#238c8f !important;border-radius: 5px;"></i>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="container text-center p-0">
+							<h4 class="text-new">{% blocktrans %}Job Offer{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">
+				<a class="a_new" href="{% url 'logout' %}">
+					<div class="row">
+						<div class="container text-center p-3">
+							<i class="fas fa-3x fa-sign-out-alt p-3" style="background:#656765 !important;border-radius: 5px;"></i>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="container text-center p-0">
+							<h4 class="text-new">{% blocktrans %}Log out{% endblocktrans %}</h4>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+
+<link href="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" rel="stylesheet">
+
+<script src="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+    
+    a.disabled {
+        pointer-events: none;
+        color: #875a7b;
+    }
+</style>
+
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="breadcrumb-new">
+			<a href="{% url 'stocks' %}" class="active">{% blocktrans %}Products{% endblocktrans %}</a>
+			<a href="{% url 'update-stock' stock.id %}">{{stock.reference}}</a>
+		</div>
+		<div class="col-12 pt-3">
+            <a href="{% url 'update-stock' stock.id %}" class="btn btn-import ml-2">{% blocktrans %}Edit Stock{% endblocktrans %}</a>
+		</div>
+		
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+		            <form class="pt-3 pb-3" novalidate id="myForm" method="POST" enctype='multipart/form-data'>
+		            	{% csrf_token %}
+		            	<div class="row m-0">
+		            		<div class="col-12 col-md-4 pl-md-4">
+		            			<div class="form-group text-center mt-4">
+		            				<div class="mb-3">
+		            					<span class="img_upload">
+		            						<i class="far fa-8x fa-image pl-5 pr-5" style="border:1px solid;{% if stock.picture %}display: none;{% endif %}"></i>
+		            						<img src="{% if stock.picture %}{{ stock.picture.url }}{% else %}{% static 'images/avatar-default.jpg' %}{% endif %}" style="{% if stock.picture %}display: inline-block;{% else %}display: none;{% endif %}" disabled>
+		            						
+		            					</span>
+		            					{% if stock.picture %}
+	            							<a class="img-clear disabled" href="javascript:void(0);" data-id="1"><span><i class="fas fa-trash-alt" disabled></i></span></a>
+	            						{% endif %}
+		            					<input type="file" name="picture" id="imagen" onchange="readURL(this);" style="display: none" disabled>
+		            				</div>
+		            			</div>
+		            		</div>
+		            		<div class="col-12 col-md-4 pl-md-4">
+		            			<div class="form-group">
+		            				{% if form.errors %}
+									    {% for field in form %}
+									        {% for error in field.errors %}
+									            <div class="alert alert-danger">
+									                <strong>{{ error|escape }}</strong>
+									            </div>
+									        {% endfor %}
+									    {% endfor %}
+									    {% for error in form.non_field_errors %}
+									        <div class="alert alert-danger">
+									            <strong>{{ error|escape }}</strong>
+									        </div>
+									    {% endfor %}
+									{% endif %}
+		            			</div>
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="ref">{% blocktrans %}Ref{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="ref" name="reference" value="{{ stock.reference }}" required="" disabled>
+			                        </div>
+					            </div>
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="name" name="name" required="" value="{{ stock.name }}" disabled>
+					                    <div class="invalid-feedback">
+									        {% blocktrans %}This field is required.{% endblocktrans %}
+									    </div>
+			                        </div>
+					            </div>
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="quantity">{% blocktrans %}Initial Quantity{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="number" class="form-control" id="quantity" name="quantity" step="1" min="0" value="{{ stock.quantity }}" required="" disabled>
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="minium">{% blocktrans %}Minium Quantity{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="number" class="form-control" id="minium" name="minium" step="1" min="1" value="{% if stock %}{{ stock.minium }}{% else %}1{% endif %}" disabled>
+			                        </div>
+					            </div>
+					            <div class="form-group row m-0">
+					                <div class="col-10 p-0">
+					                	<label for="location">{% blocktrans %}Location{% endblocktrans %}</label>
+					                	<select  class="selectpicker form-control" id="location" name="location" data-live-search="true" disabled>
+					                		<option value="">------------</option>
+					                    	{% for cate in locations %}
+					                    		<option value="{{ cate.id }}">{{ cate.name }}</option>
+					                    	{% endfor %}
+					                    </select>
+					                </div>
+			                        <div class="col-2 p-0">
+			                        	<br>
+			                        	<b class="btn btn-primary btn-sm mt-1 ml-3 btn_add_location" disabled><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add{% endblocktrans %}</b>
+			                        </div>
+					            </div>
+					            <div class="form-group row m-0">
+					                <div class="col-3 pl-0">
+					                	<label for="width">{% blocktrans %}Width{% endblocktrans %}</label><span style="font-size: 70%;" class="ml-2">(mm)</span>
+					                    <input type="number" class="form-control" id="width" name="width" step="1" min="1" value="{% if stock %}{{ stock.width }}{% else %}1{% endif %}" disabled>
+			                        </div>
+			                        <div class="col-3 pl-0">
+					                	<label for="height">{% blocktrans %}Height{% endblocktrans %}</label><span style="font-size: 70%;" class="ml-2">(mm)</span>
+					                    <input type="number" class="form-control" id="height" name="height" step="1" min="1" value="{% if stock %}{{ stock.height }}{% else %}1{% endif %}" disabled>
+			                        </div>
+			                        <div class="col-3 pl-0">
+					                	<label for="depth">{% blocktrans %}Depth{% endblocktrans %}</label><span style="font-size: 70%;" class="ml-2">(mm)</span>
+					                    <input type="number" class="form-control" id="depth" name="depth" step="1" min="1" value="{% if stock %}{{ stock.depth }}{% else %}1{% endif %}" disabled>
+			                        </div>
+			                        <div class="col-3 pl-0 pr-0">
+					                	<label for="weight">{% blocktrans %}Weight{% endblocktrans %}</label><span style="font-size: 70%;" class="ml-2">(g)</span>
+					                    <input type="number" class="form-control" id="weight" name="weight" step="1" min="1" value="{% if stock %}{{ stock.weight }}{% else %}1{% endif %}" disabled>
+			                        </div>
+					            </div>
+					            <div class="form-group row m-0">
+					                <div class="col-10 p-0">
+					                	<label for="category">{% blocktrans %}Category{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <select  class="selectpicker form-control" id="category" name="category" required data-live-search="true" disabled>
+					                    	{% for cate in categories %}
+					                    		<option value="{{ cate.id }}">{{ cate.name }}</option>
+					                    	{% endfor %}
+					                    </select>
+			                        </div>
+			                        <div class="col-2 p-0">
+			                        	<br>
+			                        	<b class="btn btn-primary btn-sm mt-1 ml-3 btn_add_category" disabled><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add{% endblocktrans %}</b>
+			                        </div>
+					            </div>
+					        </div>
+							<div class="col-12 col-md-4 pl-md-4">
+								<div class="form-group">
+		            				{% if form.errors %}
+									    {% for field in form %}
+									        {% for error in field.errors %}
+									            <div class="alert alert-danger">
+									                <strong>{{ error|escape }}</strong>
+									            </div>
+									        {% endfor %}
+									    {% endfor %}
+									    {% for error in form.non_field_errors %}
+									        <div class="alert alert-danger">
+									            <strong>{{ error|escape }}</strong>
+									        </div>
+									    {% endfor %}
+									{% endif %}
+		            			</div>
+								<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="sale_price">{% blocktrans %}Sale Price{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="number" class="form-control" id="sale_price" name="sale_price" step="1" min="1" value="{{ stock.sale_price }}" disabled>
+			                        </div>
+					            </div>
+								<div class="form-group row m-0">
+					                <div class="col-12 p-0">
+					                	<label for="tax">{% blocktrans %}Taxes{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <select  class="selectpicker form-control" id="tax" name="tax" required data-live-search="true" disabled>
+					                    	{% for ta in taxes %}
+												<option value="{{ta.id}}">{{ ta.name }}</option>
+											{% endfor %}
+					                    	
+					                    </select>
+			                        </div>
+					            </div>
+
+							</div>
+					        <input type="hidden" name="b_group" id="b_group" value="0">
+					        <input type="hidden" name="user" value="{{ user.id }}">
+		            		<input type="hidden" id="exist" name="exist" value="{% if stock.picture %}YES{% endif %}">
+		            	</div>
+		            	<!--div class="row m-0">
+		            		<div class="col-12 text-center mt-3">
+		            			<button type="submit" class="btn btn-new mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+		            			<a href="{% url 'stocks' %}" class="btn btn-import ml-2">{% blocktrans %}Cancel{% endblocktrans %}</a>
+		            		</div>
+		            	</div-->
+		            	
+		            </form>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      	<div class="modal-header">
+	        	<h5 class="modal-title" id="exampleModalLabel">{% blocktrans %}ADD CATEGORY{% endblocktrans %}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<div class="modal-body">
+	      		<form novalidate="" id="addForm">
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+							<input type="text" class="form-control" name="cate_name" id="cate_name" required="">
+							<div class="invalid-feedback">
+						        {% blocktrans %}This field is required.{% endblocktrans %}
+						    </div>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label>{% blocktrans %}Description{% endblocktrans %}</label>
+							<textarea class="form-control" name="cate_description" id="cate_description"></textarea>
+						</div>
+					</div>
+					<input type="hidden" id="cate_id" value="-1">
+				</form>
+	        	
+	      	</div>
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+		        <button id="add_confirm" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+<div class="modal fade" id="addLocationModal" tabindex="-1" role="dialog" aria-labelledby="addLocationModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      	<div class="modal-header">
+	        	<h5 class="modal-title">{% blocktrans %}ADD LOCATION{% endblocktrans %}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<div class="modal-body">
+	      		<form novalidate="" id="addLocationForm">
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label>{% blocktrans %}Location{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+							<input type="text" class="form-control" id="location_name" required="">
+							<div class="invalid-feedback">
+						        {% blocktrans %}This field is required.{% endblocktrans %}
+						    </div>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label>{% blocktrans %}Description{% endblocktrans %}</label>
+							<textarea class="form-control" id="location_description"></textarea>
+						</div>
+					</div>
+					
+				</form>
+	        	
+	      	</div>
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+		        <button id="add_location_confirm" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+<script type="text/javascript">
+	$(".selectpicker").selectpicker();
+	$("#myForm").submit(function( event ){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+	});
+	{% if stock %}
+		$("#category").val('{{ stock.category.id }}');
+		$("#location").val('{% if stock.location %}{{ stock.location.id }}{% endif %}');
+		$("#category").selectpicker('refresh');
+		$("#location").selectpicker('refresh');
+		$("#tax").val('{{ stock.tax.id }}');
+		$("#tax").selectpicker('refresh');
+	{% endif %}
+	//$(".btn_add_category").on('click', function(){
+	//	$("#addModal").modal();
+	//});
+    $(".btn_add_category").attr("disabled", true);
+    $(".btn_add_category").attr('style',  'background-color:gray');
+    $(".btn_add_location").attr("disabled", true);
+    $(".btn_add_location").attr('style',  'background-color:gray');
+	$("#add_confirm").on('click', function(){
+		var form = $("#addForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-category" %}',
+			data: {
+				'name': $("#cate_name").val(),
+				'description': $("#cate_description").val(),
+				'cate_id': $("#cate_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#category").html(data);
+				$("#category").selectpicker("refresh");
+				$("#addModal").modal("hide");
+			}
+		});
+	});
+	//$(".btn_add_location").on('click', function(){
+	//	$("#addLocationModal").modal();
+	//});
+	$("#add_location_confirm").on('click', function(){
+		var form = $("#addLocationForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-location" %}',
+			data: {
+				'name': $("#location_name").val(),
+				'description': $("#location_description").val(),
+				'item_id': '-1',
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#location").html(data);
+				$("#location").selectpicker("refresh");
+				$("#addLocationModal").modal("hide");
+			}
+		});
+	});
+	$(".img-clear").on('click', function(){
+		$(".img_upload img").attr('src', '');
+		$('.img_upload img').css('display', 'none');
+		$('.img_upload i').css('display', 'inline-block');
+		$("#imagen").empty();
+		$("#exist").val('NO'); 
+	});
+    $(".img_upload").on('click', function(){
+        $("#imagen").click();
+    })
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.img_upload img').attr('src', e.target.result);
+                $('.img_upload img').css('display', 'inline-block');
+                $('.img_upload i').css('display', 'none');
+                $("#exist").val('YES');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock %}

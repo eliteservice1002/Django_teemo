@@ -1,0 +1,102 @@
+{% load i18n %}
+{% load mathfilters %}
+{% load staticfiles %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    	<th width="3%" class="text-center">
+                    		<input type="checkbox" class="check" id="chk_all">
+                    	</th>
+                    	<th width="8%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Ref{% endblocktrans %}</th>
+                        <th width="13%">{% blocktrans %}Name{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Quantity{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Location{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Size{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Weight{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Category{% endblocktrans %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                	{% for stock in stocks %}
+                		<tr>
+                			<td class="text-center">
+                				<input type="checkbox" class="check chk_sub" data-id="{{ stock.id }}">
+                			</td>
+                            <td class="text-center p-2">
+                            	{% if stock.picture %}
+		                            <img src="{{stock.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+		                        {% else %}
+		                            <i class="far fa-4x fa-image pl-1 pr-1" ></i>
+		                        {% endif %}
+                            </td>
+                            <td>{{ stock.reference }}</td>
+                            <td>{{ stock.name }}</td>
+                            {% if stock.quantity < stock.minium %}
+                              <td style="color:red">{{ stock.quantity }} pcs <span class="ml-4" style="font-size: 80%;color:black;">( {{ stock.quantity|sub:stock.minium }} pcs )</span></td>
+                            {% else %}
+                              <td>{{ stock.quantity }} pcs</td>
+                            {% endif %}
+                            <td>{% if stock.location %}{{ stock.location.name }}{% endif %}</td>
+                            <td>{{ stock.width }} * {{ stock.height }} * {{ stock.depth }} mm</td>
+                            <td>{{ stock.weight }} g</td>
+                            <td>{{ stock.category.name }}</td>
+                            <td class="text-center">
+                            	<a href="{% url 'up-stock' stock.id %}"><span class="ml-1 mr-1 btn_edit" data-id="2"><i class="fas fa-edit"></i></span></a>
+                                <a href="javascript:void(0);"><span class="ml-1 mr-1 btn_adjust" data-id="{{ stock.id }}" data-quantity="{{ stock.quantity }}" data-ref="{{ stock.reference }}"><i class="fas fa-adjust"></i></span></a>
+                            </td>
+                        </tr>
+                	{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          var selected_category = $("#sel_category").val().join();
+            $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                url: '{% url "ajax-list-stocks" %}',
+                data: {
+                    'search_key': $("#search_box").val(),
+                    'page': $(this).data("id"),
+                    'selected_category': selected_category,
+                    'from_package': from_package,
+                    'to_package': to_package,
+                    'less': $("#chk_less_minium").prop('checked'),
+                    'greater': $("#chk_greater_minium").prop('checked')
+                },
+                type: 'POST',
+                success: function (data) {
+                    $("#div_content").html(data);
+                    
+                }
+            });
+        });
+      </script>
+    {% endif %}
+    <script type="text/javascript">
+        $(".btn_adjust").on('click', function(e){
+            $("#adjust_id").val($(this).data('id'));
+            $("#current_qt").val($(this).data('quantity'));
+            $("#adjust_stock_ref").html($(this).data('ref'));
+            $("#text_adjust_error").hide();
+            $("#adjustModal").modal();
+        });
+    </script>
+</div>
+<script src="{% static 'plugins/icheck/icheck.init.js' %}"></script>
+<script type="text/javascript">
+	$("#chk_all").on('ifChecked', function(){
+		$('.chk_sub').iCheck('check');
+	});
+	$("#chk_all").on('ifUnchecked', function(){
+		$('.chk_sub').iCheck('uncheck');
+	});
+</script>

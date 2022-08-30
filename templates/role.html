@@ -1,0 +1,348 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<style>
+	.was-validated .form-control:valid{
+		border-left: none;
+		border-top: none;
+		border-right: none;
+	}
+	.form-group.validate input{
+		border-left: none;
+		border-top: none;
+		border-right: none;
+	}
+</style>
+
+{% block content %}
+<div class="container-fluid">
+    <div class="block-header row m-0">
+		<div class="col-12 col-md-7 mr-auto">
+			<h2 class="mr-auto">{% blocktrans %}User Role{% endblocktrans %}</h2>
+		</div>
+	</div>
+    <div class="block-header row m-0">
+		<div class="col-12 col-md-5">
+			<button id="btn_role" class="btn btn-primary btn-xs">{% blocktrans %}Save{% endblocktrans %}</button>
+		</div>
+	</div>
+    
+    <div class="row clearfix mt-2">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form class="pt-3 pb-3" action="." novalidate id="myRoleForm" method="POST" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Suppliers{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="supplier_add" name="supplier_add" type="checkbox" {% if role.supplier_add %} checked {% endif %}>
+                                    <label for="supplier_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="supplier_up" name="supplier_up" type="checkbox" {% if role.supplier_up %} checked {% endif %}>
+                                    <label for="supplier_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="supplier_del" name="supplier_del" type="checkbox" {% if role.supplier_del %} checked {% endif %}>
+                                    <label for="supplier_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Leads{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="lead_add" name="lead_add" type="checkbox" {% if role.lead_add %} checked {% endif %}>
+                                    <label for="lead_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="lead_up" name="lead_up" type="checkbox" {% if role.lead_up %} checked {% endif %}>
+                                    <label for="lead_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="lead_del" name="lead_del" type="checkbox" {% if role.lead_del %} checked {% endif %}>
+                                    <label for="lead_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Mail Marketing{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="mail_add" name="mail_add" type="checkbox" {% if role.mail_add %} checked {% endif %}>
+                                    <label for="mail_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="mail_up" name="mail_up" type="checkbox" {% if role.mail_up %} checked {% endif %}>
+                                    <label for="mail_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="mail_del" name="mail_del" type="checkbox" {% if role.mail_del %} checked {% endif %}>
+                                    <label for="mail_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Products{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="product_add" name="product_add" type="checkbox" {% if role.product_add %} checked {% endif %}>
+                                    <label for="product_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="product_up" name="product_up" type="checkbox" {% if role.product_up %} checked {% endif %}>
+                                    <label for="product_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="product_del" name="product_del" type="checkbox" {% if role.product_del %} checked {% endif %}>
+                                    <label for="product_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Purchase{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="purchase_add" name="purchase_add" type="checkbox" {% if role.purchase_add %} checked {% endif %}>
+                                    <label for="purchase_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="purchase_up" name="purchase_up" type="checkbox" {% if role.purchase_up %} checked {% endif %}>
+                                    <label for="purchase_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="purchase_del" name="purchase_del" type="checkbox" {% if role.purchase_del %} checked {% endif %}>
+                                    <label for="purchase_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Transport{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="transport_add" name="transport_add" type="checkbox" {% if role.transport_add %} checked {% endif %}>
+                                    <label for="transport_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="transport_up" name="transport_up" type="checkbox" {% if role.transport_up %} checked {% endif %}>
+                                    <label for="transport_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="transport_del" name="transport_del" type="checkbox" {% if role.transport_del %} checked {% endif %}>
+                                    <label for="transport_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Manufacturing{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="manufact_add" name="manufact_add" type="checkbox" {% if role.manufact_add %} checked {% endif %}>
+                                    <label for="manufact_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="manufact_up" name="manufact_up" type="checkbox" {% if role.manufact_up %} checked {% endif %}>
+                                    <label for="manufact_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="manufact_del" name="manufact_del" type="checkbox" {% if role.manufact_del %} checked {% endif %}>
+                                    <label for="manufact_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Outcome{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="outcome_add" name="outcome_add" type="checkbox" {% if role.outcome_add %} checked {% endif %}>
+                                    <label for="outcome_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="outcome_up" name="outcome_up" type="checkbox" {% if role.outcome_up %} checked {% endif %}>
+                                    <label for="outcome_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="outcome_del" name="outcome_del" type="checkbox" {% if role.outcome_del %} checked {% endif %}>
+                                    <label for="outcome_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Trolley{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="trolley_add" name="trolley_up" type="checkbox" {% if role.trolley_add %} checked {% endif %}>
+                                    <label for="trolley_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="trolley_up" name="trolley_up" type="checkbox" {% if role.trolley_up %} checked {% endif %}>
+                                    <label for="trolley_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="trolley_del" name="trolley_del" type="checkbox" {% if role.trolley_del %} checked {% endif %}>
+                                    <label for="trolley_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Inventory Adjustment{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="invent_add" name="invent_add" type="checkbox" {% if role.invent_add %} checked {% endif %}>
+                                    <label for="invent_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="invent_up" name="invent_up" type="checkbox" {% if role.invent_up %} checked {% endif %}>
+                                    <label for="invent_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="invent_del" name="invent_del" type="checkbox" {% if role.invent_del %} checked {% endif %}>
+                                    <label for="invent_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Job offer{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="offer_add" name="offer_add" type="checkbox" {% if role.offer_add %} checked {% endif %}>
+                                    <label for="offer_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="offer_up" name="offer_up" type="checkbox" {% if role.offer_up %} checked {% endif %}>
+                                    <label for="offer_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="offer_del" name="offer_del" type="checkbox" {% if role.offer_del %} checked {% endif %}>
+                                    <label for="offer_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Time Sheet{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="time_add" name="time_add" type="checkbox" {% if role.time_add %} checked {% endif %}>
+                                    <label for="time_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="time_up" name="time_up" type="checkbox" {% if role.time_up %} checked {% endif %}>
+                                    <label for="time_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="time_del" name="time_del" type="checkbox" {% if role.time_del %} checked {% endif %}>
+                                    <label for="time_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-1">
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <span class="label label-primary p-2"> {% blocktrans %}Settings{% endblocktrans %} </span>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="setting_add" name="setting_add" type="checkbox" {% if role.setting_add %} checked {% endif %}>
+                                    <label for="setting_add"> {% blocktrans %}ADD{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="setting_up" name="setting_up" type="checkbox" {% if role.setting_up %} checked {% endif %}>
+                                    <label for="setting_up"> {% blocktrans %}UPDATE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-xs-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input id="setting_del" name="setting_del" type="checkbox" {% if role.setting_del %} checked {% endif %}>
+                                    <label for="setting_del"> {% blocktrans %}DELETE{% endblocktrans %} </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#btn_role").click(function(){
+		var form = $("#myRoleForm");
+		form.submit();
+	});
+</script>
+{% endblock %}

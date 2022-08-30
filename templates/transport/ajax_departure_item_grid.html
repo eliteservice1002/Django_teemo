@@ -1,0 +1,70 @@
+{% load i18n %}
+<style type="text/css">
+    .card-child{
+        height: 90px;
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+</style>
+<div class="row">
+    {% for item in items %}
+        <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6 col-12">
+            <div class="card card-child">
+                <div class="row m-0 pt-1">
+                    <div class="col-12 pr-0">
+                        <a href="javascript:void(0);">
+                            <span class='btn_edit' data-id='{{item.id}}' data-stock='{{item.stock.id}}' data-quantity='{{item.quantity}}'>{{ item.stock.name }}</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-2">
+                        {% if item.stock.picture %}
+                            <img src="{{item.stock.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 58px;"/>
+                        {% else %}
+                            <i class="far fa-3x fa-image" ></i>
+                        {% endif %}
+                    </div>
+                    <div class="col-8 pl-0 pr-0">
+                        <div class="col-12 pl-0 pr-0">
+                            <span style="font-size: 90%;">{% blocktrans %}Ref{% endblocktrans %}:  {{ item.stock.reference }}</span>
+                        </div>
+                        <div class="row m-0">
+                            <span style="font-size: 90%;">{% blocktrans %}Qt{% endblocktrans %}:  {{ item.quantity }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor%}
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+    {% endif %}
+    <script type="text/javascript">
+        $('[data-toggle="tooltip"]').tooltip();
+        $(".page_link").on('click', function(){
+            $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                url: '{% url "ajax-grid-departure-item" %}',
+                data: {
+                    'transport_id': $("#transport_id").val(),
+                    'page': $(this).data("id"),
+                },
+                type: 'POST',
+                success: function (data) {
+                    $("#div_content").html(data);
+                    
+                }
+            });
+        });
+        $(".btn_edit").on('click', function(event){
+          $("#head_title").html('Edit Order Item');
+          $("#add_id").val($(this).data('id'));
+          $("#stock").val($(this).data('stock'));
+          $("#stock").selectpicker('refresh');
+          $("#quantity").val($(this).data('quantity'));
+          $("#addModal").modal();
+        });
+    </script>
+</div>

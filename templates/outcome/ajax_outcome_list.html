@@ -1,0 +1,88 @@
+{% load i18n %}
+{% load staticfiles %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    	<th width="5%" class="text-center">
+                    		<input type="checkbox" class="check" id="chk_all">
+                    	</th>
+                        <th width="10%">{% blocktrans %}Date{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Name{% endblocktrans %}</th>
+                        <th width="14%">{% blocktrans %}Client{% endblocktrans %}</th>
+                        <th width="20%">{% blocktrans %}Description{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Cube{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Weight{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Owner{% endblocktrans %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                	{% for item in outcomes %}
+                		<tr>
+                			<td class="text-center">
+                				<input type="checkbox" class="check chk_sub" data-id="{{ item.id }}">
+                			</td>
+                            <td>{{ item.order_date}}</td>
+                            <td>
+                                <div class="row m-0">
+                                    <div class="col-8 p-0">
+                                        {{ item.name }}
+                                    </div>
+                                    <div class="col-4 p-0">
+                                        {% if item.finished %}
+                                            <span class="badge badge-success">Finished</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ item.client.name}}</td>
+                            <td>{{ item.description|default_if_none:"" }}</td>
+                            <td>{{ item.cube|default_if_none:"0" }} mm<sup>3</sup></td>
+                            <td>{{ item.sum_weight|default_if_none:"0" }} g</td>
+                            <td>{% if item.user.first_name %}{{ item.user.first_name}} {{ item.user.last_name }}{% else %}{{ item.user.username }}{% endif %}</td>
+                            <td class="text-center">
+                            	<a href="{% url 'detail-outcome' item.id %}"><span class="ml-2 mr-2 btn_edit" data-id="2"><i class="fas fa-edit"></i></span></a>
+                            </td>
+                        </tr>
+                	{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-list-outcomes" %}',
+            data: {
+              'search_key': $("#search_box").val(),
+              'page': $(this).data("id"),
+              'selected_client': $("#sel_client").val().join(),
+              'selected_owner': $("#sel_owner").val().join(),
+              'start_date': start_date,
+              'end_date': end_date,
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        });
+      </script>
+    {% endif %}
+    
+</div>
+<script src="{% static 'plugins/icheck/icheck.init.js' %}"></script>
+<script type="text/javascript">
+	$("#chk_all").on('ifChecked', function(){
+		$('.chk_sub').iCheck('check');
+	});
+	$("#chk_all").on('ifUnchecked', function(){
+		$('.chk_sub').iCheck('uncheck');
+	});
+</script>

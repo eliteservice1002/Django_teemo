@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<style type="text/css">
+	h2{
+		margin-bottom: 0px;
+	}
+</style>
+<div class="" style="height: 1px; background-color: white">
+</div>
+<div class="block-header row m-0 p-3" style="background-color: #875a7b;">
+	<div class="col-12 col-md-7 mr-auto">
+		<h2 class="mr-auto text-white mb-0 text-uppercase">{% blocktrans %}Mailings{% endblocktrans %}</h2>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="row clearfix pt-2 pb-2" id="myStickHeader">
+		{% if request.user.is_superuser %}
+		<div class="col-12 col-md-8">
+			<a href="{% url 'new-mailings' %}" class="btn btn-new mr-2">{% blocktrans %}NEW MAILING{% endblocktrans %}</a>
+			<button class="btn btn-import mr-2">{% blocktrans %}EXPORT{% endblocktrans %}</button>
+		</div>
+		{% else %}
+			{% if request.user.role.mail_add %}
+				<div class="col-12 col-md-8">
+					<a href="{% url 'new-mailings' %}" class="btn btn-new mr-2">{% blocktrans %}NEW MAILING{% endblocktrans %}</a>
+					<button class="btn btn-import mr-2">{% blocktrans %}EXPORT{% endblocktrans %}</button>
+				</div>
+			{% else %}
+			{% endif %}
+		{% endif %}
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="card">
+				<div class="card-body">
+	        	    <div class="table-responsive m-t-20">
+		                <table id="myTable" class="table table-bordered table-striped">
+		                    <thead>
+		                        <tr>
+		                        	<th>{% blocktrans %}Name{% endblocktrans %}</th>
+		                        	<th>{% blocktrans %}Content{% endblocktrans %}</th>
+                                    <th>{% blocktrans %}Date(Day and hour){% endblocktrans %}</th>
+                                    <th>{% blocktrans %}N Contact{% endblocktrans %}</th>
+		                            <th class="text-center">{% blocktrans %}Action{% endblocktrans %}</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody>
+		                    	{% for mail in mailings %}
+		                    		<tr>
+	                                    <td>
+											<a href="javascript:void(0);">
+					                        	<span class='btn_supplier_detail' data-id='{{mail.id}}'>{{ mail.name }}</span>
+					                        </a>
+										</td>
+	                                    <td>{{ mail.content|default_if_none:"" }}</td>
+                                        <td>{{ mail.date|date:"D, M d, Y h:m a" }}</td>
+                                        {% if mail.mailing_list %}
+                                        <td><span class="label label-primary p-2">{{ mail.mailing_list }}</span></td>
+                                        {% else %}
+                                        <td>{{ mail.mailing_list|default_if_none:"" }}</td>
+                                        {% endif %}
+	                                    <td class="text-center">
+											{% if request.user.is_superuser %}
+	                                    	<a href="{% url 'mailings-detail' mail.id %}">
+	                                    		<span class='btn_edit'><i class="fas fa-edit mr-2"></i></span>
+	                                    	</a>
+	                                    	<a href="javascript:void(0);">
+					                        	<span class='btn_delete' data-id='{{mail.id}}'><i class="fas fa-trash"></i></span>
+					                        </a>
+											{% else %}
+												{% if request.user.role.mail_up %}
+													<a href="{% url 'mailings-detail' mail.id %}">
+														<span class='btn_edit'><i class="fas fa-edit mr-2"></i></span>
+													</a>
+													
+												{% else %}
+												{% endif %}
+												{% if request.user.role.mail_del %}
+													<a href="javascript:void(0);">
+														<span class='btn_delete' data-id='{{mail.id}}'><i class="fas fa-trash"></i></span>
+													</a>
+												{% else %}
+												{% endif %}
+											{% endif %}
+	                                    </td>
+	                                </tr>
+		                    	{% endfor%}
+		                    </tbody>
+		                </table>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		
+	</div>
+</div>
+<div class="modal fade" id="deletModal" tabindex="-1" role="dialog" aria-labelledby="deletModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% blocktrans %}DELETE MAILING{% endblocktrans %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<p>{% blocktrans %}Are you sure you want to delete this record?{% endblocktrans %}</p>
+        	<input type="hidden" id="del_id" value="-1">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}No{% endblocktrans %}</button>
+        <button id="del_confirm" type="button" class="btn btn-primary">{% blocktrans %}Yes{% endblocktrans %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+<script type="text/javascript">
+    $(".btn-import").click(function(e){
+        $("#myTable").table2excel({
+            filename: "mailings.xlsx"
+        });
+    })
+	
+	$('#myTable').DataTable({
+		"order": [
+            [0, 'asc']
+        ],
+        "aoColumns": [
+		    { "bSortable": true },
+		    { "bSortable": true },
+            { "bSortable": true },
+		    { "bSortable": true },
+		    { "bSortable": false },
+		],
+		{% if LANGUAGE_CODE == 'es' %}
+		"language": {
+			"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
+		},
+		{% endif %}
+	});
+    $(".btn_delete").on('click', function(event){
+    	$("#del_id").val($(this).data('id'));
+    	$("#deletModal").modal();
+    });
+    $("#del_confirm").on('click', function(event){
+    	$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-delete-mailings" %}',
+			data: {
+				'mail_id': $("#del_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				location.reload(); 
+			}
+		});
+    	$('#deletModal').modal('hide')
+    });
+</script>
+{% endblock %}

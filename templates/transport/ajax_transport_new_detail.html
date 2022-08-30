@@ -1,0 +1,102 @@
+{% load i18n %}
+{% load mathfilters %}
+<div class="col-12 p-0">
+    <div class="row ml-0 mr-0 mb-4" >
+        <div class="col-2" style="border-bottom: 1px solid;">
+            <span>{% blocktrans %}Supplier{% endblocktrans %}:</span>
+        </div>
+        <div class="col-2" style="border-bottom: 1px solid;">
+            <span>{{ purchase.supplier.name }}</span>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-2" style="border-bottom: 1px solid;">
+            <span>{% blocktrans %}Order Date{% endblocktrans %}:</span>
+        </div>
+        <div class="col-2" style="border-bottom: 1px solid;">
+            <span>{{ purchase.order_date }}</span>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th width="7%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                <th width="9%">{% blocktrans %}Ref{% endblocktrans %}</th>
+                <th width="13%">{% blocktrans %}Name{% endblocktrans %}</th>
+                <th width="12%">{% blocktrans %}Category{% endblocktrans %}</th>
+                <th width="15%">{% blocktrans %}Quantity{% endblocktrans %}</th>
+                <th width="35%" class="text-center">{% blocktrans %}Income & Valid{% endblocktrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+                <td class="text-center p-2">
+                    {% if item.stock.picture %}
+                      <img src="{{item.stock.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+                    {% else %}
+                      <i class="far fa-4x fa-image pl-1 pr-1" ></i>
+                    {% endif %}
+                </td>
+                <td>{{ item.stock.reference }}</td>
+                <td>{{ item.stock.name }}</td>
+                <td>{{ item.stock.category.name }}</td>
+                <td class="p-1">
+                    <div class="row m-0">
+                        <div class="col-7 pl-0 pr-1">
+                            {% blocktrans %}Ordered{% endblocktrans %} :
+                        </div>
+                        <div class="col-5 p-0">
+                            {{ item.order_quantity }} pcs
+                        </div>
+                    </div>
+                    {% if item.income_sum %}
+                    <div class="row m-0">
+                        <div class="col-7 pl-0 pr-1">
+                            {% blocktrans %}Income{% endblocktrans %} :
+                        </div>
+                        <div class="col-5 p-0 text-primary font-weight-bold">
+                            {{ item.income_sum }} pcs
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if item.valid_sum %}
+                    <div class="row m-0">
+                        <div class="col-7 pl-0 pr-1">
+                            {% blocktrans %}Valid{% endblocktrans %} :
+                        </div>
+                        <div class="col-5 p-0 text-success font-weight-bold">
+                            {{ item.valid_sum }} pcs
+                        </div>
+                    </div>
+                    {% endif %}
+                </td>
+                <td class="p-1">
+                    {% for child in item.childs %}
+                        {% if child.income_date %}
+                            <div class="row pt-1 pb-1 ml-0 mr-0" style="border-bottom: 1px solid #d5d5d5;">
+                                <div class="col-6 pl-1 pr-0 " style="border-right: 1px solid #c3c3c3;">
+                                    {{ child.income_date|date:'yy-m-d' }}:
+                                    <span data-toggle="tooltip" title="{{ child.income_description }}" data-placement="bottom" class="text-primary">
+                                        {{ child.income_quantity }} pcs
+                                    </span>
+                                </div>
+                                
+                                {% if child.valid_date %}
+                                    <div class="col-6 pr-0 pl-1">
+                                        {{ child.valid_date|date:'yy-m-d' }}:
+                                        <span data-toggle="tooltip" title="{{ child.valid_description }}" data-placement="bottom" class="text-success">
+                                            {{ child.valid_quantity }} pcs
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>

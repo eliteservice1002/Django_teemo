@@ -1,0 +1,62 @@
+{% load i18n %}
+{% load staticfiles %}
+<style type="text/css">
+    .card{
+        /*height: 100px;*/
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+</style>
+<div class="row">
+    {% for item in timesheets %}
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 col-12">
+            <div class="card">
+                <div class="row m-0 pb-1 pt-2">
+                  <div class="col-12">
+                    <a href="{% url 'detail-timesheet' item.id %}">
+                        {% if item.user.first_name %}{{ item.user.first_name}} {{ item.user.last_name }}{% else %}{{ item.user.username }}{% endif %}
+                    </a>
+                  </div>
+                </div>
+                <div class="row m-0 pb-2">
+                  <div class="col-5 pr-0">
+                      {% if item.user.picture %}
+                          <img src="{{item.user.picture.url}}" class="img-circle" alt="" style="width: 55px;height: 55px;" id="img_profile"/>
+                      {% else %}
+                          <img src="{% static 'images/avatar-default.jpg' %}" class="img-circle" style="width: 55px;height: 55px;" id="img_profile">
+                      {% endif %}
+                  </div>
+                  <div class="col-7 pr-0">
+                      <span>{{ item.date}}</span>
+                  </div>
+                </div>
+                
+            </div>
+        </div>
+    {% endfor%}
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-grid-timesheets" %}',
+            data: {
+              'search_key': $("#search_box").val(),
+              'page': $(this).data("id"),
+              'selected_client': $("#sel_client").val().join(),
+              'selected_owner': $("#sel_owner").val().join(),
+              'start_date': start_date,
+              'end_date': end_date,
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        });
+      </script>
+    {% endif %}
+    
+</div>

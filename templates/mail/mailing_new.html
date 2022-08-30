@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/jquery-nestable.css' %}" rel="stylesheet">
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<script src="{% static 'js/jquery.nestable.js' %}"></script>
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+<link href="{% static 'plugins/select2/select2.min.css' %}" rel="stylesheet">
+<script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	.bootstrap-tagsinput{
+		font-size: 1rem;
+		width: 100%;
+		line-height: 1.5;
+		min-height: 38px;
+	}
+	.bootstrap-tagsinput .tag {
+	    line-height: 23px;
+	    font-size: 100%;
+	    margin: 1px;
+	}
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12">
+			<h2 class="mr-auto">{% if mailing %}{% blocktrans %}Edit Mailing{% endblocktrans %}{% else %}{% blocktrans %}Add New Mailing{% endblocktrans %}{% endif %}</h2>
+		</div>
+		
+	</div>
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-5">
+			<a href="#" id="mailings_submit" class="btn btn-primary btn-sm">{% blocktrans %}Save{% endblocktrans %}</a>
+			<a href="{% if sel_mail %}{% url 'mailings-detail' sel_mail %}{% else %}{% url 'mailings' %}{% endif %}" class="btn btn-danger btn-sm ">{% blocktrans %}Cancel{% endblocktrans %}</a>
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-lg-8 col-md-12">
+			<div class="card">
+		        <div class="card-body">
+		            <form class="pt-3 pb-3" novalidate id="myForm" method="POST" enctype='multipart/form-data'>
+		            	{% if form.errors %}
+						    {% for field in form %}
+						        {% for error in field.errors %}
+						            <div class="alert alert-danger">
+						                <strong>{{ error|escape }}</strong>
+						            </div>
+						        {% endfor %}
+						    {% endfor %}
+						    {% for error in form.non_field_errors %}
+						        <div class="alert alert-danger">
+						            <strong>{{ error|escape }}</strong>
+						        </div>
+						    {% endfor %}
+						{% endif %}
+		            	{% csrf_token %}
+		            	<div class="row m-0">
+		            		<div class="col-12 col-md-12">
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Name{% endblocktrans %} </label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="name" name="name" required value="{{ mailing.name }}">
+			                            <div class="invalid-feedback">
+									        {% blocktrans %}This field is required.{% endblocktrans %}
+									    </div>
+					                </div>
+					            </div>
+					            
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="content">{% blocktrans %}Content{% endblocktrans %}</label>
+					                    <textarea rows="8" class="form-control" id="content" name="content">{{ mailing.content }}</textarea>
+			                        </div>
+					            </div>
+
+                                <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="product">{% blocktrans %}Lists{% endblocktrans %}</label>
+										<select  class="form-control" id="maillists" name="maillists" multiple="multiple">
+					                    	{% for mail in maillists %}
+					                    		<option value="{{ mail.id }}" {% if mail.id|stringformat:'i' in sel_mailings %} selected="selected" {% endif%}>{{ mail.name }}</option>
+					                    	{% endfor %}
+					                    </select>
+			                        </div>
+									
+					            </div>
+                                <!--div class="col-12 text-center pt-3">
+                                    <button type="submit" class="btn btn-new mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+                                    <a href="{% if sel_mail %}{% url 'mailings-detail' sel_mail %}{% else %}{% url 'mailings' %}{% endif %}" class="btn btn-import ml-2">{% blocktrans %}Cancel{% endblocktrans %}</a>
+                                </div-->
+					            
+		            		</div>
+		            		<input type="hidden" name="user" value="{{ user.id }}">
+		            	</div>         	
+		            </form>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+    	<div class="modal-content">
+	      	<div class="modal-header">
+	        	<h5 class="modal-title" id="head_title">{% blocktrans %}Contacts and Addresses{% endblocktrans %}</h5>
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          		<span aria-hidden="true">&times;</span>
+	        	</button>
+	      	</div>
+	      	<div class="modal-body">
+	        	<form novalidate="" id="addForm">
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label for="name">{% blocktrans %}Name{% endblocktrans %} </label><span class="text-danger">&nbsp;*&nbsp;</span>
+							<input type="text" class="form-control" id="subname" name="subname" required>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label for="name">{% blocktrans %}Email{% endblocktrans %} </label>
+							<input type="text" class="form-control" id="subemail" name="subemail" >
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label for="name">{% blocktrans %}Mobile{% endblocktrans %} </label>
+							<input type="text" class="form-control" id="submobile" name="submobile" >
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label for="name">{% blocktrans %}Position{% endblocktrans %} </label>
+							<input type="text" class="form-control" id="subposition" name="subposition">
+						</div>
+					</div>
+					<input type="hidden" id="contact_id" value="{{ contact.id }}">
+					<input type="hidden" id="sub_contact_id" value="-1">
+				</form>
+	      	</div>
+	      	<div class="modal-footer">
+			  	<button id="btn_save" class="btn btn-primary mr-2" data-dismiss="modal">{% blocktrans %}Save{% endblocktrans %}</button>
+	      		<button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+	        	
+			</div>
+    	</div>
+  	</div>
+</div>
+<script type="text/javascript">
+
+	$("#btn_save").on('click', function(){
+		var form = $("#addForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-sub-contact" %}',
+			data: {
+				'subname': $("#subname").val(),
+				'subposition': $("#subposition").val(),
+				'subemail': $("#subemail").val(),
+				'submobile': $("#submobile").val(),
+				'contact_id': $("#contact_id").val(),
+				'sub_contact_id': $("#sub_contact_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#head_title").html("{% blocktrans %}Add Contact{% endblocktrans %}");
+				$("#subname").val("");
+				$("#subposition").val("");
+				$("#subemail").val("");
+				$("#submobile").val("");
+				$("#sub_contact_id").val("-1");
+				get_sub_contact_data();
+			}
+		});
+	});
+	get_sub_contact_data();
+	function get_sub_contact_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-get-sub-contact" %}',
+			data: {
+				'contact_id': $("#contact_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_sub_address").html(data);
+			}
+		});
+	}
+
+	$(".selectpicker").selectpicker();
+
+	$("#country").val('{{ contact.country.id }}');
+	$("#country").selectpicker("refresh");
+	
+	$("#myForm").submit(function( event ){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+	});
+
+	$("#mailings_submit").click(function(){
+		var form = $("#myForm");
+		form.submit();
+	});
+	
+	$(".img-clear").on('click', function(){
+		$(".img_upload img").attr('src', '');
+		$('.img_upload img').css('display', 'none');
+		$('.img_upload i').css('display', 'inline-block');
+		$("#imagen").empty();
+		$("#exist").val('NO');
+	});
+	$(".pdf_clear").on('click', function(){
+		$("#pdf").empty();
+		$("#exist_pdf").val('NO');
+		$(".uploaded_pdf_name").html("");
+		$(this).hide();
+	});
+    $(".img_upload").on('click', function(){
+        $("#imagen").click();
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.img_upload img').attr('src', e.target.result);
+                $('.img_upload img').css('display', 'inline-block');
+                $('.img_upload i').css('display', 'none');
+                $("#exist").val('YES');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $(".pdf_upload").on('click', function(){
+        $("#pdf").click();
+    });
+    function readPDFURL(input) {
+        if (input.files && input.files[0]) {
+        	$('.uploaded_pdf_name').html(input.files[0].name);
+        	$("#exist_pdf").val('YES');
+        }
+    }
+
+	// filter modal process
+	options = [];
+	$('#maillists option').each(function(idx) {
+	    options.push({id: $(this).val(), text: $(this).text()});
+	});
+
+	$("#maillists").select2({
+	  	tags: true,
+	  	width: '100%',
+	  	allowClear: true,
+		minimumResultsForSearch: Infinity,
+	  	createTag: function (params) {
+		    var term = $.trim(params.term);
+			if (term === '') {
+		      return null;
+		    }
+		    // check whether the term matches an id
+		    var search = $.grep(options, function( n, i ) {
+		      return ( n.id === term || n.text === term); // check against id and text
+		    });
+		    // if a match is found replace the term with the options' text
+		    if (search.length) 
+		      term = search[0].text;
+		    else
+		      return null; // didn't match id or text value so don't add it to selection
+		return {
+			id: term,
+			text: term,
+			value: true // add additional parameters
+	    }
+	  }
+	});
+</script>
+{% endblock %}

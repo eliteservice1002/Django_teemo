@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<style>
+	h2{
+		margin-bottom: 0px;
+	}
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-7 mr-auto">
+			<h2 class="mr-auto">{% blocktrans %}Locations{% endblocktrans %}</h2>
+		</div>
+		<div class="col-12 col-md-5">
+			<button id="btn_add" class="btn btn-primary">{% blocktrans %}Add New Location{% endblocktrans %}</button>
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="card">
+				<div class="card-body">
+	        	    <div class="table-responsive m-t-20">
+		                <table id="myTable" class="table table-bordered table-striped">
+		                    <thead>
+		                        <tr>
+		                        	<th>{% blocktrans %}Location{% endblocktrans %}</th>
+		                        	<th>{% blocktrans %}Description{% endblocktrans %}</th>
+		                            <th class="text-center">{% blocktrans %}Action{% endblocktrans %}</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody>
+		                    	{% for item in items %}
+		                    		<tr>
+	                                    <td>{{ item.name }}</td>
+	                                    <td>{{ item.description }}</td>
+	                                    <td class="text-center">
+	                                    	<a href="javascript:void(0);">
+	                                    		<span class='btn_edit' data-id='{{item.id}}' data-name='{{item.name}}' data-description='{{item.description}}'><i class="fas fa-edit mr-2"></i></span>
+	                                    	</a>
+	                                    	<a href="javascript:void(0);">
+					                        	<span class='btn_delete' data-id='{{item.id}}'><i class="fas fa-trash"></i></span>
+					                        </a>
+	                                    </td>
+	                                </tr>
+		                    	{% endfor%}
+		                    </tbody>
+		                </table>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="deletModal" tabindex="-1" role="dialog" aria-labelledby="deletModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% blocktrans %}DELETE RECORD{% endblocktrans %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<p>{% blocktrans %}Are you sure you want to delete this record?{% endblocktrans %}</p>
+        	<input type="hidden" id="del_id" value="-1">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}No{% endblocktrans %}</button>
+        <button id="del_confirm" type="button" class="btn btn-primary">{% blocktrans %}Yes{% endblocktrans %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="head_title">{% blocktrans %}Add Location{% endblocktrans %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<form novalidate="" id="myForm">
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+						<input type="text" class="form-control" name="name" id="name" required="">
+						<div class="invalid-feedback">
+					        {% blocktrans %}This field is required.{% endblocktrans %}
+					    </div>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Description{% endblocktrans %}</label>
+						<textarea class="form-control" name="description" id="description"></textarea>
+					</div>
+				</div>
+				<input type="hidden" id="item_id" value="-1">
+			</form>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_save" class="btn btn-primary mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+		<button id="btn_cancel" class="btn btn-light ml-2">{% blocktrans %}Cancel{% endblocktrans %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/datatables/jquery.dataTables.min.js' %}"></script>
+
+<script type="text/javascript">
+	$("#div_form_error").hide();
+	$("#div_form_error_reset").hide();
+	
+	$('#myTable').DataTable({
+		"order": [
+            [0, 'asc']
+        ],
+        "aoColumns": [
+		    { "bSortable": true },
+		    { "bSortable": true },
+		    { "bSortable": false },
+		],
+	});
+	
+	$(".btn_delete").on('click', function(event){
+    	$("#del_id").val($(this).data('id'));
+    	$("#deletModal").modal();
+    });
+    $("#del_confirm").on('click', function(event){
+    	$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-delete-location" %}',
+			data: {
+				'item_id': $("#del_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				location.reload(); 
+			}
+		});
+    	$('#deletModal').modal('hide')
+    });
+    $("#btn_add").on('click', function(){
+    	$("#addModal").modal();
+    });
+    $(".btn_edit").on('click', function(event){
+    	$("#head_title").html('{% blocktrans %}Edit Location{% endblocktrans %}');
+    	$("#item_id").val($(this).data('id'));
+    	$("#name").val($(this).data('name'));
+    	$("#description").val($(this).data('description'));
+    	$("#addModal").modal();
+    });
+    $("#btn_cancel").on('click', function(event){
+    	$("#head_title").html('{% blocktrans %}Add Location{% endblocktrans %}');
+    	$("#item_id").val("-1");
+    	$("#name").val("");
+    	$("#description").val("");
+    	$("#addModal").modal('hide');
+    });
+	$("#btn_save").on('click', function(event){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-location" %}',
+			data: {
+				'name': $("#name").val(),
+				'description': $("#description").val(),
+				'item_id': $("#item_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				location.reload(); 
+			}
+		});
+	});
+</script>
+{% endblock %}

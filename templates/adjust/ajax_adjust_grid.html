@@ -1,0 +1,80 @@
+{% load i18n %}
+<style type="text/css">
+    .card{
+        /*height: 100px;*/
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+</style>
+<div class="row">
+    {% for item in adjusts %}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-12">
+            <div class="card">
+                <div class="row m-0 pb-1 pt-2">
+                    <div class="col-12">
+                        <a href="javascript:void(0);">
+                            <span class="btn_edit" data-id="{{ item.id }}" data-name="{{ item.name }}" data-stock="{{ item.stock.id }}" data-date="{{ item.adjust_date|date:'yy-m-d' }}" data-current="{{ item.current_qt }}" data-adjust="{{ item.adjust_qt }}">{{ item.name }}</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row m-0">
+                  <div class="col-5 pr-0">
+                      <span style="font-size: 90%;">{% blocktrans %}Adjusted Date{% endblocktrans %}:</span>
+                  </div>
+                  <div class="col-7 pr-0">
+                      <span>{{ item.adjust_date}}</span>
+                  </div>
+                </div>
+                <div class="row m-0 pb-2 pt-2">
+                    <div class="col-5 pr-0">
+                        {% if item.stock.picture %}
+                            <img src="{{item.stock.picture.url}}" alt="" style="max-width: 99%;max-height: 85px;"/>
+                        {% else %}
+                            <i class="far fa-4x fa-image pl-1 pr-1" ></i>
+                        {% endif %}
+                    </div>
+                    <div class="col-7 pr-0">
+                        <div class="col-12 p-0">
+                            <span >{{ item.stock.reference }}</span>
+                        </div>
+                        <div class="col-12 p-0">
+                            <span style="font-size: 90%;">{% blocktrans %}Origin Qt{% endblocktrans %}: {{ item.current_qt }} pcs</span>
+                        </div>
+                        <div class="col-12 p-0">
+                            <span style="font-size: 90%;">{% blocktrans %}Adjusted Qt{% endblocktrans %}: {{ item.adjust_qt }} pcs</span>
+                        </div>
+                        <div class="col-12 p-0">
+                            <span style="font-size: 90%;">{% blocktrans %}Adjusted By{% endblocktrans %}: {% if item.user.first_name %}{{ item.user.first_name}} {{ item.user.last_name }}{% else %}{{ item.user.username }}{% endif %}</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    {% endfor%}
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-grid-adjusts" %}',
+            data: {
+              'search_key': $("#search_box").val(),
+              'page': $(this).data("id"),
+              'selected_stock': $("#sel_stock").val().join(),
+              'selected_owner': $("#sel_owner").val().join(),
+              'start_date': start_date,
+              'end_date': end_date,
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        });
+      </script>
+    {% endif %}
+    
+</div>

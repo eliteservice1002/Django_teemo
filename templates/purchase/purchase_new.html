@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	.bootstrap-tagsinput{
+		font-size: 1rem;
+		width: 100%;
+		line-height: 1.5;
+		min-height: 38px;
+	}
+	.bootstrap-tagsinput .tag {
+	    line-height: 23px;
+	    font-size: 100%;
+	    margin: 1px;
+	}
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12">
+			<h2 class="mr-auto">{% if job %}{% blocktrans %}Edit Purchase{% endblocktrans %}{% else %}{% blocktrans %}Add New Purchase{% endblocktrans %}{% endif %}</h2>
+		</div>
+		
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+		            <form class="pt-3 pb-3" novalidate id="myForm" method="POST" enctype='multipart/form-data'>
+		            	{% if form.errors %}
+						    {% for field in form %}
+						        {% for error in field.errors %}
+						            <div class="alert alert-danger">
+						                <strong>{{ error|escape }}</strong>
+						            </div>
+						        {% endfor %}
+						    {% endfor %}
+						    {% for error in form.non_field_errors %}
+						        <div class="alert alert-danger">
+						            <strong>{{ error|escape }}</strong>
+						        </div>
+						    {% endfor %}
+						{% endif %}
+		            	{% csrf_token %}
+		            	<div class="row m-0">
+		            		<div class="col-12 col-md-4">
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="name" name="name" required value="{{ purchase.name }}">
+			                            <div class="invalid-feedback">
+									        {% blocktrans %}This field is required.{% endblocktrans %}
+									    </div>
+					                </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="category">{% blocktrans %}Category{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="category" name="category" required value="{{ job.category }}">
+			                            <div class="invalid-feedback">
+									        {% blocktrans %}This field is required.{% endblocktrans %}
+									    </div>
+					                </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="description">{% blocktrans %}Description{% endblocktrans %}</label>
+					                    <textarea  class="form-control" id="description" name="description" row="5">{{ job.description }}</textarea>
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="skills">{% blocktrans %}Skills{% endblocktrans %}</label>
+					                    <input type="text" class="form-control" id="skills" name="skills" data-role="tagsinput" value="{{ job.skills }}">
+			                        </div>
+					            </div>
+					            <div class="form-group mt-5">
+					            	<div class="col-xs-12 text-center">
+				            			<button type="submit" class="btn btn-new mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+				            			<a href="{% if job %}{% url 'detail-job' job.id %}{% else %}{% url 'jobs' %}{% endif %}" class="btn btn-import ml-2">{% blocktrans %}Cancel{% endblocktrans %}</a>
+				            		</div>
+					            </div>
+		            		</div>
+		            		
+		            	</div>
+		            	
+		            </form>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	
+	$("#myForm").submit(function( event ){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+	});
+	$(".img-clear").on('click', function(){
+		$(".img_upload img").attr('src', '');
+		$('.img_upload img').css('display', 'none');
+		$('.img_upload i').css('display', 'inline-block');
+		$("#imagen").empty();
+		$("#exist").val('NO');
+	});
+	$(".img_upload").on('click', function(){
+        $("#imagen").click();
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.img_upload img').attr('src', e.target.result);
+                $('.img_upload img').css('display', 'inline-block');
+                $('.img_upload i').css('display', 'none');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock %}

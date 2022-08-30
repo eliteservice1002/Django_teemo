@@ -1,0 +1,94 @@
+{% load i18n %}
+{% load mathfilters %}
+<div class="col-lg-4 col-md-5 col-sm-12 col-xs-12 col-12">
+    <div style="border:1px solid; border-radius: 10px;" class="mt-4 mb-2">
+        <div class="row m-0 pb-1 pt-2">
+            <div class="col-12 pr-0">
+                <a href="javascript: void(0);">
+                    <span>{{ stock.name }}</span>
+                </a>
+            </div>
+        </div>
+        <div class="row m-0">
+            <div class="col-12 pl-2 pr-1 text-center">
+                {% if stock.picture %}
+                    <img src="{{stock.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 84px;"/>
+                {% else %}
+                    <i class="far fa-6x fa-image" ></i>
+                {% endif %}
+            </div>
+            <div class="col-12 pt-4">
+                <div class="form-group row">
+                    <div class="col-6 pr-0">
+                        <span >{% blocktrans %}Ref{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-6 pr-0">
+                        <span>{{ stock.reference }}</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-6 pr-0">
+                        <span >{% blocktrans %}Quantity{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-6 pr-0">
+                        <span >{{ stock.quantity }} pcs</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-6 pr-0">
+                        <span >{% blocktrans %}Category{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-6 pr-0">
+                        <span style="color:blue;">{{ stock.category.name }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-8 col-md-7 col-sm-12 col-xs-12 col-12 p-0">
+    <div class=" div_quantity_error text-center">
+        <span class="text-danger">{% blocktrans %}You can't manufature this Product!{% endblocktrans %}</span>    
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th width="10%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                    <th width="12%">{% blocktrans %}Ref{% endblocktrans %}</th>
+                    <th width="15%">{% blocktrans %}Name{% endblocktrans %}</th>
+                    <th width="13%">{% blocktrans %}Quantity{% endblocktrans %}</th>
+                    <th width="12%">{% blocktrans %}Required{% endblocktrans %}</th>
+                    <th width="18%">{% blocktrans %}Location{% endblocktrans %}</th>
+                    <th width="20%">{% blocktrans %}Category{% endblocktrans %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td class="text-center p-2">
+                            {% if item.stock.picture %}
+                            <img src="{{item.stock.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+                        {% else %}
+                            <i class="far fa-4x fa-image pl-2 pr-2" ></i>
+                        {% endif %}
+                        </td>
+                        <td>{{ item.stock.reference }}</td>
+                        <td style="font-size: 90%;">{{ item.stock.name }}</td>
+                        <td>{{ item.current_quantity }} pcs</td>
+                        <td>
+                        {% if item.current_quantity < item.quantity|mul:quantity %}
+                            <span style="font-size: 80%;color:red;" class="quantiy_error">{{ item.quantity|mul:quantity }} pcs</span>
+                        {% else %}
+                            <span style="font-size: 80%;">{{ item.quantity|mul:quantity }} pcs</span>
+                        {% endif %}
+                        </td>
+                        <td style="font-size: 90%;">{% if item.stock.location %}{{ item.stock.location.name }}{% endif %}</td>
+                        <td style="font-size: 90%;">{{ item.stock.category.name }}</td>
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

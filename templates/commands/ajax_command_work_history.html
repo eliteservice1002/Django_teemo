@@ -1,0 +1,23 @@
+{% load i18n %}
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th width="10%">{% blocktrans %}From{% endblocktrans %}</th>
+            <th width="10%">{% blocktrans %}To{% endblocktrans %}</th>
+            <th width="20%">{% blocktrans %}Description{% endblocktrans %}</th>
+            <th width="10%">{% blocktrans %}Duaration{% endblocktrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item1 in workhistory %}
+            <tr>
+                <td>{{ item1.start|date:'yy-m-d h:m:s' }}</td>
+                <td>{{ item1.end|date:'yy-m-d h:m:s' }}</td>
+                <td>{{ item1.description }}</td>
+                <td>
+                	{{ item1.get_time_diff }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

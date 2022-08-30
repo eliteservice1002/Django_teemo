@@ -1,0 +1,664 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/jquery-nestable.css' %}" rel="stylesheet">
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'plugins/dropify/dist/css/dropify.min.css' %}">
+<script src="{% static 'js/jquery.nestable.js' %}"></script>
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	.bootstrap-tagsinput{
+		font-size: 1rem;
+		width: 100%;
+		line-height: 1.5;
+		min-height: 38px;
+	}
+	.bootstrap-tagsinput .tag {
+	    line-height: 23px;
+	    font-size: 100%;
+	    margin: 1px;
+	}
+	.form-control[readonly] {
+		background-color: #fff;
+		outline: none; 
+		opacity: 1;
+	}
+    .child-card{
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        margin-bottom: 15px;
+    }
+	.o_Message.o-not-discussion {
+    background-color: #edeff1;
+    border-bottom: 1px solid #cfd5db;
+}
+.o_Message {
+    background-color: white;
+}
+.o_Message {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding: 0.5rem;
+}
+.o_Message_sidebar {
+    flex: 0 0 50px;
+    max-width: 50px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    margin-inline-end: 0.5rem;
+    justify-content: center;
+}
+.o_Message_sidebarItem {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+}
+.o_Message_authorAvatarContainer {
+    position: relative;
+    height: 36px;
+    width: 36px;
+}
+.o_Message_authorRedirect {
+    cursor: pointer;
+}
+.o_Message_authorAvatar {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.rounded-circle {
+    border-radius: 50% !important;
+}
+.o_Message.o-not-discussion .o_Message_partnerImStatusIcon {
+    color: #edeff1;
+}
+.o_PartnerImStatusIcon.o-has-open-chat {
+    cursor: pointer;
+}
+.o_Message_core {
+    min-width: 0;
+    margin-inline-end: 1rem;
+}
+.o_Message_header {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    align-items: baseline;
+}
+.o_Message_authorRedirect {
+    cursor: pointer;
+}
+.o_Message_authorName {
+    font-weight: bold;
+}
+.o_Message_authorName {
+    margin-inline-end: 0.5rem;
+}
+.o_Message_date {
+    color: #adb5bd;
+}
+.o_Message_headerDate {
+    margin-inline-end: 0.5rem;
+    font-size: 0.8em;
+}
+.o_Message_headerCommands:not(.o-mobile) {
+    opacity: 0;
+}
+.o_Message_headerCommands {
+    margin-inline-end: 0.5rem;
+    align-self: center;
+}
+.o_Message_commands {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+}
+.o_Message_command {
+    cursor: pointer;
+    color: #ced4da;
+}
+.o_Message_commandStar {
+    font-size: 1.3em;
+}
+.o_Message_content {
+    word-wrap: break-word;
+    word-break: break-word;
+}
+.o_Message_content *:not(li):not(li div) {
+    max-width: 100%;
+    overflow-x: auto;
+}
+.o_Message_prettyBody > p:last-of-type {
+    margin-bottom: 0;
+}
+.o_Message_content *:not(li):not(li div) {
+    max-width: 100%;
+    overflow-x: auto;
+}
+.comment-container {
+    display: block;
+}
+.action-comment.is-truncated {
+    max-height: 374px;
+    position: relative;
+}
+.action-comment.can-edit {
+    cursor: pointer;
+}
+.action-comment {
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px -1px rgb(9 30 66 / 25%), 0 0 0 1px rgb(9 30 66 / 8%);
+    box-sizing: border-box;
+    clear: both;
+    display: inline-block;
+    margin: 4px 2px 4px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+.markeddown {
+    word-break: break-word;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.action-comment p {
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+.action-comment .current-comment {
+    padding: 8px 12px;
+}
+.action-comment p:last-child, .action-comment pre:last-child {
+    margin-bottom: 0;
+}
+.phenom.mod-attachment-type .phenom-desc, .phenom.mod-comment-type .phenom-desc {
+    display: block;
+}
+.phenom-desc {
+    margin: 0;
+    word-wrap: break-word;
+}
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-7">
+			<h2 class="mr-auto"><a href="{% url 'leads' %}">{% blocktrans %}Leads{% endblocktrans %}</a> / {{ contact.name }}  {% if contact.parent %}( {{ contact.parent.name }} ){% endif %}</h2>
+		</div>
+	</div>
+	{% if request.user.is_superuser %}
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-5">
+			<a href="{% url 'update-lead' contact.id %}" class="btn btn-primary btn-sm">{% blocktrans %}EDIT{% endblocktrans %}</a>
+		</div>
+	</div>
+	{% else %}
+		{% if request.user.role.lead_up %}
+			<div class="block-header row m-0">
+				<div class="col-12 col-md-5">
+					<a href="{% url 'update-lead' contact.id %}" class="btn btn-primary btn-sm">{% blocktrans %}EDIT{% endblocktrans %}</a>
+				</div>
+			</div>
+		{% else %}
+		{% endif %}
+	{% endif %}
+	<div class="row clearfix mt-2">
+		<div class="col-lg-8 col-md-12 col-sm-12">
+			<div class="card">
+		        <div class="card-body form-material">
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-12">
+							<h2>{{ contact.name }}  {% if contact.parent %}( {{ contact.parent.name }} ){% endif %}</h2>
+						</div>
+						<div class="col-12 col-md-6 col-sm-12 pull-right">
+	            			<div class="form-group text-center">
+	            				<div class="float-right">
+	            					<span>
+	            						{% if contact.picture %}
+				                            <img src="{{contact.picture.url}}" alt="" class="p-1" style="max-width: 99%;max-height: 70px;border:1px solid #555555;"/>
+				                        {% else %}
+				                          {% if contact.parent %}
+				                            <i class="fas fa-3x fa-user pt-2 pb-2 pl-3 pr-3" style="border:1px solid;"></i>
+				                          {% else %}
+				                            <i class="fas fa-3x fa-industry  p-3" style="border:1px solid;"></i>
+				                          {% endif %}
+				                        {% endif %}
+	            					</span>
+	            					
+	            				</div>
+	            			</div>
+							{% if contact.pdf %}
+	            			<div class="form-group text-center mt-4">
+	            				<div class="pt-4">
+									<a href="{{ contact.pdf.url}}" download>
+										<span >
+											<i class="far fa-3x fa-file-pdf p-2"></i>
+										</span>
+										<label class="ml-2">{% if contact.pdf %}{{ contact.filename}}{% endif %}</label>
+										<i class="fas fa-file-download"></i>
+									</a>
+	            				</div>
+	            			</div>
+							{% endif %}
+	            		</div>
+					</div>
+	            	<div class="row m-0">
+	            		<div class="col-12 col-md-6" >
+				            <div class="form-group">
+				                <div class="col-xs-12">
+				                	<label for="name">{% blocktrans %}NIF{% endblocktrans %}</label>
+				                    <input type="text" class="form-control form-control-line" readonly value="{{ contact.nif|default_if_none:"" }}">
+		                            
+				                </div>
+				            </div>
+				            <div class="form-group">
+				                <div class="col-xs-12">
+				                	<label for="address">{% blocktrans %}Address{% endblocktrans %}</label>
+				                    <textarea  class="form-control form-control-line" readonly>{{ contact.address|default_if_none:"" }}</textarea>
+		                        </div>
+				            </div>
+							<div class="form-group">
+				                <div class="col-xs-12">
+				                	<label for="name">{% blocktrans %}POSTAL CODE{% endblocktrans %}</label>
+				                    <input type="text" class="form-control form-control-line" readonly value="{{ contact.postalcode|default_if_none:"" }}">
+		                            
+				                </div>
+				            </div>
+							<div class="form-group">
+				                <div class="col-xs-12">
+				                	<label for="name">{% blocktrans %}STATE{% endblocktrans %}</label>
+				                    <input type="text" class="form-control form-control-line" readonly value="{{ contact.state|default_if_none:"" }}">
+		                            
+				                </div>
+				            </div>
+				            <div class="form-group">
+				            	<div class="col-xs-12">
+				            		<label for="country">{% blocktrans %}Country{% endblocktrans %}</label>
+				                    <input type="text" class="form-control form-control-line" readonly value="{% if LANGUAGE_CODE == 'en' %}{{ contact.country.name }}{% else %}{{ contact.country.alternate_names }}{% endif %}">
+		                        </div>
+				            </div>
+				            
+				            <div class="form-group">
+				                <div class="col-xs-12">
+				                	<span style="font-weight: 700;">{% blocktrans %}Created by{% endblocktrans %}: {% if contact.user.first_name %}{{ contact.user.first_name}} {{ contact.user.last_name }}{% else %}{{ contact.user.username }}{% endif %}</span>
+				                    
+		                        </div>
+				            </div>
+	            		</div>
+	            		<div class="col-12 col-md-6 pl-md-4">
+	            			<div class="form-group">
+				                <div class="col-xs-12">
+				                	<label for="telephone">{% blocktrans %}Telephone{% endblocktrans %}</label>
+				                    <input type="text" class="form-control form-control-line" readonly value="{{ contact.telephone|default_if_none:'' }}">
+		                        </div>
+				            </div>
+				            <div class="form-group">
+				                <div class="col-xs-12">
+				                	<label for="mobile">{% blocktrans %}Mobile{% endblocktrans %}</label>
+				                    <input type="text" class="form-control form-control-line" readonly value="{{ contact.mobile|default_if_none:'' }}">
+		                        </div>
+				            </div>
+				            <div class="form-group">
+				                <div class="col-xs-12">
+				                	<label for="email">{% blocktrans %}Email{% endblocktrans %}</label>
+				                    <input type="email" class="form-control form-control-line" readonly value="{{ contact.email|default_if_none:'' }}">
+		                        </div>
+				            </div>
+				            <div class="form-group">
+				                <div class="col-xs-12">
+				                	<label for="web">{% blocktrans %}Web{% endblocktrans %}</label>
+				                    <input type="text" class="form-control form-control-line" readonly value="{{ contact.web|default_if_none:'' }}">
+		                        </div>
+				            </div>
+				            {% if contact.parent %}
+				            {% else %}
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="product">{% blocktrans %}Products{% endblocktrans %}</label>
+					                    <input type="text" class="form-control form-control-line" readonly data-role="tagsinput" value="{{ contact.products }}">
+			                        </div>
+					            </div>
+					        {% endif %}
+							<div class="form-group">
+				                <div class="col-xs-12">
+				                	<label for="notes">{% blocktrans %}Notes{% endblocktrans %}</label>
+				                    <textarea  class="form-control form-control-line" readonly>{{ contact.notes }}</textarea>
+		                        </div>
+				            </div>
+							<div class="form-group">
+								<div class="col-xs-12">
+									<label for="list">{% blocktrans %}Lists{% endblocktrans %}</label>
+									<input type="text" class="form-control form-control-line" readonly data-role="tagsinput" value="{{ contact.maillists }}">
+								</div>
+							</div>
+							{% comment %} {% if contact.parent %}
+								
+				            {% else %}
+					            
+					        {% endif %} {% endcomment %}
+	            		</div>
+	            		
+	            	</div>
+
+	            	{% if contact.parent == None %}
+	            		<hr>
+						<div class="row">
+							<a href="{% url 'new-contact-lead' contact.id %}" class="btn btn-primary btn-xs mt-1 ml-3 btn_add_contact"><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add contact person{% endblocktrans %}</a>
+						</div>
+		            	<div class="row m-0 p-1">
+		            		{% for child in child_contacts %}
+						        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-12 p-2">
+						            <div class="child-card p-1">
+						                <div class="row m-0">
+						                    <div class="col-3 pt-2 align-middle">
+						                        {% if child.picture %}
+						                            <img src="{{child.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 58px;"/>
+						                        {% else %}
+						                          {% if child.parent %}
+						                            <span class="align-middle">
+														<i class="fas fa-2x fa-user " ></i>
+													</span>
+						                          {% else %}
+						                            <i class="fas fa-2x fa-industry" ></i>
+						                          {% endif %}
+						                        {% endif %}
+						                    </div>
+						                    <div class="col-9 pt-2 mr-0">
+												<div class="col-12 p-0 text-left">
+													<a href="{% url 'detail-lead' child.id %}">
+														<strong>{{ child.name }}</strong>
+													</a>
+												</div>
+						                        <div class="col-12 p-0">
+						                            <span style="font-size: 70%;">{{ child.email|default_if_none:"" }}</span>
+						                        </div>
+						                        <div class="col-12 p-0 text-left">
+						                            <span style="font-size: 70%;">{% if LANGUAGE_CODE == 'en' %}{{ child.country.name }}{% else %}{{ child.country.alternate_names }}{% endif %}</span>
+						                        </div>
+												<div class="col-12 p-0 text-left">
+													<span class="badge badge-success " style="font-size: 70%;">{{child.submailtag}}</span>
+												</div>
+						                    </div>
+											
+						                </div>
+						            </div>
+						        </div>
+						    {% endfor%}
+						</div>
+	            		<hr>
+	            		<div class="form-group row m-0">
+			                <div class="col-4">
+			                	<h3 class="mt-2">{% blocktrans %}Address{% endblocktrans %}</h3>
+			                </div>
+			            </div>
+						<div class="row">
+							<div class="col-6">
+			                	<button class="btn btn-primary btn-xs btn_add_address" data-toggle="modal" data-target="#addModal"><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add alternate address{% endblocktrans %}</button>
+			                </div>
+						</div>
+			            <div class="row m-0" id="div_address">
+		            		
+						</div>
+	            	{% endif %}
+		        </div>
+		    </div>
+		</div>
+		<div class="col-lg-4 col-md-12 col-sm-12">
+			<div class="card o_FormRenderer_chatterContainer">
+				<div class="row">
+					<div class="col-2">
+						<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#addChatter"><i class="fas fa-plus"></i>{% blocktrans %}Add{% endblocktrans %}</button>
+					</div>
+				</div>
+		        <div class="card-body">
+				{% for chat in chatter %}
+					<div class="o_MessageList_separator o_MessageList_separatorDate o_MessageList_item">
+						<hr class="o_MessageList_separatorLine">
+						<span class="o_MessageList_separatorLabel o_MessageList_separatorLabelDate"><strong>{{chat.date}}</strong></span>
+						<hr class="o_MessageList_separatorLine">
+					</div>
+					<div class="o_Message o-not-discussion o-notification o_MessageList_item o_MessageList_message">
+						<div class="o_Message_sidebar">
+							<div class="o_Message_authorAvatarContainer o_Message_sidebarItem">
+								<img src="{% static 'images/avatar-default.jpg' %}" title="Open chat" alt="Avatar" class="o_Message_authorAvatar rounded-circle o_Message_authorRedirect o_redirect">
+							</div>
+						</div>
+						<div class="o_Message_core">
+							<div class="o_Message_header">
+								<div title="Open profile" class="o_Message_authorName o_Message_authorRedirect o_redirect"><b>{{chat.client.user.username}}</b></div>
+								<div class="o_Message_commands o_Message_headerCommands">
+									<span title="Mark as Todo" class="o_Message_command o_Message_commandStar o_Message_headerCommand fa fa-star-o"></span>
+								</div>
+							</div>
+							{% if chat.comment %}
+							<div class="comment-container">
+								<div class="action-comment can-edit markeddown js-comment is-truncated" dir="auto">
+									<div class="action-comment-fade-button js-expand-comment"> </div>
+									<div class="current-comment js-friendly-links js-open-card">
+										<p>{{chat.comment}}</p>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							{% if chat.pdf %}
+							<div class="phenom-desc">
+								<a class="js-open-attachment-viewer" href="{{chat.pdf.url}}"><i class="fa fa-paperclip pr-2" aria-hidden="true"></i>{{chat.pdfname|truncatechars:20}}</a>
+							</div>
+							{% endif %}
+							{% if chat.clientaddress == None and chat.client != None %}
+								{% if chat.flag == True %}
+								<div class="o_Message_content">
+									<div class="o_Message_prettyBody">
+										<p style="font-size:11px; color: red;">Contact created - {{chat.name}}</p>
+									</div>
+								</div>
+								{% else %}
+								<!--div class="o_Message_content">
+									<div class="o_Message_prettyBody">
+										<p style="font-size:11px; color: red;">Contact updated - {{chat.name}}</p>
+									</div>
+								</div-->
+								{% endif %}
+							{% else %}
+								{% if chat.flag == True %}
+								<div class="o_Message_content">
+									<div class="o_Message_prettyBody">
+										<p style="font-size:11px; color: red;">Address created - {{chat.name}}</p>
+									</div>
+								</div>
+								{% else %}
+								<div class="o_Message_content">
+									<div class="o_Message_prettyBody">
+										<p style="font-size:11px; color: red;">Address updated - {{chat.name}}</p>
+									</div>
+								</div>
+								{% endif %}
+							{% endif %}
+						</div>
+					</div>
+					{% endfor %}
+				</div>	
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+    	<div class="modal-content">
+	      	<div class="modal-header">
+	        	<h5 class="modal-title" id="head_title">{% blocktrans %}Add Address{% endblocktrans %}</h5>
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          		<span aria-hidden="true">&times;</span>
+	        	</button>
+	      	</div>
+	      	<div class="modal-body">
+	        	<form novalidate="" id="addForm">
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label>{% blocktrans %}Address{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+							<textarea class="form-control" id="address" rows="5" required=""></textarea>
+						</div>
+					</div>
+					<input type="hidden" id="contact_id" value="{{ contact.id }}">
+					<input type="hidden" id="add_id" value="-1">
+				</form>
+	      	</div>
+	      	<div class="modal-footer">
+	      		<button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+	        	<button id="btn_save" class="btn btn-primary mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+			</div>
+    	</div>
+  	</div>
+</div>
+
+<div class="modal fade" id="addChatter" tabindex="-1" role="dialog" aria-labelledby="addChatterLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+    	<div class="modal-content">
+	      	<div class="modal-header">
+	        	<h5 class="modal-title" id="head_title">{% blocktrans %}Add Chatter{% endblocktrans %}</h5>
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          		<span aria-hidden="true">&times;</span>
+	        	</button>
+	      	</div>
+	      	<div class="modal-body">
+	        	<form novalidate="" id="addChatForm">
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label>{% blocktrans %}Comment{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+							<textarea class="form-control" id="chat_comment" rows="3" required=""></textarea>
+						</div>
+					</div>
+					<input type="file" id="input_file_now" class="dropify" />
+					<input type="hidden" id="chatter_id" value="{{ contact.id }}">
+				</form>
+	      	</div>
+	      	<div class="modal-footer">
+	      		<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+	        	<button id="btn_chat_save" class="btn btn-primary btn-sm mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+			</div>
+    	</div>
+  	</div>
+</div>
+<script src="{% static 'plugins/dropify/dist/js/dropify.min.js' %}"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.dropify').dropify();
+	});
+	$("#btn_save").on('click', function(){
+		var form = $("#addForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-lead-address" %}',
+			data: {
+				'add_id': $("#add_id").val(),
+				'address': $("#address").val(),
+				'contact_id': $("#contact_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#head_title").html("{% blocktrans %}Add Address{% endblocktrans %}");
+				$("#add_id").val("-1");
+				$("#address").val("");
+				get_address_data();
+			}
+		});
+	});
+
+	$("#btn_chat_save").on('click', function(){
+		var form = $("#addChatForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		} else {
+			var file_data = $('#input_file_now').prop('files')[0]; 
+			if (file_data != null) {
+				var form_data = new FormData();
+				form_data.append('comment', $("#chat_comment").val());                
+				form_data.append('file', file_data);
+				form_data.append('client', $("#chatter_id").val()); 
+				$.ajax({
+					headers: { "X-CSRFToken": '{{csrf_token}}' },
+					url: '{% url "ajax-chatter-leads" %}',
+					type: 'POST',
+					data: form_data,
+					cache: false,
+					contentType: false,
+					processData: false,
+					success: function (data) {
+						if(data="Ok") {
+							window.location.reload();
+						}
+						
+					}
+				});
+			} else {
+				$.ajax({
+					headers: { "X-CSRFToken": '{{csrf_token}}' },
+					url: '{% url "ajax-chatter-comment" %}',
+					type: 'POST',
+					data: {
+						'comment': $("#chat_comment").val(),
+						'client': $("#chatter_id").val(),
+					},
+					
+					success: function (data) {
+						if (data="Ok") {
+							window.location.reload();
+						}
+						
+					}
+				});
+			}
+			
+		}
+		
+		
+	});
+	get_address_data();
+	function get_address_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-get-lead-address" %}',
+			data: {
+				'contact_id': $("#contact_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_address").html(data);
+			}
+		});
+	}
+	
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% load i18n %}
+<style type="text/css">
+    .small-card {
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border-radius: 0.25rem;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        position: relative;
+        padding:5px;
+    }
+</style>
+{% for item in contacts_inf %}
+    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-12 p-2">
+        <div class="card small-card">
+            <div class="row m-0">
+                <div class="col-8">
+                    <div class="pt-2 pb-2">
+                        <span>{{ item.name|default_if_none:"" }}</span>
+                    </div>
+                    <div class="pl-1">
+                        <span style="font-size: 80%;color:#00a09d;">{{ item.email|default_if_none:"" }}</span>
+                    </div>
+                    <div class="pl-1">
+                        <span style="font-size: 80%;">{% blocktrans %}Telephone{% endblocktrans %}: {{ item.mobile|default_if_none:"" }}</span>
+                    </div>
+                    <div class="pl-1">
+                        <span style="font-size: 80%;">{{ item.position|default_if_none:"" }}</span>
+                    </div>
+                </div>
+                <div class="col-4 text-right">
+                    <a href="javascript:void(0);">
+                		<span class='btn_edit' data-id='{{item.id}}' data-name='{{item.name}}' data-position='{{item.position}}' data-email='{{item.email}}' data-mobile='{{item.mobile}}' ><i class="fas fa-edit mr-2"></i></span>
+                	</a>
+                	<a href="javascript:void(0);">
+                    	<span class='btn_delete' data-id='{{item.id}}'><i class="fas fa-trash"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor%}
+
+<script type="text/javascript">
+	$(".btn_edit").on('click', function(){
+		$("#head_title").html("{% blocktrans %}Edit Contact{% endblocktrans %}");
+		$("#subname").val($(this).data('name'));
+        $("#subemail").val($(this).data('email'));
+        $("#subposition").val($(this).data('position'));
+        $("#submobile").val($(this).data('mobile'));
+        $("#sub_contact_id").val($(this).data('id'));
+		$("#addModal").modal();
+	});
+	$(".btn_delete").on('click', function(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-delete-sub-contact" %}',
+			data: {
+				'del_id': $(this).data('id'),
+			},
+			type: 'POST',
+			success: function (data) {
+				get_sub_contact_data();
+			}
+		});
+	});
+</script>

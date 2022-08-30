@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load staticfiles %}
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>{% blocktrans %}Name{% endblocktrans %}</th>
+            <th>{% blocktrans %}Position{% endblocktrans %}</th>
+            <th>{% blocktrans %}Email{% endblocktrans %}</th>
+            <th>{% blocktrans %}Mobile{% endblocktrans %}</th>
+        </tr>
+    </thead>
+    {% for con in subcontacts %}
+    <tr>
+        <td>{{con.name}}</td>
+        <td>{{con.position}}</td>
+        <td>{{con.email}}</td>
+        <td>{{con.mobile}}</td>
+    </tr>  
+    {% endfor %}
+</table>

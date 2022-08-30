@@ -1,0 +1,104 @@
+{% load i18n %}
+<style type="text/css">
+    .card-child{
+        height: 165px;
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+</style>
+<div class="row">
+    {% for item in items %}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-12">
+            <div class="card card-child">
+                <div class="row m-0 pt-1">
+                    <div class="col-9 pr-0">
+                        <a href="{% url 'detail-trolley-item' item.id %}">
+                          <span class='btn_edit' data-id='{{item.id}}' data-stock='{{item.stock.id}}' data-quantity='{{item.order_quantity}}'>{{ item.stock.name }}</span>
+                        </a>
+                    </div>
+                    <div class="col-3 pl-0 pr-0">
+                        {% if item.finished %}
+                            <span class="badge badge-success">{% blocktrans %}Finished{% endblocktrans %}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-2">
+                        {% if item.stock.picture %}
+                            <img src="{{item.stock.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 58px;"/>
+                        {% else %}
+                            <i class="far fa-3x fa-image" ></i>
+                        {% endif %}
+                    </div>
+                    <div class="col-8 pl-0 pr-0">
+                        <div class="col-12 pl-0 pr-0">
+                            <span style="font-size: 90%;">{% blocktrans %}Ref{% endblocktrans %}:  {{ item.stock.reference }}</span>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-7 pl-0 pr-0">
+                                <span style="font-size: 90%;">{% blocktrans %}Ordered Qt{% endblocktrans %}:</span>
+                            </div>
+                            <div class="col-5 pl-0 pr-0">
+                                <span style="font-size: 90%;">{{ item.order_quantity }} pcs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ml-0 mr-0 mt-1">
+                    <div class="col-4 pr-0 pl-2">
+                        <span style="font-size: 90%;">{% blocktrans %}Location{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-8 pr-0 pl-1">
+                        <span style="font-size: 90%;">{% if item.stock.location %}{{ item.stock.location.name }}{% endif %}</span>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-1">
+                        <span style="font-size: 90%;">{% blocktrans %}Size{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-8 pl-2 pr-1">
+                        <span style="font-size: 90%;">{{ item.stock.width }} * {{ item.stock.height }} * {{ item.stock.depth }} mm<sup>3</sup></span>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-1">
+                        <span style="font-size: 90%;">{% blocktrans %}Weight{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-8 pl-2 pr-1">
+                        <span style="font-size: 90%;">{{ item.stock.weight }} g</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor%}
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+    {% endif %}
+    <script type="text/javascript">
+        $('[data-toggle="tooltip"]').tooltip();
+        $(".page_link").on('click', function(){
+            $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                url: '{% url "ajax-grid-outcome-item" %}',
+                data: {
+                    'outcome_id': $("#outcome_id").val(),
+                    'page': $(this).data("id"),
+                },
+                type: 'POST',
+                success: function (data) {
+                    $("#div_content").html(data);
+                    
+                }
+            });
+        });
+        $(".btn_edit").on('click', function(event){
+          $("#head_title").html('{% blocktrans %}Edit Order Item{% endblocktrans %}');
+          $("#add_id").val($(this).data('id'));
+          $("#stock").val($(this).data('stock'));
+          $("#stock").selectpicker('refresh');
+          $("#quantity").val($(this).data('quantity'));
+          $("#addModal").modal();
+        });
+    </script>
+</div>

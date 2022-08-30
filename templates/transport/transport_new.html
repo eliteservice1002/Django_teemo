@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12">
+			<h2 class="mr-auto">{% if transport %}{% blocktrans %}Edit Transport{% endblocktrans %}{% else %}{% blocktrans %}Add New Transport{% endblocktrans %}{% endif %}</h2>
+		</div>
+		
+	</div>
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-5">
+			<a href="#" id="transport_submit" class="btn btn-primary btn-sm">{% blocktrans %}Save{% endblocktrans %}</a>
+			<a href="{% if transport %}{% url 'detail-transport' transport.id %}{% else %}{% url 'transports' %}{% endif %}" class="btn btn-danger btn-sm ">{% blocktrans %}Cancel{% endblocktrans %}</a>
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+		            <form class="pt-3 pb-3" novalidate id="myForm" method="POST">
+		            	{% csrf_token %}
+		            	<div class="row m-0">
+		            		<div class="col-12 col-md-3">
+		            			<div class="form-group">
+		            				{% if form.errors %}
+									    {% for field in form %}
+									        {% for error in field.errors %}
+									            <div class="alert alert-danger">
+									                <strong>{{ error|escape }}</strong>
+									            </div>
+									        {% endfor %}
+									    {% endfor %}
+									    {% for error in form.non_field_errors %}
+									        <div class="alert alert-danger">
+									            <strong>{{ error|escape }}</strong>
+									        </div>
+									    {% endfor %}
+									{% endif %}
+		            			</div>
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Purchase Name{% endblocktrans %}</label>
+					                    <select  class="selectpicker form-control" id="purchase" name="purchase" required data-live-search="true">
+					                    	{% for pur in purchases %}
+					                    		<option value="{{ pur.id }}">{{ pur.name }}</option>
+					                    	{% endfor %}
+					                    </select>
+			                        </div>
+					            </div>
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Transport Name{% endblocktrans %}</label>
+					                    <input type="text" class="form-control" id="name" name="name" value="{{ transport.name|default_if_none:'' }}">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Container{% endblocktrans %}</label>
+					                    <select  class="selectpicker form-control" id="container" name="container" required>
+					                    	<option value="0" data-icon="fas fa-ship"> {% blocktrans %}Ship{% endblocktrans %}</option>
+					                    	<option value="1" data-icon="fas fa-truck"> {% blocktrans %}Truck{% endblocktrans %}</option>
+					                    </select>
+			                        </div>
+					            </div>
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="date">{% blocktrans %}Departure{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="departure" name="departure" required="">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="date">{% blocktrans %}Arrival{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="arrival" name="arrival" required="">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="description">{% blocktrans %}Description{% endblocktrans %}</label>
+		                    			<textarea  class="form-control" id="description" name="description" row="5">{{ transport.description }}</textarea>
+			                        </div>
+					            </div>
+					            
+					            
+					        </div>
+					        <input type="hidden" name="user" value="{{ user.id }}">
+		            		<div class="col-12 col-md-9 row m-0 pr-0" id="div_detail">
+
+		            		</div>
+		            	</div>
+		            	<!--div class="row m-0">
+		            		<div class="col-12 text-center mt-3">
+		            			<button type="submit" class="btn btn-new mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+		            			<a href="{% if transport %}{% url 'detail-transport' transport.id %}{% else %}{% url 'transports' %}{% endif %}" class="btn btn-import ml-2">{% blocktrans %}Cancel{% endblocktrans %}</a>
+		            		</div>
+		            	</div-->
+		            	
+		            </form>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(".selectpicker").selectpicker();
+	var date = new Date();
+ 	var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+ 	function formatDate(date) {
+	    var d = new Date(date),
+	        month = '' + (d.getMonth() + 1),
+	        day = '' + d.getDate(),
+	        year = d.getFullYear();
+
+	    if (month.length < 2) 
+	        month = '0' + month;
+	    if (day.length < 2) 
+	        day = '0' + day;
+
+	    return [year, month, day].join('-');
+	}
+	$("#departure").datepicker({
+		format: "yyyy-mm-dd",
+		todayHighlight: true,
+		defaultDate: formatDate(today),
+	});
+	$("#arrival").datepicker({
+		format: "yyyy-mm-dd",
+		todayHighlight: true,
+		defaultDate: formatDate(today),
+	});
+	{% if transport %}
+		$("#departure").val('{{ transport.departure|date:"yy-m-d"}}');
+		$("#departure").datepicker('setDate', '{{ transport.departure|date:"yy-m-d"}}');
+		$("#arrival").val('{{ transport.arrival|date:"yy-m-d"}}');
+		$("#arrival").datepicker('setDate', '{{ transport.arrival|date:"yy-m-d"}}');
+		$("#purchase").val('{{ transport.purchase.id }}');
+		$("#purchase").selectpicker("refresh");
+		$("#container").val('{{ transport.container }}');
+		$("#container").selectpicker("refresh");
+	{% else %}
+		$("#departure").val(formatDate(today));
+		$("#departure").datepicker('setDate', formatDate(today));
+	{% endif %}
+
+	get_detail_view();
+
+	$("#myForm").submit(function( event ){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+			form.addClass('was-validated');
+			return;
+		}
+	});
+
+	$("#transport_submit").click(function(){
+		var form = $("#myForm");
+		form.submit();
+	});
+
+	$("#purchase").on('change', function(){
+		get_detail_view();
+	});
+	function get_detail_view(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-transport-new-detail" %}',
+			data: {
+				'purchase_id': $("#purchase").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_detail").html(data);
+				
+			}	
+		});
+	}
+	
+</script>
+{% endblock %}

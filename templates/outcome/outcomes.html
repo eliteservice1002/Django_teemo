@@ -1,0 +1,538 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/icheck/skins/all.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/select2/select2.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+
+<script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'plugins/moment/moment.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+<style type="text/css">
+	.select2-selection__choice{
+		background-color: #009efb !important;
+		color: white;
+	}
+	.select2-selection__choice__remove{
+		color: white !important;
+	}
+	.select2-selection__clear{
+		display: none;
+	}
+	li{
+		list-style: none;
+	}
+	
+	h4{
+		cursor: pointer;
+	}
+	.div_filter_row{
+		vertical-align: middle;
+
+	}
+	
+	.div_filter_row i:hover{
+		color:#0056b3;
+	}
+	.mailbox ul{
+		width: 300px;
+	}
+	.mailbox ul li .drop-title{
+		padding: 10px;
+	}
+	#addForm .form-group{
+		margin-bottom: 15px;
+	}
+</style>
+<div class="" style="height: 1px; background-color: white">
+</div>
+<div class="block-header row m-0 p-3" style="background-color: #875a7b;">
+	<div class="col-12 col-md-7 mr-auto">
+		<h2 class="mr-auto text-white mb-0 text-uppercase">{% blocktrans %}Orders{% endblocktrans %}</h2>
+	</div>
+	<div class="col-8 col-md-3 search_tool p-0">
+		<span id="filter" class="mr-4"style="font-weight: 700;"><i class="fas fa-filter mr-2"></i>{% blocktrans %}Filter{% endblocktrans %}</span>
+		
+        <li class="dropdown">
+            <a class="dropdown-toggle text-white waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span id="filter" style="font-weight: 700;">
+            		<i class="fas fa-star mr-2"></i>{% blocktrans %}Favorite{% endblocktrans %}
+            	</span>
+            </a>
+            <div class="dropdown-menu mailbox animated bounceInDown" aria-labelledby="2">
+                <ul class="p-1 ul_favor_filter">
+                    <li>
+                        <div class="drop-title">{% blocktrans %}Favorite Filter{% endblocktrans %}</div>
+                    </li>
+                    <li>
+                        <div class="message-center">
+                        	{% for favor in favorites %}
+                        		<a href="javascript:void(0);">
+	                            	<div class="row m-0 div_filter_row">
+	                            		
+	                            		<div class="col-11 favor_row p-0" data-url="{% url 'favor-outcome' favor.id %}">
+	                            			<h4 class="mb-0">{{ favor.name }}</h4>
+	                            		</div>
+
+	                            		<div class="col-1 p-0">
+	                            			<i class="fas fa-trash-alt btn_favor_delete" data-id="{{ favor.id }}"></i>
+	                            		</div>
+	                            	</div>
+                            	</a>
+                        	{% endfor %}
+                        </div>
+                    </li>
+                    
+                </ul>
+            </div>
+        </li>
+		<span id="btn_delete" class="ml-4" style="font-weight: 700;"><i class="fas fa-trash-alt mr-2"></i></span>
+	</div>
+	<div class="col-4 col-md-2 text-right search_tool p-0">
+		<span id="grid_view" class="mr-2 ml-2"><i class="fas fa-2x fa-th"></i></span>
+		<span id="list_view" class="mr-2 ml-2 active"><i class="fas fa-2x fa-list-ul"></i></span>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="row clearfix pt-2 pb-2" id="myStickHeader">
+		<div class="col-12 col-md-8">
+			<button id="btn_new" class="btn btn-new mr-2">{% blocktrans %}NEW{% endblocktrans %}</button>
+			
+		</div>
+		<div class="col-12 col-md-3 app-search pt-2 float-right">
+			<input id="search_box" type="text" class="form-control" placeholder="{% blocktrans %}Search for...{% endblocktrans %}">
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-12" id="div_content">
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+	        	<h5 class="modal-title" id="exampleModalLabel">{% blocktrans %}Filter{% endblocktrans %}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<div class="modal-body p-3">
+	      		<div class="form-group mt-2">
+        			<label >{% blocktrans %}Date Range{% endblocktrans %}</label>
+        			<input id="range_date" class="form-control">	
+        		</div>
+	      		<div class="form-group">
+            		<div class="col-12 p-0">
+	        			<label >{% blocktrans %}Owner{% endblocktrans %}</label><br>
+	        			<select class="form-control" id="sel_owner" multiple="multiple">
+					  		{% for user_child in users %}
+					  			<option value="{{ user_child.id }}" {% if user_child.id|stringformat:'i' in sel_users %} selected="selected" {% endif%}>{% if user_child.first_name %}{{ user_child.first_name}} {{ user_child.last_name }}{% else %}{{ user_child.username }}{% endif %}</option>
+					  		{% endfor%}
+						</select>
+					</div>
+        		</div>
+            	<div class="form-group">
+            		<div class="col-12 p-0">
+	        			<label >{% blocktrans %}Client{% endblocktrans %}</label><br>
+	        			<select class="form-control" id="sel_client" multiple="multiple">
+					  		{% for sup in clients %}
+					  			<option value="{{ sup.id }}" {% if sup.id|stringformat:'i' in sel_clients %} selected="selected" {% endif%}>{{ sup.name }}</option>
+					  		{% endfor%}
+						</select>
+					</div>
+        		</div>
+        		<form novalidate id="favoriteForm">
+        			<div class="form-group row m-0">
+        				<div class="col-5 p-0">
+	        				<input type="checkbox" class="check_modal" id="chk_favorite">
+	        				<label for="chk_favorite">{% blocktrans %}Add Favorite{% endblocktrans %}</label>
+	        			</div>
+	        			<div class="col-7" id="div_name">
+	        				<input type="text" class="form-control" id="favorite_name" placeholder="{% blocktrans %}Favorite Name{% endblocktrans %}" required="">
+	        			</div>
+	        		</div>
+        		</form>
+	      	</div>
+
+	      	<div class="modal-footer">
+		        <button id="btn_close" type="button" class="btn btn-primary">{% blocktrans %}Close{% endblocktrans %}</button>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+	        	<h5 class="modal-title" id="head_title">{% blocktrans %}Add New Order{% endblocktrans %}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<div class="modal-body p-3">
+	      		<form class="pt-3 pb-3" novalidate id="addForm" method="POST">
+	      			<div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="name">{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+		                    <input type="text" class="form-control" id="name" name="name" required>
+                            <div class="invalid-feedback">
+						        {% blocktrans %}This field is required.{% endblocktrans %}
+						    </div>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="category">{% blocktrans %}Client{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+		                    <select  class="selectpicker form-control" id="client" name="client" required data-live-search="true">
+	                    	{% for supp in clients %}
+	                    		<option value="{{ supp.id }}">{{ supp.name }}</option>
+	                    	{% endfor %}
+	                    </select>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="date">{% blocktrans %}Date{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					        <input type="text" class="form-control" id="date" name="date" required="">
+                        </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="description">{% blocktrans %}Description{% endblocktrans %}</label>
+		                    <textarea  class="form-control" id="description" name="description" row="5"></textarea>
+                        </div>
+		            </div>
+		            
+		        </form>
+	      	</div>
+
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+		        <button id="add_confirm" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deletModalLabel" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<h5 class="modal-title">{% blocktrans %}DELETE ORDERS{% endblocktrans %}</h5>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        			<span aria-hidden="true">&times;</span>
+        		</button>
+      		</div>
+      		<div class="modal-body">
+        		<p>{% blocktrans %}Are you sure you want to delete this record?{% endblocktrans %}</p>
+        		<input type="hidden" id="arr_checked_val">
+      		</div>
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}No{% endblocktrans %}</button>
+        		<button id="del_confirm" type="button" class="btn btn-primary">{% blocktrans %}Yes{% endblocktrans %}</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<script src="{% static 'plugins/icheck/icheck.min.js' %}"></script>
+<script src="{% static 'plugins/icheck/icheck_modal.init.js' %}"></script>
+<script type="text/javascript">
+	$(".selectpicker").selectpicker();
+	var date = new Date();
+ 	var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+ 	function formatDate(date) {
+	    var d = new Date(date),
+	        month = '' + (d.getMonth() + 1),
+	        day = '' + d.getDate(),
+	        year = d.getFullYear();
+
+	    if (month.length < 2) 
+	        month = '0' + month;
+	    if (day.length < 2) 
+	        day = '0' + day;
+
+	    return [year, month, day].join('-');
+	}
+	$("#date").datepicker({
+		format: "yyyy-mm-dd",
+		todayHighlight: true,
+	});
+	$("#date").val(formatDate(today));
+	$("#date").datepicker('setDate', formatDate(today));
+	jQuery(document).on('click', '.ul_favor_filter', function (e) {
+        e.stopPropagation()
+    });
+    // favorite modal process
+    $(".btn_favor_delete").on('click', function(e){
+    	$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-delete-outcome-favorite" %}',
+			data: {
+				'id': $(this).data("id"),
+			},
+			type: 'POST',
+			success: function (data) {
+				location.href = "{% url 'outcomes' %}"
+			}
+		});
+    });
+    $(".favor_row").on('click', function(e){
+    	location.href = $(this).data("url");
+    });
+	// filter modal process
+	options = [];
+	$('#sel_client option').each(function(idx) {
+	    options.push({id: $(this).val(), text: $(this).text()});
+	});
+	options_owner = [];
+	$('#sel_owner option').each(function(idx) {
+	    options_owner.push({id: $(this).val(), text: $(this).text()});
+	});
+
+	$("#sel_client").select2({
+	  	tags: true,
+	  	width: '100%',
+	  	allowClear: true,
+	  	createTag: function (params) {
+		    var term = $.trim(params.term);
+			if (term === '') {
+		      return null;
+		    }
+		    // check whether the term matches an id
+		    var search = $.grep(options, function( n, i ) {
+		      return ( n.id === term || n.text === term); // check against id and text
+		    });
+		    // if a match is found replace the term with the options' text
+		    if (search.length) 
+		      term = search[0].text;
+		    else
+		      return null; // didn't match id or text value so don't add it to selection
+		return {
+			id: term,
+			text: term,
+			value: true // add additional parameters
+	    }
+	  }
+	});
+	$("#sel_owner").select2({
+	  	tags: true,
+	  	width: '100%',
+	  	allowClear: true,
+	  	createTag: function (params) {
+		    var term = $.trim(params.term);
+			if (term === '') {
+		      return null;
+		    }
+		    // check whether the term matches an id
+		    var search = $.grep(options_owner, function( n, i ) {
+		      return ( n.id === term || n.text === term); // check against id and text
+		    });
+		    // if a match is found replace the term with the options' text
+		    if (search.length) 
+		      term = search[0].text;
+		    else
+		      return null; // didn't match id or text value so don't add it to selection
+		return {
+			id: term,
+			text: term,
+			value: true // add additional parameters
+	    }
+	  }
+	});
+	$("#filter").on('click', function(e){
+		$("#filterModal").modal();
+	});
+	$('#div_name').hide();
+	$("#chk_favorite").on('ifChecked', function(){
+		$('#div_name').show();
+	});
+	$("#chk_favorite").on('ifUnchecked', function(){
+		$('#div_name').hide();
+	});
+	$("#btn_close").on('click', function(e){
+		if($("#chk_favorite").prop('checked')){
+			var form = $("#favoriteForm")
+			if (form[0].checkValidity() === false) {
+				event.preventDefault()
+				event.stopPropagation()
+				form.addClass('was-validated');
+				return;
+			}
+			$.ajax({
+				headers: { "X-CSRFToken": '{{csrf_token}}' },
+				url: '{% url "ajax-add-outcome-favorite" %}',
+				data: {
+					'selected_client': $("#sel_client").val().join(),
+					'selected_owner': $("#sel_owner").val().join(),
+					'name': $("#favorite_name").val(),
+					'start_date': start_date,
+					'end_date': end_date,
+				},
+				type: 'POST',
+				success: function (data) {
+					if(data.err_code == "1"){
+						
+					}else if(data.err_code == "2"){
+						
+					}else{
+						$(".message-center").html(data);
+						$("#favorite_name").val("");
+					}
+				}
+			});
+		}
+		if(currentState){
+        	get_list_data();
+        }else{
+        	get_grid_data();
+        }
+        $("#filterModal").modal('hide');
+	});
+	// filter process end
+	// add Outcome module
+	$("#btn_new").on('click', function(){
+		$("#addModal").modal();
+	});
+	$("#add_confirm").on('click', function(){
+		var form = $("#addForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-outcome" %}',
+			data: {
+				'name': $("#name").val(),
+				'date': $("#date").val(),
+				'description': $("#description").val(),
+				'client': $("#client").val(),
+				'add_id': '-1'
+			},
+			type: 'POST',
+			success: function (data) {
+				if(data.err_code == 2){
+					location.href = '{% url "detail-outcome" 333 %}'.replace('333', data.outcome_id);
+				}else{
+					$("#addModal").modal('hide');
+				}
+			}
+		});
+	})
+
+	var start_date = '{{ start_date|date:"yy-m-d" }}';
+	var end_date = '{{ end_date|date:"yy-m-d" }}';
+	$('#range_date').daterangepicker({ 
+		startDate: '{{ start_date|date:"m/d/yy" }}', 
+		endDate: '{{ end_date|date:"m/d/yy" }}',
+		autoApply: true 
+	}, function(start, end, label) {
+	    start_date = start.format('YYYY-MM-DD');
+	    end_date = end.format('YYYY-MM-DD');
+  	});
+
+	var currentState = true;
+	get_list_data();
+
+	$("#btn_delete").on('click', function(){
+		var arr_checked = [];
+		$( ".chk_sub" ).each(function( index ) {
+		  if($( this ).prop('checked')){
+		  	arr_checked.push($(this).data("id"));
+		  }
+		});
+		if(arr_checked.length == 0){
+			return;
+		}
+		$("#arr_checked_val").val(arr_checked.join());
+		$("#deleteModal").modal();
+		
+	});
+	$("#del_confirm").on('click', function(e){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-delete-outcomes" %}',
+			data: {
+				'checked_contacts': $("#arr_checked_val").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#arr_checked_val").val("");
+				$("#deleteModal").modal('hide');
+				if(currentState){
+		        	get_list_data();
+		        }else{
+		        	get_grid_data();
+		        }
+			}
+		});
+	});
+	$("#grid_view").on('click', function(){
+		$(this).addClass('active');
+		$("#list_view").removeClass('active');
+		get_grid_data();
+		currentState = false;
+	});
+	$("#list_view").on('click', function(){
+		$(this).addClass('active');
+		$("#grid_view").removeClass('active');
+		get_list_data();
+		currentState = true;
+	});
+	$("#search_box").on('keypress',function(e) {
+	    if(e.which == 13) {
+	        if(currentState){
+	        	get_list_data();
+	        }else{
+	        	get_grid_data();
+	        }
+	    }
+	});
+	function get_list_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-list-outcomes" %}',
+			data: {
+				'search_key': $("#search_box").val(),
+				'page': 1,
+				'selected_client': $("#sel_client").val().join(),
+				'selected_owner': $("#sel_owner").val().join(),
+				'start_date': start_date,
+				'end_date': end_date,
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+			}
+		});
+	}
+	function get_grid_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-grid-outcomes" %}',
+			data: {
+				'search_key': $("#search_box").val(),
+				'page': 1,
+				'selected_client': $("#sel_client").val().join(),
+				'selected_owner': $("#sel_owner").val().join(),
+				'start_date': start_date,
+				'end_date': end_date,
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+			}
+		});
+	}
+</script>
+{% endblock %}

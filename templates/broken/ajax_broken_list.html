@@ -1,0 +1,81 @@
+{% load i18n %}
+{% load staticfiles %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    	<th width="10%">{% blocktrans %}Supplier{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Ref{% endblocktrans %}</th>
+                        <th width="15%">{% blocktrans %}Name{% endblocktrans %}</th>
+                        <th width="15%">{% blocktrans %}Location{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Category{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Broken Quantity{% endblocktrans %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                	{% for item in brokens %}
+                		<tr>
+                			<td>{{ item.supplier.name }}</td>
+                            <td class="text-center p-2">
+                                {% if item.stock.picture %}
+                                    <img src="{{item.stock.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+                                {% else %}
+                                    <i class="far fa-4x fa-image pl-1 pr-1" ></i>
+                                {% endif %}
+                            </td>
+                            <td>{{ item.stock.reference }}</td>
+                            <td>{{ item.stock.name }}</td>
+                            <td>{% if item.stock.location %}{{ item.stock.location.name }}{% endif %}</td>
+                            <td>{{ item.stock.category.name }}</td>
+                            <td>{{ item.broken_sum }} pcs</td>
+                            <td class="text-center">
+                                <a href="{% url 'detail-broken' item.supplier.id item.stock.id %}"><span class="ml-2 mr-2 btn_edit" data-id="2"><i class="fas fa-edit"></i></span></a>
+                                <button class='btn_refund btn btn-sm btn-primary' data-supplier='{{ item.supplier.id }}' data-stock='{{ item.stock.id }}' data-quantity='{{ item.broken_sum }}' data-supname='{{ item.supplier.name }}' data-stockname='{{ item.stock.name }}' >{% blocktrans %}Refund{% endblocktrans %}</button>
+                            </td>
+                        </tr>
+                	{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-list-brokens" %}',
+            data: {
+              'search_key': $("#search_box").val(),
+              'page': $(this).data('id'),
+              'selected_supplier': $("#sel_supplier").val().join(),
+              'selected_stock': $("#sel_stock").val().join(),
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        });
+      </script>
+    {% endif %}
+    
+</div>
+
+<script type="text/javascript">
+
+    $(".btn_refund").on('click', function(event){
+        $("#supplier_id").val($(this).data('supplier'));
+        $("#stock_id").val($(this).data('stock'));
+        $("#supplier_name").html($(this).data('supname'));
+        $("#stock_name").html($(this).data('stockname'));
+        $("#quantity").val($(this).data('quantity'));
+        $("#date").val(formatDate(today));
+        $("#date").datepicker('setDate', formatDate(today));
+        $("#refundModal").modal();
+    });
+</script>

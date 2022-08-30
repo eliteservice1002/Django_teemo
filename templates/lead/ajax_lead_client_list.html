@@ -1,0 +1,155 @@
+{% load i18n %}
+{% load staticfiles %}
+<style>
+    [data-toggle="toggle"] {
+        display: none;
+    }
+</style>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                    	<th width="3%" class="text-center">
+                    		<input type="checkbox" class="check" id="chk_all_client">
+                    	</th>
+                    	<th width="8%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Name{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}NIF{% endblocktrans %}</th>
+                        <th width="15%">{% blocktrans %}Email{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Telephone{% endblocktrans %}</th>
+                        <th width="8%">{% blocktrans %}Country{% endblocktrans %}</th>
+                        <th width="14%">{% blocktrans %}Product{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Owner{% endblocktrans %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                
+                	{% for contact in contacts %}
+                        <tbody class="labels">
+                    		<tr>
+                                <td>
+                                    <label class="mb-0" for="contact_{{ contact.id }}">{% if contact.childs %}<i class="fas fa-plus"></i>{% else %}<i class="fas fa-minus"></i>{% endif %}</label>
+                                    <input type="checkbox" id="contact_{{ contact.id }}" data-toggle="toggle">
+                                </td>
+                    			<td class="text-center">
+                    				<input type="checkbox" class="check chk_sub_client" data-id="{{ contact.id }}">
+                    			</td>
+                                <td class="text-center p-2">
+                                	{% if contact.picture %}
+    		                            <img src="{{contact.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+      		                        {% else %}
+                                    {% if contact.parent %}
+                                      <i class="fas fa-3x fa-user" ></i>
+                                    {% else %}
+      		                            <i class="fas fa-3x fa-industry" ></i>
+                                    {% endif %}
+      		                        {% endif %}
+                                </td>
+                                <td>{{ contact.name }}{% if contact.parent %}&nbsp;&nbsp;({{ contact.parent.name }}){% endif %}</td>
+                                <td>{{ contact.nif|default_if_none:"" }}</td>
+                                <td>{{ contact.email|default_if_none:"" }}</td>
+                                <td>{{ contact.telephone|default_if_none:"" }}</td>
+                                <td>{% if LANGUAGE_CODE == 'en' %}{{ contact.country.name }}{% else %}{{ contact.country.alternate_names }}{% endif %}</td>
+                                <td>{{ contact.products }}</td>
+                                <td>{% if contact.user.first_name %}{{ contact.user.first_name}} {{ contact.user.last_name }}{% else %}{{ contact.user.username }}{% endif %}</td>
+                                <td class="text-center">
+                                	<a href="{% url 'detail-lead' contact.id %}"><span class="ml-2 mr-2 btn_edit" data-id="2"><i class="fas fa-edit"></i></span></a>
+                                    <button class="btn btn-sm btn-primary ml-2 btn_make_lead" data-id="{{ contact.id }}">{% blocktrans %}Make Lead{% endblocktrans %}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {% if contact.childs %}
+                            <tbody class="hide-client hide">
+                                {% for child in contact.childs %}
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-center">
+                                            <input type="checkbox" class="check chk_sub_client" data-id="{{ child.id }}">
+                                        </td>
+                                        <td class="text-center p-2">
+                                            {% if child.picture %}
+                                                <img src="{{child.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+                                            {% else %}
+                                            {% if child.parent %}
+                                              <i class="fas fa-3x fa-user" ></i>
+                                            {% else %}
+                                                <i class="fas fa-3x fa-industry" ></i>
+                                            {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ child.name }}</td>
+                                        <td>{{ child.nif|default_if_none:"" }}</td>
+                                        <td>{{ child.email|default_if_none:"" }}</td>
+                                        <td>{{ child.telephone|default_if_none:"" }}</td>
+                                        <td>{% if LANGUAGE_CODE == 'en' %}{{ child.country.name }}{% else %}{{ child.country.alternate_names }}{% endif %}</td>
+                                        <td>{{ child.products }}</td>
+                                        <td>{% if child.user.first_name %}{{ child.user.first_name}} {{ child.user.last_name }}{% else %}{{ child.user.username }}{% endif %}</td>
+                                        <td class="text-center">
+                                            <a href="{% url 'detail-lead' child.id %}"><span class="ml-1 mr-1"><i class="fas fa-edit"></i></span></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        {% endif %}
+                	{% endfor %}
+                
+            </table>
+        </div>
+    </div>
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+        <script type="text/javascript">
+            $(".page_link").on('click', function(){
+              $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                url: '{% url "ajax-list-client-leads" %}',
+                data: {
+                  'search_key': $("#search_box").val(),
+                  'page': $(this).data('id'),
+                  'selected_country': $("#sel_country").val().join(),
+                  'selected_owner': $("#sel_owner").val().join(),
+                },
+                type: 'POST',
+                success: function (data) {
+                  $("#div_content").html(data);
+                }
+              });
+            });
+        </script>
+    {% endif %}
+    <script type="text/javascript">
+        $('[data-toggle="toggle"]').change(function(){
+            $(this).parents().next('.hide-client').toggle();
+        });
+        $(".btn_make_lead").on('click', function(){
+            $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                url: '{% url "ajax-transform-client-lead" %}',
+                data: {
+                  'contact_id': $(this).data('id'),
+                  'b_client': '0'
+                },
+                type: 'POST',
+                success: function (data) {
+                    if(currentState){
+                        get_list_data();
+                    }else{
+                        get_grid_data();
+                    }
+                }
+            });
+        });
+    </script>
+</div>
+<!-- <script src="{% static 'plugins/icheck/icheck.init.js' %}"></script> -->
+<script type="text/javascript">
+	$("#chk_all_client").on('ifChecked', function(){
+		$('.chk_sub_client').iCheck('check');
+	});
+	$("#chk_all_client").on('ifUnchecked', function(){
+		$('.chk_sub_client').iCheck('uncheck');
+	});
+</script>

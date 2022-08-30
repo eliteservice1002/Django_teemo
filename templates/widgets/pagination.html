@@ -1,0 +1,61 @@
+{% load i18n %}
+<div class="col-12 text-center">
+    <nav aria-label="pagination" class="mt-2 mb-2">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.number > 1 %}
+            <li class="page-item">
+              <a class="page-link page_link" data-id="1">{% blocktrans %}First{% endblocktrans %}</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">{% blocktrans %}First{% endblocktrans %}</span>
+            </li>
+          {% endif %}
+
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link page_link" data-id="{{ page_obj.previous_page_number }}">{% blocktrans %}Previous{% endblocktrans %}</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">{% blocktrans %}Previous{% endblocktrans %}</span>
+            </li>
+          {% endif %}
+
+          {% for page_num in paginator.page_range %}
+            {% if page_obj.number == page_num %}
+              <li class="page-item active">
+                <span class="page-link">
+                  {{ page_num }}
+                  <span class="sr-only">(current)</span>
+                </span>
+              </li>
+            {% elif page_num > page_obj.number|add:'-3' and page_num < page_obj.number|add:'3' %}
+              <li class="page-item">
+                <a class="page-link page_link" data-id="{{ page_num }}">{{ page_num }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link page_link" data-id="{{ page_obj.next_page_number }}">{% blocktrans %}Next{% endblocktrans %}</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">{% blocktrans %}Next{% endblocktrans %}</span>
+            </li>
+          {% endif %}
+
+          {% if page_obj.number != paginator.num_pages %}
+            <li class="page-item">
+              <a class="page-link page_link" data-id="{{ paginator.num_pages }}">{% blocktrans %}Last{% endblocktrans %}</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">{% blocktrans %}Last{% endblocktrans %}</span>
+            </li>
+          {% endif %}
+        </ul>
+    </nav>
+</div>

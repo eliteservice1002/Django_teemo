@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/jquery-nestable.css' %}" rel="stylesheet">
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<script src="{% static 'js/jquery.nestable.js' %}"></script>
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+<link href="{% static 'plugins/select2/select2.min.css' %}" rel="stylesheet">
+<script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	.bootstrap-tagsinput{
+		font-size: 1rem;
+		width: 100%;
+		line-height: 1.5;
+		min-height: 38px;
+	}
+	.bootstrap-tagsinput .tag {
+	    line-height: 23px;
+	    font-size: 100%;
+	    margin: 1px;
+	}
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12">
+			<h2 class="mr-auto">{% if contact %}{% blocktrans %}Edit Supplier{% endblocktrans %}{% else %}{% blocktrans %}Add New Supplier{% endblocktrans %}{% endif %}</h2>
+		</div>
+	</div>
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-5">
+			<a href="#" id="supplier_submit" class="btn btn-primary btn-sm">{% blocktrans %}Save{% endblocktrans %}</a>
+			<a href="{% if sel_company %}{% url 'detail-supplier' sel_company %}{% else %}{% url 'suppliers' %}{% endif %}" class="btn btn-danger btn-sm ">{% blocktrans %}Cancel{% endblocktrans %}</a>
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+		            <form class="pt-3 pb-3" novalidate id="myForm" method="POST" enctype='multipart/form-data'>
+		            	{% if form.errors %}
+						    {% for field in form %}
+						        {% for error in field.errors %}
+						            <div class="alert alert-danger">
+						                <strong>{{ error|escape }}</strong>
+						            </div>
+						        {% endfor %}
+						    {% endfor %}
+						    {% for error in form.non_field_errors %}
+						        <div class="alert alert-danger">
+						            <strong>{{ error|escape }}</strong>
+						        </div>
+						    {% endfor %}
+						{% endif %}
+		            	{% csrf_token %}
+		            	<div class="row m-0">
+		            		<div class="col-12 col-md-4">
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Name{% endblocktrans %} </label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="name" name="name" required value="{{ contact.name }}">
+			                            <div class="invalid-feedback">
+									        {% blocktrans %}This field is required.{% endblocktrans %}
+									    </div>
+					                </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="nif">{% blocktrans %}NIF{% endblocktrans %} </label>
+					                    <input type="text" class="form-control" id="nif" name="nif" value="{{ contact.nif|default_if_none:'' }}">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="address">{% blocktrans %}Address{% endblocktrans %}</label>
+					                    <textarea  class="form-control" id="address" name="address">{{ contact.address }}</textarea>
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					            	<div class="col-xs-12">
+					            		<label for="country">{% blocktrans %}Country{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <select  class="selectpicker form-control" id="country" name="country" required data-live-search="true">
+					                    	{% for country in countries %}
+					                    		<option value="{{ country.id }}">{% if LANGUAGE_CODE == 'en' %}{{ country.name }}{% else %}{{ country.alternate_names }}{% endif %}</option>
+					                    	{% endfor %}
+					                    </select>
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="notes">{% blocktrans %}Notes{% endblocktrans %}</label>
+					                    <textarea  class="form-control" id="notes" name="notes">{{ contact.notes }}</textarea>
+			                        </div>
+					            </div>
+		            		</div>
+		            		<div class="col-12 col-md-4 pl-md-4">
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="telephone">{% blocktrans %}Telephone{% endblocktrans %}</label>
+					                    <input type="text" class="form-control" id="telephone" name="telephone" value="{{ contact.telephone|default_if_none:'' }}">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="mobile">{% blocktrans %}Mobile{% endblocktrans %}</label>
+					                    <input type="text" class="form-control" id="mobile" name="mobile" value="{{ contact.mobile|default_if_none:'' }}">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="email">{% blocktrans %}Email{% endblocktrans %}</label>
+					                    <input type="email" class="form-control" id="email" name="email" value="{{ contact.email|default_if_none:'' }}">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="web">{% blocktrans %}Web{% endblocktrans %}</label>
+					                    <input type="text" class="form-control" id="web" name="web" value="{{ contact.web|default_if_none:'' }}">
+			                        </div>
+					            </div>
+					            <div class="form-group div_products">
+					                <div class="col-xs-12">
+					                	<label for="product">{% blocktrans %}Products{% endblocktrans %}</label>
+										<select  class="form-control" id="products" name="products" multiple="multiple">
+					                    	{% for product in products %}
+					                    		<option value="{{ product.id }}" {% if product.id|stringformat:'i' in sel_products %} selected="selected" {% endif%}>{{ product.name }}</option>
+					                    	{% endfor %}
+					                    </select>
+			                        </div>
+									
+					            </div>
+		            		</div>
+		            		<div class="col-12 col-md-4 pl-md-4">
+		            			<div class="form-group text-center mt-4">
+		            				<div class="mb-3">
+		            					<span class="img_upload">
+		            						<i class="fas fa-6x fa-industry pl-5 pr-5" style="border:1px solid;{% if contact.picture %}display: none;{% endif %}"></i>
+		            						<img src="{% if contact.picture %}{{ contact.picture.url }}{% else %}{% static 'images/avatar-default.jpg' %}{% endif %}" style="{% if contact.picture %}display: inline-block;{% else %}display: none;{% endif %}">
+		            						
+		            					</span>
+		            					{% if contact.picture %}
+	            							<a class="img-clear" href="javascript:void(0);" data-id="1"><span><i class="fas fa-trash-alt"></i></span></a>
+	            						{% endif %}
+		            					<input type="file" name="picture" id="imagen" onchange="readURL(this);" style="display: none">
+		            				</div>
+		            			</div>
+		            			<div class="form-group text-center mt-4">
+		            				<div class="pt-4">
+		            					<span class="pdf_upload">
+		            						<i class="far fa-3x fa-file-pdf p-2"></i>
+		            					</span>
+		            					<label class="ml-2 uploaded_pdf_name">{% if contact.pdf %}{{ contact.filename}}{% endif %}</label>
+		            					{% if contact.pdf %}
+	            							<a class="ml-4 pdf_clear" href="javascript:void(0);" data-id="2"><span><i class="fas fa-trash-alt"></i></span></a>
+	            						{% endif %}
+		            					<input type="file" name="pdf" id="pdf" onchange="readPDFURL(this);" style="display: none">
+		            				</div>
+		            			</div>
+		            		</div>
+		            		<input type="hidden" name="user" value="{{ user.id }}">
+		            		<input type="hidden" id="exist" name="exist" value="{% if contact.picture %}YES{% endif %}">
+		            		<input type="hidden" id="exist_pdf" name="exist_pdf" value="{% if contact.pdf %}YES{% endif %}">
+		            	</div>
+		            	<!--div class="row m-0">
+		            		<div class="col-12 text-center">
+		            			<button type="submit" class="btn btn-new mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+		            			<a href="{% if sel_company %}{% url 'detail-supplier' sel_company %}{% else %}{% url 'suppliers' %}{% endif %}" class="btn btn-import ml-2">{% blocktrans %}Cancel{% endblocktrans %}</a>
+		            		</div>
+		            	</div-->
+		            	
+		            </form>
+					<hr>
+					<div class="form-group row m-0">
+						<h3 class="mt-2">{% blocktrans %}Contacts and Addresses{% endblocktrans %}</h3>
+					</div>
+					<div class="form-group row m-0">
+						<button class="btn btn-primary btn_add_contact" data-toggle="modal" data-target="#addModal"><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add{% endblocktrans %}</button>
+					</div>
+					<div class="row m-0" id="div_sub_address">
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+    	<div class="modal-content">
+	      	<div class="modal-header">
+	        	<h5 class="modal-title" id="head_title">{% blocktrans %}Contacts and Addresses{% endblocktrans %}</h5>
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          		<span aria-hidden="true">&times;</span>
+	        	</button>
+	      	</div>
+	      	<div class="modal-body">
+	        	<form novalidate="" id="addForm">
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label for="name">{% blocktrans %}Name{% endblocktrans %} </label><span class="text-danger">&nbsp;*&nbsp;</span>
+							<input type="text" class="form-control" id="subname" name="subname" required>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label for="name">{% blocktrans %}Email{% endblocktrans %} </label>
+							<input type="text" class="form-control" id="subemail" name="subemail" >
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label for="name">{% blocktrans %}Mobile{% endblocktrans %} </label>
+							<input type="text" class="form-control" id="submobile" name="submobile" >
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+							<label for="name">{% blocktrans %}Position{% endblocktrans %} </label>
+							<input type="text" class="form-control" id="subposition" name="subposition">
+						</div>
+					</div>
+					<input type="hidden" id="contact_id" value="{{ contact.id }}">
+					<input type="hidden" id="sub_contact_id" value="-1">
+				</form>
+	      	</div>
+	      	<div class="modal-footer">
+			  	<button id="btn_save" class="btn btn-primary mr-2" data-dismiss="modal">{% blocktrans %}Save{% endblocktrans %}</button>
+	      		<button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+	        	
+			</div>
+    	</div>
+  	</div>
+</div>
+<script type="text/javascript">
+
+	$("#btn_save").on('click', function(){
+		var form = $("#addForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-sub-contact" %}',
+			data: {
+				'subname': $("#subname").val(),
+				'subposition': $("#subposition").val(),
+				'subemail': $("#subemail").val(),
+				'submobile': $("#submobile").val(),
+				'contact_id': $("#contact_id").val(),
+				'sub_contact_id': $("#sub_contact_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#head_title").html("{% blocktrans %}Add Contact{% endblocktrans %}");
+				$("#subname").val("");
+				$("#subposition").val("");
+				$("#subemail").val("");
+				$("#submobile").val("");
+				$("#sub_contact_id").val("-1");
+				get_sub_contact_data();
+			}
+		});
+	});
+	get_sub_contact_data();
+	function get_sub_contact_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-get-sub-contact" %}',
+			data: {
+				'contact_id': $("#contact_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_sub_address").html(data);
+			}
+		});
+	}
+
+	$(".selectpicker").selectpicker();
+
+	$("#country").val('{{ contact.country.id }}');
+	$("#country").selectpicker("refresh");
+	
+	$("#myForm").submit(function( event ){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+	});
+	$("#supplier_submit").click(function(){
+		var form = $("#myForm");
+		form.submit();
+	});
+	$(".img-clear").on('click', function(){
+		$(".img_upload img").attr('src', '');
+		$('.img_upload img').css('display', 'none');
+		$('.img_upload i').css('display', 'inline-block');
+		$("#imagen").empty();
+		$("#exist").val('NO');
+	});
+	$(".pdf_clear").on('click', function(){
+		$("#pdf").empty();
+		$("#exist_pdf").val('NO');
+		$(".uploaded_pdf_name").html("");
+		$(this).hide();
+	});
+    $(".img_upload").on('click', function(){
+        $("#imagen").click();
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.img_upload img').attr('src', e.target.result);
+                $('.img_upload img').css('display', 'inline-block');
+                $('.img_upload i').css('display', 'none');
+                $("#exist").val('YES');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $(".pdf_upload").on('click', function(){
+        $("#pdf").click();
+    });
+    function readPDFURL(input) {
+        if (input.files && input.files[0]) {
+        	$('.uploaded_pdf_name').html(input.files[0].name);
+        	$("#exist_pdf").val('YES');
+        }
+    }
+
+	// filter modal process
+	options = [];
+	$('#products option').each(function(idx) {
+	    options.push({id: $(this).val(), text: $(this).text()});
+	});
+
+	$("#products").select2({
+	  	tags: true,
+	  	width: '100%',
+	  	allowClear: true,
+		minimumResultsForSearch: Infinity,
+	  	createTag: function (params) {
+		    var term = $.trim(params.term);
+			if (term === '') {
+		      return null;
+		    }
+		    // check whether the term matches an id
+		    var search = $.grep(options, function( n, i ) {
+		      return ( n.id === term || n.text === term); // check against id and text
+		    });
+		    // if a match is found replace the term with the options' text
+		    if (search.length) 
+		      term = search[0].text;
+		    else
+		      return null; // didn't match id or text value so don't add it to selection
+		return {
+			id: term,
+			text: term,
+			value: true // add additional parameters
+	    }
+	  }
+	});
+</script>
+{% endblock %}

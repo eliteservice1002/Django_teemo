@@ -1,0 +1,89 @@
+{% load i18n %}
+{% load staticfiles %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    	<th width="3%" class="text-center">
+                    		<input type="checkbox" class="check" id="chk_all">
+                    	</th>
+                      <th width="10%">{% blocktrans %}Supplier{% endblocktrans %}</th>
+                      <th width="10%">{% blocktrans %}Purchase Name{% endblocktrans %}</th>
+                      <th width="10%">{% blocktrans %}Transport Name{% endblocktrans %}</th>
+                      <th width="13%">{% blocktrans %}Description{% endblocktrans %}</th>
+                      <th width="9%">{% blocktrans %}Departure{% endblocktrans %}</th>
+                      <th width="26%"></th>
+                      <th width="9%">{% blocktrans %}Arrival{% endblocktrans %}</th>
+                      <th width="15%">{% blocktrans %}Owner{% endblocktrans %}</th>
+                      <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                	{% for item in transports %}
+                		<tr>
+                			<td class="text-center">
+                				<input type="checkbox" class="check chk_sub" data-id="{{ item.id }}">
+                			</td>
+                            <td>{{ item.purchase.supplier.name}}</td>
+                            <td>{{ item.purchase.name }}</td>
+                            <td>{{ item.name}}</td>
+                            <td>{{ item.description|default_if_none:"" }}</td>
+                            <td>{{ item.departure}}</td>
+                            <td>
+                              <p style="width: 100%;border-bottom: 1px solid;" class="m-0 pr-4">
+                                {% if item.container == 0 %}
+                                  <i class="fas fa-2x fa-ship" style="margin-left: {{ item.progress_rate|floatformat }}%"></i>
+                                {% else %}
+                                  <i class="fas fa-2x fa-truck" style="margin-left: {{ item.progress_rate|floatformat }}%"></i>
+                                {% endif %}
+                              </p>
+                            </td>
+                            <td>{{ item.arrival}}</td>
+                            <td>{% if item.purchase.user.first_name %}{{ item.purchase.user.first_name}} {{ item.purchase.user.last_name }}{% else %}{{ item.purchase.user.username }}{% endif %}</td>
+                            <td class="text-center">
+                            	<a href="{% url 'detail-transport' item.id %}"><span class="ml-2 mr-2 btn_edit" data-id="2"><i class="fas fa-edit"></i></span></a>
+                            </td>
+                        </tr>
+                	{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-list-transports" %}',
+            data: {
+              'search_key': $("#search_box").val(),
+              'page': $(this).data("id"),
+              'selected_supplier': $("#sel_supplier").val().join(),
+              'selected_owner': $("#sel_owner").val().join(),
+              'dep_start_date': dep_start_date,
+              'dep_end_date': dep_end_date,
+              'arr_start_date': arr_start_date,
+              'arr_end_date': arr_end_date,
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        });
+      </script>
+    {% endif %}
+    
+</div>
+<script src="{% static 'plugins/icheck/icheck.init.js' %}"></script>
+<script type="text/javascript">
+	$("#chk_all").on('ifChecked', function(){
+		$('.chk_sub').iCheck('check');
+	});
+	$("#chk_all").on('ifUnchecked', function(){
+		$('.chk_sub').iCheck('uncheck');
+	});
+</script>

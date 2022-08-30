@@ -1,0 +1,1444 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/icheck/skins/all.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" rel="stylesheet">
+
+<script src="{% static 'js/html2canvas.min.js' %}"></script>
+<script src="{% static 'js/jspdf.debug.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/icheck/icheck.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+<style>
+    label{
+        margin-bottom: 0px;
+        /*font-size: 80%;*/
+        /*color: red;*/
+    }
+    .form-group{
+        margin-bottom: 10px;
+    }
+    .form-group-pdf{
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: 10px;
+    }
+    .form-group-pdf div{
+        border-bottom: 1px solid #d5d5d5;
+        padding: 0px;
+    }
+    .form-group-pdf span{
+        color: #000;
+    }
+    .child-card{
+        height: 100px;
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        margin-bottom: 15px;
+    }
+    h2{
+        margin-bottom: 0px;
+    }
+    .bootstrap-tagsinput{
+        font-size: 1rem;
+        width: 100%;
+        line-height: 1.5;
+        min-height: 38px;
+    }
+    .img-card{
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+    .bootstrap-tagsinput .tag {
+        line-height: 23px;
+        font-size: 100%;
+        margin: 1px;
+    }
+    .tb_pdf td{
+        padding: 5px;
+    }
+    
+</style>
+<div class="container-fluid">
+    <div class="block-header row m-0">
+        <div class="col-12 col-md-6">
+            <h2 class="mr-auto"><a href="{% url 'trolleys' %}">{% blocktrans %}Orders{% endblocktrans %}</a> / <a href="{% url 'detail-trolley' trolley.id %}">{{ trolley.name }}</a> / <span id="title_span">{% if trolley_item %}{{ trolley_item.position }}{% else %}{% blocktrans %}Add New Order Item{% endblocktrans %}{% endif %}</span></h2>
+        </div>
+        <div class="col-12 col-md-3">
+            {% if trolley_item %}
+                <button id="btn_duplicate" class="btn btn-primary pl-3 pr-3 mr-3" data-toggle="modal" data-target="#duplicateModal"><i class="fas fa-clone mr-2"></i>{% blocktrans %}Duplicate{% endblocktrans %}</button>
+                <button id="btn_pdf_download" class="btn btn-primary pl-3 pr-3"><i class="fas fa-download mr-2"></i>{% blocktrans %}PDF{% endblocktrans %}</button>
+            {% endif %}
+        </div>
+        <div class="col-12 col-md-3">
+            {% if trolley_item %}
+                <button id="btn_prev" class="btn {% if trolley_item.position == 1 %}btn-disabled{% else %}btn-primary{% endif %} pl-3 pr-3 mr-3" {% if trolley_item.position == 1 %}disabled{% endif %}><i class="fas fa-angle-double-left mr-2"></i>{% blocktrans %}Previous{% endblocktrans %}</button>
+                <button id="btn_next" class="btn {% if trolley_item.position == trolley_count %}btn-disabled{% else %}btn-primary{% endif %} pl-3 pr-3" {% if trolley_item.position == trolley_count %}disabled{% endif %}>{% blocktrans %}Next{% endblocktrans %}<i class="fas fa-angle-double-right ml-2" ></i></button>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row clearfix mt-2">
+        <div class="col-12">
+            <div class="card ">
+                <div class="card-body">
+                    <div class="row m-0">
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <div class="col-10 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+                                    <div class="col-6 pl-1 pr-1">
+                                        <span>{% blocktrans %}Order Number{% endblocktrans %}:</span>
+                                    </div>
+                                    <div class="col-6 pl-0 pr-1">
+                                        <span style="color:#000;">{{ trolley.name }}{% if trolley_item %} / {{ trolley_item.position }}{% endif %}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-10 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+                                    <div class="col-6 pl-1 pr-1">
+                                        <span>{% blocktrans %}Client{% endblocktrans %}:</span>
+                                    </div>
+                                    <div class="col-6 pl-0 pr-1">
+                                        <span style="color:#000;">{{ trolley.client.name }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <div class="col-10 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+                                    <div class="col-6 pl-1 pr-1">
+                                        <span>{% blocktrans %}Date{% endblocktrans %}:</span>
+                                    </div>
+                                    <div class="col-6 pl-0 pr-1">
+                                        <span style="color:#000;">{{ trolley.order_date }}</span>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="trolley_order_id" value="{{ trolley.id }}">
+                                <input type="hidden" id="trolley_order_item_id" value="{% if trolley_item %}{{ trolley_item.id }}{% else %}-1{% endif %}">
+                            </div>
+                        </div>
+                        {% if trolley_item.finished %}
+                        <div class="col-12 col-md-4">
+                            <div class="form-group row">
+                                <div class="col-6 m-0 p-0">
+                                    <span class="badge badge-success pl-3 pr-3 pt-2 pb-2" style="font-size: 100%">{% blocktrans %}Finished{% endblocktrans %}</span>
+                                </div>
+                                <div class="col-6 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+                                    <div class="col-6 pl-1 pr-1">
+                                        <span>{% blocktrans %}Total Minutes{% endblocktrans %}:</span>
+                                    </div>
+                                    <div class="col-6 pl-0 pr-1">
+                                        <span style="color:#000;">{{ trolley_item.finished_time }} minutes</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <form novalidate id="addOrderItemForm">
+                        <div class="row ml-0 mr-0 mt-4">
+                            <div class="col-12 col-md-4">
+                            
+                                <div class="form-group row">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Ref of the trolley{% endblocktrans %}:</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <select  class="selectpicker form-control" id="trolley_group_id" data-live-search="true" required>
+                                            {% for item in stocks %}
+                                                <option value="{{ item.id }}">{{ item.reference }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Number of trolleys{% endblocktrans %}:</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="number" class="form-control" id="order_quantity" step="1" min="1"  required value="1" readonly="">
+                                    </div>
+                                </div>
+                                <div class="form-group mt-5 row">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Type inside walls{% endblocktrans %}:</label>
+                                    </div>    
+                                    <div class="col-5">
+                                        <select class="selectpicker form-control" id="wall_type" data-live-search="true" >
+                                            <option value="">-------------</option>
+                                            {% for item in wallstype %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <b class="btn btn-sm btn-primary  mt-1" data-toggle="modal" data-target="#addWallTypeModal"><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add{% endblocktrans %}</b>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Castors{% endblocktrans %}:</label>
+                                    </div>    
+                                    <div class="col-5">
+                                        <select class="selectpicker form-control" id="castor" data-live-search="true" >
+                                            <option value="">-------------</option>
+                                            {% for item in castors %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <b class="btn btn-sm btn-primary  mt-1" data-toggle="modal" data-target="#addCastorModal"><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add{% endblocktrans %}</b>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-5 row">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Colour of the sides{% endblocktrans %}:</label>
+                                    </div>    
+                                    <div class="col-5">
+                                        <select  class="selectpicker form-control" id="color_side" data-live-search="true" >
+                                            <option value="">-------------</option>
+                                            {% for item in colors %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <b class="btn btn-sm btn-primary  mt-1" data-toggle="modal" data-target="#addColorModal"><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add{% endblocktrans %}</b>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Colour of the drawers{% endblocktrans %}:</label>
+                                    </div>    
+                                    <div class="col-5">
+                                        <select  class="selectpicker form-control" id="color_drawer"  data-live-search="true" >
+                                            <option value="">-------------</option>
+                                            {% for item in drawer_colors %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <b class="btn btn-sm btn-primary  mt-1"  data-toggle="modal" data-target="#addDrawerColorModal"><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add{% endblocktrans %}</b>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Strips{% endblocktrans %}:</label>
+                                    </div>    
+                                    <div class="col-5">
+                                        <select  class="selectpicker form-control" id="strip"  data-live-search="true" >
+                                            <option value="">-------------</option>
+                                            {% for item in strips %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <b class="btn btn-sm btn-primary  mt-1"  data-toggle="modal" data-target="#addStripModal"><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add{% endblocktrans %}</b>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Lock{% endblocktrans %}:</label>
+                                    </div>    
+                                    <div class="col-5">
+                                        <select  class="selectpicker form-control" id="lock"  data-live-search="true" >
+                                            <option value="">-------------</option>
+                                            {% for item in locks %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <b class="btn btn-sm btn-primary  mt-1"  data-toggle="modal" data-target="#addLockModal"><i class="fas fa-plus mr-2"></i>{% blocktrans %}Add{% endblocktrans %}</b>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-5 pr-0">
+                                        <label class="mt-2">{% blocktrans %}Configuration of the trolley{% endblocktrans %}:</label>
+                                    </div>    
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" id="configuration" value="{{ trolley_item.configuration }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="form-group text-center">
+                                    <div class="trolley_img">
+                                       <i class="far fa-10x fa-image pl-1 pr-1" ></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <label for="product">{% blocktrans %}Manufacturing Workers{% endblocktrans %}</label>
+                                        <input type="text" class="form-control" id="manu_workers" data-role="tagsinput" value="{{ trolley_item.manu_workers }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row mt-3">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Cleaning Worker{% endblocktrans %}:</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" id="clean_worker" value="{{ trolley_item.clean_worker }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row mt-3">
+                                    <div class="col-5">
+                                        <label class="mt-2">{% blocktrans %}Checking Worker{% endblocktrans %}:</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" id="check_worker" value="{{ trolley_item.check_worker }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row m-0">
+                        <div class="col-12 text-center">
+                            <b id="btn_save_item" class="btn btn-primary pl-4 pr-4">{% blocktrans %}Save{% endblocktrans %}</b>
+                            <button id="btn_finish" class="btn btn-primary ml-3 pl-3 pr-3" data-toggle="modal" data-target="#finishedModal">{% blocktrans %}Finish{% endblocktrans %}</button>
+                        </div>
+                    </div>
+                    <div class="row ml-0 mr-0 mt-4" id="accesories_list">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-12 col-md-7">
+                                            <h2 >{% blocktrans %}Accesories List{% endblocktrans %}</h2>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <button id="btn_add" class="btn btn-primary">{% blocktrans %}Add New Accesories{% endblocktrans %}</button>
+                                        </div>
+                                        <div class="col-6 col-md-2 text-right card_tool">
+                                            <span id="btn_delete" class="" style="font-weight: 700;"><i class="fas fa-trash-alt mr-2"></i></span>
+                                            <span id="grid_view" class="mr-2 ml-2 "><i class="fas fa-2x fa-th"></i></span>
+                                            <span id="list_view" class="mr-2 active"><i class="fas fa-2x fa-list-ul"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pt-4 pb-2" id="div_content">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if trolley_item.finished %}
+                    <div class="row ml-0 mr-0">
+                        <div class="col-12 pb-2">
+                            <h2 class="mr-auto">{% blocktrans %}Finished Result{% endblocktrans %}</h2>
+                        </div>
+                        {% for item in trolley_item.photos %}
+                            <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 col-12">
+                                <div class="card img-card">
+                                    <div class="col-12 m-0 text-center p-0">
+                                        <a class="img-clear" href="javascript:void(0);" data-id="{{ item.id }}"><span><i class="fas fa-trash-alt"></i></span></a>
+                                        <img src="{{item.picture.url}}" alt="" class="pt-1 pb-1" style="max-width: 99%;max-height: 250px;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="col-12 pb-2">
+                            <p>{{ trolley_item.check_description }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix mt-2">
+        <div class="col-9">
+            <div class="card hide" id="div_pdf_area">
+                <div class="card-body pl-0 pr-0">
+                    <div class="row m-0">
+                        <div class="col-7 col-md-7">
+                            <div class="col-12">
+                                <span style="font-weight:700">LAPASTILLA Soluciones Integrales S.L.</span>
+                            </div>
+                            <div class="col-12">
+                                <span >CIF: B88427174</span>
+                            </div>
+                            <div class="col-12">
+                                <span >C/ Brates, 2C, 28925 Alcorcón, Madrid España</span>
+                            </div>
+                            <div class="col-12">
+                                <span >Tlf: +(34) 916332271 | Móvil: +(34) 630765422 | Fax: +(34) 916323497</span>
+                            </div>
+                            <div class="col-12">
+                                <span >lapastilla@lapastilla.com | www.lapastilla.com</span>
+                            </div>
+                        </div>
+                        <div class="col-5 col-md-5 text-right">
+                            <img src="{% static 'images/company_logo.jpg' %}" style="max-width: 90%; max-height: 100px;">
+                        </div>
+                    </div>
+                    <div class="row ml-0 mr-0 mt-4">
+                        <div class="col-12 text-right">
+                            <span class="mr-5">ok v.</span>
+                        </div>
+                    </div>
+                    <div class="row ml-0 mr-0 mt-4 mb-4">
+                        <div class="col-12 text-center pt-4 pb-4">
+                            <span style="font-weight: 700;font-size: 25pt;">HOJA TRABAJO</span>
+                        </div>
+                    </div>
+                    <div class="row ml-0 mr-0 mt-4 mb-4">
+                        <div class="col-9 text-center">
+                            <span style="font-weight: 700;font-size: 24pt; color: #000;">№ {{ trolley.name }} / {{ trolley_item.position }}</span>
+                        </div>
+                        <div class="col-3 text-center pt-4">
+                            <span>Fecha: {{ trolley.order_date }}</span>
+                        </div>
+                    </div>
+                    <div class="row ml-0 mr-0 mt-4">
+                        <div class="col-12 row m-0">
+                            <div class="col-4 ml-3 pl-0">
+                                
+                            </div>
+                            <div class="col-5 pr-0">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-0 text-center">
+                        <div class="col-11 ml-4 mr-0 text-center">
+                            <table style="width: 100%" class="tb_pdf">
+                                <tr>
+                                    <td style="border-bottom: 1px solid; width: 35%;text-align: left;">
+                                        <span style="font-size: 18pt;">CLIENTE:</span>
+                                    </td>
+                                    <td style="border-bottom: 1px solid; width: 30%;">
+                                        <span style="font-weight: 700;font-size: 18pt; color: #000;">{{ trolley.client.name }}</span>
+                                    </td>
+                                    <td style="border-bottom: 1px solid; width: 25%;">
+                                    </td>
+                                    <td style="border-bottom: 1px solid; width: 10%;padding-top: 20px;padding-bottom: 0px;"><span style="font-size: 10pt;">UNIDADES</span></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="13">
+                                        <div class="col-12">
+                                            {% if trolley_item.stock.picture %}
+                                                <img src="{{trolley_item.stock.picture.url}}" alt="" style="max-width: 95%;max-height: 350px;"/>
+                                            {% else %}
+                                                <i class="far fa-9x fa-image" ></i>
+                                            {% endif %}
+                                        </div>
+                                        <td style="border:1px solid; text-align: left;">Referencia:</td>
+                                        <td style="border:1px solid;font-weight: 600;">{{ trolley_item.stock.reference }}</td>
+                                        <td style="border:1px solid;font-weight: 600;">1</td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">color paredes:</td>
+                                    <td style="border:1px solid;font-weight: 600;">{{ trolley_item.color_side }}</td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">color cajones:</td>
+                                    <td style="border:1px solid;font-weight: 600;">{{ trolley_item.color_drawer }}</td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">paredes interiores:</td>
+                                    <td style="border:1px solid;font-weight: 600;">{{ trolley_item.wall_type }}</td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">Ruedas:</td>
+                                    <td style="border:1px solid;font-weight: 600;">{{ trolley_item.castor }}</td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">Cerradura:</td>
+                                    <td style="border:1px solid;font-weight: 600;">{{ trolley_item.lock }}</td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">TIRAS:</td>
+                                    <td style="border:1px solid;font-weight: 600;">{{ trolley_item.strip.name }}</td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">&nbsp;</td>
+                                    <td style="border:1px solid;font-weight: 600;">&nbsp;</td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">&nbsp;</td>
+                                    <td style="border:1px solid;font-weight: 600;">&nbsp;</td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td ></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">{% if trolley_item.configuration %}{{ trolley_item.configuration|slice:"0:1"}} cajón h: 75 mm{% endif %}</td>
+                                    <td>&nbsp;</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">{% if trolley_item.configuration %}{{ trolley_item.configuration|slice:"1:2"}} cajones h: 155 mm{% endif %}</td>
+                                    <td>&nbsp;</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid; text-align: left;">{% if trolley_item.configuration %}{{ trolley_item.configuration|slice:"2:3"}} cajón h: 235 mm{% endif %}</td>
+                                    <td>&nbsp;</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="8" style="text-align: left;">
+                                        <div class="pt-4" style="margin-top: 100px;">
+                                            <div class="col-12">
+                                                <span style="font-weight: 600;">Medidas Palet:</span>
+                                            </div>
+                                            <div class="col-12">
+                                                <span style="font-weight: 600;">Alto:</span>
+                                            </div>
+                                            <div class="col-12">
+                                                <span style="font-weight: 600;">Peso:</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td >&nbsp;</td>
+                                    <td ></td>
+                                    <td ></td>
+                                </tr>
+                                {% for item in trolley_item.accesories_pdf %}
+                                    <tr>
+                                        <td colspan="2" style="border:1px solid;text-align: left;font-weight: 600;">{{ item.stock_item.reference }} &nbsp;&nbsp;{{ item.stock_item.name }}</td>
+                                        <td style="border:1px solid;font-weight: 600;">{{ item.quantity }}</td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="2" style="border:1px solid;">&nbsp;</td>
+                                    <td style="border:1px solid;"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="text-align: left;"><span style="border-bottom: 1px solid;">OJO!!! TABLA de parada de fenólico</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card hide" style="width: 35%" id="div_pdf_label">
+                <div class="col-12 pt-3">
+                    <span style="font-weight: 700;font-size: 18pt;">MODELO: {{ trolley_item.stock.reference }}</span>
+                </div>
+                <div class="col-12">
+                    <span style="font-weight: 700;font-size: 18pt;">PEDIDO № {{ trolley.name }} / {{ trolley_item.position }}</span>
+                </div> 
+                <div class="col-12 pb-3">
+                    <span style="font-weight: 700;font-size: 18pt;">CLIENTE: </span><span>{{ trolley_item.stock.reference }}</span>
+                </div>    
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addAccessModal" tabindex="-1" role="dialog" aria-labelledby="addAccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="head_title">{% blocktrans %}Add Accesories{% endblocktrans %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form novalidate="" id="myForm">
+                <div class="row form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                        <label>{% blocktrans %}Accesories{% endblocktrans %}</label>
+                        <select  class="selectpicker form-control" id="access_stock" required data-live-search="true">
+                            {% for stock in stocks %}
+                                <option value="{{ stock.id }}">{{ stock.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                        <label>{% blocktrans %}Quantity{% endblocktrans %}</label>
+                        <input type="number" class="form-control" id="quantity" value="1" min="1" step="1">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                        <label>{% blocktrans %}Description{% endblocktrans %}</label>
+                        <textarea class="form-control" id="access_description"></textarea>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                        <label>{% blocktrans %}Direction{% endblocktrans %}</label>
+                        <select class="form-control" id="direction">
+                            <option value="Left">{% blocktrans %}Left{% endblocktrans %}</option>
+                            <option value="Right">{% blocktrans %}Right{% endblocktrans %}</option>
+                            <option value="Top">{% blocktrans %}Top{% endblocktrans %}</option>
+                            <option value="Inside">{% blocktrans %}Inside{% endblocktrans %}</option>
+                        </select>
+                        
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                        <label>{% blocktrans %}Packaging{% endblocktrans %}</label>
+                        <textarea class="form-control" id="packaging"></textarea>
+                    </div>
+                </div>
+                <input type="hidden" id="trolley_item_id" value="{{ trolley_item.id }}">
+                <input type="hidden" id="add_id" value="-1">
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_save" class="btn btn-primary mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+        <button id="btn_cancel" class="btn btn-light ml-2">{% blocktrans %}Cancel{% endblocktrans %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="addWallTypeModal" tabindex="-1" role="dialog" aria-labelledby="addWallTypeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% blocktrans %}ADD WALL TYPE{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form novalidate="" id="addWallTypeForm">
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+                            <input type="text" class="form-control" id="wall_type_name" required="">
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Description{% endblocktrans %}</label>
+                            <textarea class="form-control" id="wall_type_description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+                <button id="add_confirm_wall_type" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addCastorModal" tabindex="-1" role="dialog" aria-labelledby="addCastorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% blocktrans %}ADD CASTOR{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form novalidate="" id="addCastorForm">
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+                            <input type="text" class="form-control" id="castor_name" required="">
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Description{% endblocktrans %}</label>
+                            <textarea class="form-control" id="castor_description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+                <button id="add_confirm_castor" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addColorModal" tabindex="-1" role="dialog" aria-labelledby="addColorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% blocktrans %}Add Color of Side{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form novalidate="" id="addColorForm">
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+                            <input type="text" class="form-control" id="color_name" required="">
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Description{% endblocktrans %}</label>
+                            <textarea class="form-control" id="color_description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+                <button id="add_confirm_color" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addDrawerColorModal" tabindex="-1" role="dialog" aria-labelledby="addColorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% blocktrans %}Add Color of Drawers{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form novalidate="" id="addDrawerColorForm">
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+                            <input type="text" class="form-control" id="color_drawer_name" required="">
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Description{% endblocktrans %}</label>
+                            <textarea class="form-control" id="color_drawer_description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+                <button id="add_confirm_drawer_color" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addStripModal" tabindex="-1" role="dialog" aria-labelledby="addStripModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% blocktrans %}Add Strip{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form novalidate="" id="addStripForm">
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+                            <input type="text" class="form-control" id="strip_name" required="">
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Description{% endblocktrans %}</label>
+                            <textarea class="form-control" id="strip_description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+                <button id="add_confirm_strip" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addLockModal" tabindex="-1" role="dialog" aria-labelledby="addLockModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% blocktrans %}Add Lock{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form novalidate="" id="addStripForm">
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+                            <input type="text" class="form-control" id="lock_name" required="">
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Description{% endblocktrans %}</label>
+                            <textarea class="form-control" id="lock_description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+                <button id="add_confirm_lock" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="finishedModal" tabindex="-1" role="dialog" aria-labelledby="finishedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% blocktrans %}FINISH THIS ORDER ITEM{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form novalidate="" id="finishedForm">
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Finished Time (minutes){% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+                            <input type="number" class="form-control" id="finished_time" step="1" min="1" required="" value="{{ trolley_item.finished_time|default_if_none:'' }}">
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                            <label>{% blocktrans %}Checking Description{% endblocktrans %}</label>
+                            <textarea class="form-control" id="check_description">{{ trolley_item.check_description }}</textarea>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"> 
+                            <button id="btn_upload" type="button" class="btn btn-primary"><i class="fas fa-upload mr-3"></i>{% blocktrans %}Upload Photos{% endblocktrans %}</button>
+                            <input id="fileupload" type="file" name="file" multiple style="display: none;" onchange="readURL(this);">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 div_upload_imgs row">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+                <button id="add_finished_btn" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deletModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% blocktrans %}DELETE ACCESSORIES{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>{% blocktrans %}Are you sure you want to delete this record?{% endblocktrans %}</p>
+                <input type="hidden" id="arr_checked_val">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}No{% endblocktrans %}</button>
+                <button id="del_confirm" type="button" class="btn btn-primary">{% blocktrans %}Yes{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="duplicateModal" tabindex="-1" role="dialog" aria-labelledby="duplicateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% blocktrans %}Duplicate Trolley{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form novalidate="" id="duplicateForm">
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"> 
+                            <label>{% blocktrans %}How many times you wish to duplicate?{% endblocktrans %}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-5 ml-0 mr-0">
+                        <div class="col-12 col-md-6 text-right mt-1"> 
+                            <label>{% blocktrans %}Times of Duplicate{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+                            
+                        </div>
+                        <div class="col-12 col-md-6"> 
+                            <input type="number" class="form-control" id="dup_times" required="">
+                        </div>
+                    </div>
+                   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+                <button id="duplicate_confirm" type="button" class="btn btn-primary">{% blocktrans %}Yes{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#date").datepicker({
+        format: "yyyy-mm-dd",
+        todayHighlight: true,
+    });
+    $("#trolley_group_id").val('{{ trolley_item.stock.id }}');
+    $("#trolley_group_id").selectpicker('refresh');
+    $("#wall_type").val('{{ trolley_item.wall_type.id }}');
+    $("#wall_type").selectpicker('refresh');
+    $("#color_drawer").val('{{ trolley_item.color_drawer.id }}');
+    $("#color_drawer").selectpicker('refresh');
+    $("#color_side").val('{{ trolley_item.color_side.id }}');
+    $("#color_side").selectpicker('refresh');
+    $("#castor").val('{{ trolley_item.castor.id }}');
+    $("#castor").selectpicker('refresh');
+    $("#strip").val('{{ trolley_item.strip.id }}');
+    $("#strip").selectpicker('refresh');
+    $("#lock").val('{{ trolley_item.lock.id }}');
+    $("#lock").selectpicker('refresh');
+    
+    $("#btn_delete").on('click', function(){
+        var arr_checked = [];
+        $( ".chk_sub" ).each(function( index ) {
+          if($( this ).prop('checked')){
+            arr_checked.push($(this).data("id"));
+          }
+        });
+        if(arr_checked.length == 0){
+            return;
+        }
+        $("#arr_checked_val").val(arr_checked.join());
+        $("#deleteModal").modal();
+        
+    });
+    $("#del_confirm").on('click', function(e){
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-delete-accessories-item" %}',
+            data: {
+                'checked_stocks': $("#arr_checked_val").val(),
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#arr_checked_val").val("");
+                $("#deleteModal").modal('hide');
+                if(currentState){
+                    get_list_data();
+                }else{
+                    get_grid_data();
+                }
+            }
+        });
+    });
+    $("#btn_add").on('click', function(){
+        $("#add_id").val("-1");
+        $("#addAccessModal").modal();
+    });
+    $("#btn_cancel").on('click', function(event){
+        $("#head_title").html('{% blocktrans %}Add Accesories{% endblocktrans %}');
+        $("#add_id").val("-1");
+        $("#quantity").val("1");
+        $("#access_description").val("");
+        $("#packaging").val("");
+        $("#addAccessModal").modal('hide');
+    });
+    $("#btn_save").on('click', function(event){
+        var form = $("#myForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-add-accessories-item" %}',
+            data: {
+                'stock_id': $("#access_stock").val(),
+                'description': $("#access_description").val(),
+                'direction': $("#direction").val(),
+                'packaging': $("#packaging").val(),
+                'quantity': $("#quantity").val(),
+                'add_id': $("#add_id").val(),
+                'trolley_item_id': $("#trolley_item_id").val(),
+            },
+            type: 'POST',
+            success: function (data) {
+                // $("#addAccessModal").modal('hide');
+                // $("#add_id").val("-1");
+                // $("#access_description").val("");
+                // $("#packaging").val("");
+                // $("#quantity").val("1");
+                location.reload();
+                // if(currentState){
+                //     get_list_data();
+                // }else{
+                //     get_grid_data();
+                // }
+            }
+        });
+    });
+    $("#grid_view").on('click', function(){
+        $(this).addClass('active');
+        $("#list_view").removeClass('active');
+        get_grid_data();
+        currentState = false;
+    });
+    $("#list_view").on('click', function(){
+        $(this).addClass('active');
+        $("#grid_view").removeClass('active');
+        get_list_data();
+        currentState = true;
+    });
+    var currentState = true;
+    get_list_data();
+    function get_list_data(){
+        if($("#trolley_item_id").val() == ""){
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-list-accessories-item" %}',
+            data: {
+                'trolley_item_id': $("#trolley_item_id").val(),
+                'page': 1,
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#div_content").html(data);
+            }
+        });
+    }
+    function get_grid_data(){
+        if($("#trolley_item_id").val() == ""){
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-grid-accessories-item" %}',
+            data: {
+                'trolley_item_id': $("#trolley_item_id").val(),
+                'page': 1,
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#div_content").html(data);
+            }
+        });
+    }
+    $("#add_confirm_wall_type").on('click', function(){
+        var form = $("#addWallTypeForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-add-wallstype" %}',
+            data: {
+                'name': $("#wall_type_name").val(),
+                'description': $("#wall_type_description").val(),
+                'item_id': -1,
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#wall_type").html(data);
+                $("#wall_type").selectpicker("refresh");
+                $("#addWallTypeModal").modal("hide");
+            }
+        });
+    });
+    $("#add_confirm_castor").on('click', function(){
+        var form = $("#addCastorForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-add-castor" %}',
+            data: {
+                'name': $("#castor_name").val(),
+                'description': $("#castor_description").val(),
+                'item_id': -1,
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#castor").html(data);
+                $("#castor").selectpicker("refresh");
+                $("#addCastorModal").modal("hide");
+            }
+        });
+    });
+    $("#add_confirm_color").on('click', function(){
+        var form = $("#addColorForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-add-color" %}',
+            data: {
+                'name': $("#color_name").val(),
+                'description': $("#color_description").val(),
+                'item_id': -1,
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#color_side").html(data);
+                $("#color_side").selectpicker("refresh");
+                $("#addColorModal").modal("hide");
+            }
+        });
+    });
+    $("#add_confirm_drawer_color").on('click', function(){
+        var form = $("#addDrawerColorForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-add-drawer" %}',
+            data: {
+                'name': $("#color_drawer_name").val(),
+                'description': $("#color_drawer_description").val(),
+                'item_id': -1,
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#color_drawer").html(data);
+                $("#color_drawer").selectpicker("refresh");
+                $("#addDrawerColorModal").modal("hide");
+            }
+        });
+    });
+    $("#add_confirm_strip").on('click', function(){
+        var form = $("#addStripForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-add-strip" %}',
+            data: {
+                'name': $("#strip_name").val(),
+                'description': $("#strip_description").val(),
+                'item_id': -1,
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#strip").html(data);
+                $("#strip").selectpicker("refresh");
+                $("#addStripModal").modal("hide");
+            }
+        });
+    });
+    $("#add_confirm_lock").on('click', function(){
+        var form = $("#addLockForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-add-lock" %}',
+            data: {
+                'name': $("#lock_name").val(),
+                'description': $("#lock_description").val(),
+                'item_id': -1,
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#lock").html(data);
+                $("#lock").selectpicker("refresh");
+                $("#addLockModal").modal("hide");
+            }
+        });
+    });
+    $("#trolley_group_id").on('change', function(){
+        get_image_from_id($(this).val());
+    });
+    get_image_from_id($("#trolley_group_id").val());
+    function get_image_from_id(stock_id){
+        if(stock_id == null){
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-get-stock-image" %}',
+            data: {
+                'stock_id': stock_id,
+            },
+            type: 'POST',
+            success: function (data) {
+                $(".trolley_img").html(data);
+            }
+        });
+    }
+    {% if trolley_item %}
+        $("#accesories_list").show();
+        $("#btn_finish").show();
+    {% else %}
+        $("#accesories_list").hide();
+        $("#btn_finish").hide();
+    {% endif %}
+    $("#duplicate_confirm").on('click', function(){
+        var form = $("#duplicateForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-duplicate-trolley-item" %}',
+            data: {
+                'item_id': $("#trolley_order_item_id").val(),
+                'duplicate_time': $("#dup_times").val(),
+                'trolley_order_id': $("#trolley_order_id").val(),
+            },
+            type: 'POST',
+            success: function (data) {
+                $("duplicateModal").modal('hide');
+            }
+        });
+    });
+    $("#btn_save_item").on('click', function(){
+        var form = $("#addOrderItemForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-add-trolley-item" %}',
+            data: {
+                'trolley_order_id': $("#trolley_order_id").val(),
+                'quantity': $("#order_quantity").val(),
+                'stock_id': $("#trolley_group_id").val(),
+                'wall_type_id': $("#wall_type").val(),
+                'castor_id': $("#castor").val(),
+                'color_side_id': $("#color_side").val(),
+                'color_drawer_id': $("#color_drawer").val(),
+                'strip_id': $("#strip").val(),
+                'lock_id': $("#lock").val(),
+                'configuration': $("#configuration").val(),
+                'item_id': $("#trolley_order_item_id").val(),
+                'manu_workers': $("#manu_workers").val(),
+                'clean_worker': $("#clean_worker").val(),
+                'check_worker': $("#check_worker").val(),
+
+            },
+            type: 'POST',
+            success: function (data) {
+                $("#trolley_item_id").val(data.trolley_item_id);
+                // $("#accesories_list").show();
+                // $("#btn_finish").show();
+                // $("#title_span").html("{% blocktrans %}Edit Order Item{% endblocktrans %}");
+                location.href = '{% url "detail-trolley-item" 333 %}'.replace('333', data.trolley_item_id);
+            }
+        });
+    });
+    $("#btn_prev").on('click', function(){
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-get-trolley-item-id" %}',
+            data: {
+                'trolley_position': '{{ trolley_item.position }}',
+                'trolley_order_id': $("#trolley_order_id").val(),
+                'action_type': "PREV",
+            },
+            type: 'POST',
+            success: function (data) {
+                location.href = '{% url "detail-trolley-item" 333 %}'.replace('333', data.trolley_item_id);
+            }
+        });
+    });
+    $("#btn_next").on('click', function(){
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-get-trolley-item-id" %}',
+            data: {
+                'trolley_position': '{{ trolley_item.position }}',
+                'trolley_order_id': $("#trolley_order_id").val(),
+                'action_type': "NEXT",
+
+            },
+            type: 'POST',
+            success: function (data) {
+                location.href = '{% url "detail-trolley-item" 333 %}'.replace('333', data.trolley_item_id);
+            }
+        });
+    });
+    $("#btn_upload").on('click', function(){
+        $("#fileupload").click();
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            $(".div_upload_imgs").html("");
+            var count_i = 0;
+            for (var i=0; i<input.files.length; i++){
+                var imgs_upload_html = '<div class="col-2 p-1 text-center"><img class="p-1" src="" data-id="'+ i +'" style="max-width:99%;height:58px;border:1px solid"></div>';
+                $(".div_upload_imgs").append(imgs_upload_html);
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.div_upload_imgs img[data-id="'+ count_i +'"]').attr('src', e.target.result);
+                    count_i ++ ;
+                };
+                reader.readAsDataURL(input.files[i]);
+            }
+            
+        }
+    }
+    $("#add_finished_btn").on('click', function(){
+        var form = $("#finishedForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        var file_data = $('#fileupload').prop('files');
+        var form_data = new FormData();   
+        console.log(file_data.length);
+        for (var index = 0; index < file_data.length; index++) {
+            form_data.append("files[]", file_data[index]);
+        }
+        form_data.append('finished_time', $("#finished_time").val());
+        form_data.append('check_description', $("#check_description").val());
+        form_data.append('trolley_item_id', $("#trolley_item_id").val());
+        console.log(form_data); 
+        $.ajax({
+            headers:{ 'X-CSRFToken': "{{csrf_token}}" },
+            url: "{% url 'ajax-finish-trolley-item' %}",
+            type: 'POST',
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                location.reload();
+            }
+        });
+    });
+    $(".img-clear").on('click', function(){
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-delete-final-photo" %}',
+            data: {
+                'item_id': $(this).data('id'),
+            },
+            type: 'POST',
+            success: function (data) {
+                location.reload();
+            }
+        });
+    });
+    $("#btn_pdf_download").on('click', function(){
+        print_pdf();
+    });
+    // print html ===> pdf 
+    function print_pdf(){
+        $("#div_pdf_area").show();
+        $("#div_pdf_label").show();
+        var test = $("#div_pdf_area").get(0);
+        var label_test = $("#div_pdf_label").get(0);
+        html2canvas(test, {scale: 1.5}).then(function (canvas) {
+            var imgData = canvas.toDataURL('image/png', 1);
+            var imgWidth = 200; 
+            var pageHeight = 295;  
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+            var doc = new jsPDF('p', 'mm');
+            var position = 5;
+
+            doc.addImage(imgData, 'PNG', 5, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', 5, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            html2canvas(label_test, {scale: 1.5}).then(function (canvas1) {
+                doc.addPage();
+                var imgData1 = canvas1.toDataURL('image/png', 1);
+                var imgHeight1 = canvas1.height * 90 / canvas1.width;
+                doc.addImage(imgData1, 'PNG', 5, 10, 90, imgHeight1);
+                doc.save( '{{ trolley.name }}' + "_" + "{{ trolley_item.position }}" +'.pdf');
+                $("#div_pdf_area").hide();
+                $("#div_pdf_label").hide();
+            });
+            
+            
+        });
+    }
+</script>
+{% endblock %}

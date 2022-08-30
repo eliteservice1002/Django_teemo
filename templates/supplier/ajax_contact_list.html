@@ -1,0 +1,168 @@
+{% load i18n %}
+{% load staticfiles %}
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link href="{% static 'css/nest.css' %}" rel="stylesheet">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js'></script>
+<style>
+  .hidden {
+    display: none!important;
+  }
+</style>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    	<th width="3%" class="text-center">
+                    		<input type="checkbox" class="check" id="chk_all">
+                    	</th>
+                    	<th width="8%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                        <th width="14%">{% blocktrans %}Name{% endblocktrans %}</th>
+                        <th width="14%">{% blocktrans %}NIF{% endblocktrans %}</th>
+                        <th width="16%">{% blocktrans %}Email{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Telephone{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Country{% endblocktrans %}</th>
+                        <th width="25%">{% blocktrans %}Product{% endblocktrans %}</th>
+                        <th width="20%">{% blocktrans %}Owner{% endblocktrans %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                	{% for contact in contacts %}
+                    <tr id="tr-detail_{{contact.pk}}" class="tr-detail hidden">
+                      <td></td>
+                      <td colspan="4">
+                        <div class="detail-content">
+                          <ul>
+                            <li>
+                              <div class="detail"></div>
+                              <div class="detail detail-main">
+                                <fieldset>
+                                  <legend><span class="label label-primary">{% blocktrans %}Contacts{% endblocktrans %}</span></legend>
+                                  <div id="nest_table_item_{{contact.pk}}">
+                                  </div>
+                                </fieldset>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                		<tr>
+                			<td class="text-center">
+                				<input type="checkbox" class="check chk_sub" data-id="{{ contact.id }}">
+                			</td>
+                            <td class="text-center p-2">
+                            	{% if contact.picture %}
+		                            <img src="{{contact.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+  		                        {% else %}
+  		                          <i class="fas fa-3x fa-industry" ></i>
+  		                        {% endif %}
+                            </td>
+                            <td><span class="fa fa-chevron-right fa-fw" data-id="{{ contact.id }}"></span>{{ contact.name }}</td>
+                            <td>{{ contact.nif|default_if_none:"" }}</td>
+                            <td>{{ contact.email|default_if_none:"" }}</td>
+                            <td>{{ contact.telephone|default_if_none:"" }}</td>
+                            <td>{% if LANGUAGE_CODE == 'en' %}{{ contact.country.name }}{% else %}{{ contact.country.alternate_names }}{% endif %}</td>
+                            {% if contact.product %}
+                            <td ><span class="label label-primary p-2">{{ contact.product }}</span></td>
+                            {% else %}
+                            <td >{{ contact.product }}</td>
+                            {% endif %}
+                            <td>{% if contact.user.first_name %}{{ contact.user.first_name}} {{ contact.user.last_name }}{% else %}{{ contact.user.username }}{% endif %}</td>
+                            <td class="text-center">
+                            	<a href="{% url 'detail-supplier' contact.id %}"><span class="ml-2 mr-2 btn_edit" data-id="2"><i class="fas fa-edit"></i></span></a>
+                            </td>
+                        </tr>
+                	{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if paginator.num_pages > 1 %}
+      {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-list-contacts" %}',
+            data: {
+              'search_key': $("#search_box").val(),
+              'page': $(this).data('id'),
+              'selected_country': $("#sel_country").val().join(),
+              'selected_owner': $("#sel_owner").val().join(),
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        });
+      </script>
+    {% endif %}
+    
+</div>
+<script src="{% static 'plugins/icheck/icheck.init.js' %}"></script>
+<script type="text/javascript">
+
+  $("span.fa").on("click", function() {
+		var $span = $(this);
+		var	$parentTr = $span.closest("tr");
+    var value = $(this).data('id');
+		//remove
+		if ($span.hasClass("fa-rotate-90")) {
+      $("#nest_table_item_" + value).html("");
+			$span.removeClass("fa-rotate-90");
+			$parentTr
+				.next()
+				.children("td")
+				.animate({ padding: 0 })
+				.wrapInner("<div />")
+				.children()
+				.slideUp(function() {
+					var $tr = $(this).closest("tr");
+					$tr.remove();
+				  $parentTr.removeClass("tr-selected");
+				});
+		} else {
+      
+      
+      $.ajax({
+        headers: { "X-CSRFToken": '{{csrf_token}}' },
+        url: '{% url "ajax-get-detail-nest-sub-contact" %}',
+        data: {
+          'contact_id': $(this).data('id'),
+        },
+        type: 'POST',
+        success: function (resData) {
+          $("#nest_table_item_" + value).html("");
+          $("#nest_table_item_" + value).html(resData);
+          //add
+          $span.addClass("fa-rotate-90");
+          //if ($parentTr.next().hasClass("tr-detail")) return;
+          $parentTr.addClass("tr-selected");
+          $("#tr-detail_" + value)
+            .clone()
+            .removeClass("hidden")
+            .insertAfter($parentTr)
+            .children("td")
+            .animate()
+            .wrapInner("<div style='display:none'/>")
+            .children()
+            .slideDown();
+        }
+      });
+    }
+		
+	});
+
+	$("#chk_all").on('ifChecked', function(){
+		$('.chk_sub').iCheck('check');
+	});
+	$("#chk_all").on('ifUnchecked', function(){
+		$('.chk_sub').iCheck('uncheck');
+	});
+</script>

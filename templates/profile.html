@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-body">
+                    <center class="m-t-30">
+                        {% if user.picture %}
+                            <img src="{{user.picture.url}}" class="img-circle" alt="" style="width: 250px;height: 250px;" id="img_profile"/>
+                        {% else %}
+                            <img src="{% static 'images/avatar-default.jpg' %}" class="img-circle" style="width: 250px;height: 250px;" id="img_profile">
+                        {% endif %}
+                        <h4 class="card-title m-t-10">{{user.username}}</h4>
+                        <h6 class="card-subtitle">{% if user.is_staff == True %}{% blocktrans %}Admin{% endblocktrans %}{% else %}{% blocktrans %}User{% endblocktrans %}{% endif %}</h6>
+                    </center>
+                        
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{% blocktrans %}My Profile{% endblocktrans %}</h2>
+                </div>
+                <form action="." id="personal" method="post" target="_parent" enctype='multipart/form-data' class="form-horizontal form-material">
+                    {% csrf_token %}
+                    <div class="card-body" style="padding: 20px 60px">
+                        <div class="list-unstyled row clearfix">
+                            <div class="col-lg-12">
+                                <div class="form-group row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
+                                        <label>{% blocktrans %}First Name{% endblocktrans %}</label>
+                                        {{form.first_name}}
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
+                                        <label>{% blocktrans %}Last Name{% endblocktrans %}</label>
+                                        {{form.last_name}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12"> 
+                                        <label>{% blocktrans %}Email{% endblocktrans %}</label>
+                                        {{form.email}}
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12"> 
+                                        <label>{% blocktrans %}User Name{% endblocktrans %}</label><br>
+                                        {{form.username}}
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12"> 
+                                        <label>{% blocktrans %}Phone{% endblocktrans %}</label>
+                                        {{form.telephone}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom-file" style="display: none;">
+                                <input type="file" class="custom-file-input" id="imagen" onchange="readURL(this);" name="picture">      
+                            </div>
+                        </div>
+                    </div>                 
+                <div class="col-12" style="text-align: center; padding-bottom: 50px;">    
+                    <button type="submit" class="btn btn-primary waves-effect pl-4 pr-4">{% blocktrans %}Save{% endblocktrans %}</button>
+                    <b class="btn_reset ml-4 btn btn-primary waves-effect">{% blocktrans %}Reset Password{% endblocktrans %}</b>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{% blocktrans %}RESET PASSWORD{% endblocktrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="floating-labels pt-3 pb-3 pl-4 pr-4" novalidate id="resetForm">
+                    <div class="form-group text-center mb-0" id="div_form_error_reset">
+                        <p class="label label-danger p-2" style="font-size: 14.9px;" id="text_error_reset">
+                            
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input type="password" class="form-control" id="old_password" required>
+                            <span class="bar"></span>
+                            <label for="old_password">{% blocktrans %}Old Password{% endblocktrans %}<span class="text-danger">&nbsp;*&nbsp;</span></label>
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input type="password" class="form-control" id="password_reset" required>
+                            <span class="bar"></span>
+                            <label for="password">{% blocktrans %}New Password{% endblocktrans %}<span class="text-danger">&nbsp;*&nbsp;</span></label>
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input type="password" class="form-control" id="password1_reset" required>
+                            <span class="bar"></span>
+                            <label for="password1">{% blocktrans %}Confirm Password{% endblocktrans %}<span class="text-danger">&nbsp;*&nbsp;</span></label>
+                            <div class="invalid-feedback">
+                                {% blocktrans %}This field is required.{% endblocktrans %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+                <input type="hidden" id="reset_id" value="{{ user.id }}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+                <button id="reset_confirm" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#img_profile").on('click', function(){
+        $("#imagen").click();
+    })
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img_profile')
+                    .attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $(".btn_reset").on('click', function(){
+        $("#div_form_error_reset").hide();
+        $("#resetModal").modal();
+    });
+    $("#reset_confirm").on('click', function(event){
+        var form = $("#resetForm")
+        if (form[0].checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.addClass('was-validated');
+            return;
+        }
+        var password = $("#password_reset").val();
+        var password1 = $("#password1_reset").val();
+        if(password1 != password){
+            $("#text_error_reset").html("{% blocktrans %}Passwords are not matched.{% endblocktrans %}");
+            $("#div_form_error_reset").show();
+            event.preventDefault()
+            event.stopPropagation()
+            return;
+        }else{
+            $("#div_form_error_reset").hide();
+        }
+        $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-reset-user1" %}',
+            data: {
+                'reset_id': $("#reset_id").val(),
+                'password': password,
+                'old_password': $("#old_password").val()
+            },
+            type: 'POST',
+            success: function (data) {
+                if (data.err_code == 1){
+                    $("#text_error_reset").html("{% blocktrans %}Old Password is not matched{% endblocktrans %}");
+                    $("#div_form_error_reset").show();
+                }else{
+                    $("#resetModal").modal('hide');
+                }
+            }
+        });
+        
+    });
+    
+</script>
+{% endblock %}

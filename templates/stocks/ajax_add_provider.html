@@ -1,0 +1,9 @@
+{% load i18n %}
+{% for pr in prov %}
+<tr>
+    <td>{{pr.provider.name}}</td>
+    <td>{{pr.reference}}</td>
+    <td>{{pr.price}}</td>
+    <td>{{pr.description}}</td>
+</tr>
+{% endfor %}

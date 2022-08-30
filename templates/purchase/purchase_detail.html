@@ -1,0 +1,514 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/icheck/skins/all.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/icheck/icheck.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	.child-card{
+        height: 100px;
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        margin-bottom: 15px;
+    }
+    h2{
+		margin-bottom: 0px;
+	}
+
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-7">
+			<h2 class="mr-auto"><a href="{% url 'purchases' %}">{% blocktrans %}Purchases{% endblocktrans %}</a> / {{ purchase.name }}</h2>
+		</div>
+		<div class="col-12 col-md-5">
+			<button id="btn_edit" class="btn btn-new mr-2">{% blocktrans %}EDIT{% endblocktrans %}</button>
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+	            	<div class="row m-0">
+	            		<div class="col-12 col-md-4">
+	            			<div class="form-group">
+			                	<div class="col-10 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+									<div class="col-6 pl-1 pr-1">
+										<span>{% blocktrans %}Supplier{% endblocktrans %}:</span>
+									</div>
+									<div class="col-6 pl-0 pr-1">
+										<span style="color:#000;">{{ purchase.supplier.name }}</span>
+									</div>
+								</div>
+		                    </div>
+				            <div class="form-group">
+			                	<div class="col-10 row m-0 p-0" style="border-bottom: 1px solid #d5d5d5;">
+									<div class="col-6 pl-1 pr-1">
+										<span>{% blocktrans %}Date{% endblocktrans %}:</span>
+									</div>
+									<div class="col-6 pl-0 pr-1">
+										<span style="color:#000;">{{ purchase.order_date }}</span>
+									</div>
+								</div>
+		                    </div>
+	            		</div>
+		            </div>
+	            	<div class="row m-0">
+	            		<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="row">
+										<div class="col-12 col-md-7">
+											<h2 >{% blocktrans %}Order Item List{% endblocktrans %}</h2>
+										</div>
+										<div class="col-6 col-md-3">
+											<button id="btn_add" class="btn btn-primary">{% blocktrans %}Add New Order Item{% endblocktrans %}</button>
+										</div>
+										<div class="col-6 col-md-2 text-right card_tool">
+											<span id="btn_delete" class="" style="font-weight: 700;"><i class="fas fa-trash-alt mr-2"></i></span>
+											<span id="grid_view" class="mr-2 ml-2 "><i class="fas fa-2x fa-th"></i></span>
+											<span id="list_view" class="mr-2 active"><i class="fas fa-2x fa-list-ul"></i></span>
+										</div>
+									</div>
+								</div>
+								<div class="pt-4 pb-2" id="div_content">
+					        	    
+						        </div>
+						    </div>
+						</div>
+					</div>
+	            </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="head_title">{% blocktrans %}Add Order Item{% endblocktrans %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<form novalidate="" id="myForm">
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Name{% endblocktrans %}</label>
+						<select  class="selectpicker form-control" id="stock" name="stock" required data-live-search="true">
+	                    	{% for stock in stocks %}
+	                    		<option value="{{ stock.id }}">{{ stock.name }}</option>
+	                    	{% endfor %}
+	                    </select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Quantity{% endblocktrans %}</label>
+						<input type="number" class="form-control" id="quantity" name="quantity" step="1" min="1">
+					</div>
+				</div>
+				<input type="hidden" id="purchase_id" value="{{ purchase.id }}">
+				<input type="hidden" id="add_id" value="-1">
+			</form>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_save" class="btn btn-primary mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+		<button id="btn_cancel" class="btn btn-light ml-2">{% blocktrans %}Cancel{% endblocktrans %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+	        	<h5 class="modal-title">{% blocktrans %}Edit Purchase{% endblocktrans %}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<div class="modal-body p-3">
+	      		<form class="pt-3 pb-3" novalidate id="editForm" method="POST">
+	      			<div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="name">{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+		                    <input type="text" class="form-control" id="name" name="name" value="{{ purchase.name }}" required>
+                            <div class="invalid-feedback">
+						        {% blocktrans %}This field is required.{% endblocktrans %}
+						    </div>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="category">{% blocktrans %}Supplier{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+		                    <select  class="selectpicker form-control" id="supplier" name="supplier" required data-live-search="true">
+	                    	{% for supp in suppliers %}
+	                    		<option value="{{ supp.id }}">{{ supp.name }}</option>
+	                    	{% endfor %}
+	                    </select>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="date">{% blocktrans %}Date{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					        <input type="text" class="form-control" id="date" name="date" required="" value="{{ purchase.order_date|date:'yy-m-d' }}">
+                        </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="description">{% blocktrans %}Description{% endblocktrans %}</label>
+		                    <textarea  class="form-control" id="description" name="description" row="5">{{ purchase.description }}</textarea>
+                        </div>
+		            </div>
+		            
+		        </form>
+	      	</div>
+
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+		        <button id="edit_confirm" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+<div class="modal fade" id="incomeModal" tabindex="-1" role="dialog" aria-labelledby="incomeModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+	        	<h5 class="modal-title" id="income_dlg_title">{% blocktrans %}Income Item{% endblocktrans %}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<div class="modal-body p-3">
+	      		<form class="pt-3 pb-3" novalidate id="incomeForm" method="POST">
+	      			<div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="date">{% blocktrans %}Date{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					        <input type="text" class="form-control" id="income_date" required="">
+                        </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="name">{% blocktrans %}Quantity{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+		                    <input type="number" class="form-control" id="income_quantity" required step="1">
+                            <div class="invalid-feedback">
+						        {% blocktrans %}This field is required.{% endblocktrans %}
+						    </div>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="description">{% blocktrans %}Description{% endblocktrans %}</label>
+		                    <textarea  class="form-control" id="income_description" row="5"></textarea>
+                        </div>
+		            </div>
+		            <input type="hidden" id="orderitem_id">
+		            <input type="hidden" id="income_add_id" value="-1">
+		        </form>
+	      	</div>
+
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+		        <button id="income_confirm" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+<div class="modal fade" id="validModal" tabindex="-1" role="dialog" aria-labelledby="validModalLabel" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	    	<div class="modal-header">
+	        	<h5 class="modal-title" id="valid_dlg_title">{% blocktrans %}Valid Item{% endblocktrans %}</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      	</div>
+	      	<div class="modal-body p-3">
+	      		<form class="pt-3 pb-3" novalidate id="validForm" method="POST">
+	      			<div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="date">{% blocktrans %}Date{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					        <input type="text" class="form-control" id="valid_date" required="">
+                        </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="name">{% blocktrans %}Quantity{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+		                    <input type="number" class="form-control" id="valid_quantity" required step="1">
+                            <div class="invalid-feedback">
+						        {% blocktrans %}This field is required.{% endblocktrans %}
+						    </div>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <div class="col-xs-12">
+		                	<label for="description">{% blocktrans %}Description{% endblocktrans %}</label>
+		                    <textarea  class="form-control" id="valid_description" row="5"></textarea>
+                        </div>
+		            </div>
+		            <input type="hidden" id="valid_id">
+		        </form>
+	      	</div>
+
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}Cancel{% endblocktrans %}</button>
+		        <button id="valid_confirm" type="button" class="btn btn-primary">{% blocktrans %}Save{% endblocktrans %}</button>
+	      	</div>
+	    </div>
+  	</div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deletModalLabel" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<h5 class="modal-title">{% blocktrans %}DELETE ORDER ITEM{% endblocktrans %}</h5>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        			<span aria-hidden="true">&times;</span>
+        		</button>
+      		</div>
+      		<div class="modal-body">
+        		<p>{% blocktrans %}Are you sure you want to delete this record?{% endblocktrans %}</p>
+        		<input type="hidden" id="arr_checked_val">
+      		</div>
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}No{% endblocktrans %}</button>
+        		<button id="del_confirm" type="button" class="btn btn-primary">{% blocktrans %}Yes{% endblocktrans %}</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<script type="text/javascript">
+	$("#date").datepicker({
+		format: "yyyy-mm-dd",
+		todayHighlight: true,
+	});
+	$("#supplier").val('{{ purchase.supplier.id }}');
+	$("#supplier").selectpicker('refresh');
+	$("#date").datepicker('setDate', '{{ purchase.order_date|date:"yy-m-d"}}');
+	$("#btn_edit").on('click', function(){
+    	$("#editModal").modal();
+    });
+    $("#edit_confirm").on('click', function(){
+		var form = $("#editForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-purchase" %}',
+			data: {
+				'name': $("#name").val(),
+				'date': $("#date").val(),
+				'description': $("#description").val(),
+				'supplier': $("#supplier").val(),
+				'add_id': $("#purchase_id").val()
+			},
+			type: 'POST',
+			success: function (data) {
+				location.reload();
+			}
+		});
+	});
+	$("#income_date").datepicker({
+		format: "yyyy-mm-dd",
+		todayHighlight: true,
+	});
+	$("#income_confirm").on('click', function(event){
+		var form = $("#incomeForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-update-income-order-item" %}',
+			data: {
+				'income_date': $("#income_date").val(),
+				'income_quantity': $("#income_quantity").val(),
+				'income_description': $("#income_description").val(),
+				'orderitem_id': $("#orderitem_id").val(),
+				'income_add_id': $("#income_add_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#incomeModal").modal('hide');
+				if(currentState){
+		        	get_list_data();
+		        }else{
+		        	get_grid_data();
+		        }
+			}
+		});
+	});
+	$("#valid_date").datepicker({
+		format: "yyyy-mm-dd",
+		todayHighlight: true,
+	});
+	$("#valid_confirm").on('click', function(event){
+		var form = $("#validForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-update-valid-order-item" %}',
+			data: {
+				'valid_date': $("#valid_date").val(),
+				'valid_quantity': $("#valid_quantity").val(),
+				'valid_description': $("#valid_description").val(),
+				'valid_id': $("#valid_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#validModal").modal('hide');
+				if(currentState){
+		        	get_list_data();
+		        }else{
+		        	get_grid_data();
+		        }
+			}
+		});
+	});
+	$("#btn_delete").on('click', function(){
+		var arr_checked = [];
+		$( ".chk_sub" ).each(function( index ) {
+		  if($( this ).prop('checked')){
+		  	arr_checked.push($(this).data("id"));
+		  }
+		});
+		if(arr_checked.length == 0){
+			return;
+		}
+		$("#arr_checked_val").val(arr_checked.join());
+		$("#deleteModal").modal();
+		
+	});
+	$("#del_confirm").on('click', function(e){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-delete-order-item" %}',
+			data: {
+				'checked_stocks': $("#arr_checked_val").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#arr_checked_val").val("");
+				$("#deleteModal").modal('hide');
+				if(currentState){
+		        	get_list_data();
+		        }else{
+		        	get_grid_data();
+		        }
+			}
+		});
+	});
+    $("#btn_add").on('click', function(){
+    	$("#add_id").val("-1");
+    	$("#addModal").modal();
+    });
+    $("#btn_cancel").on('click', function(event){
+    	$("#head_title").html('{% blocktrans %}Add Order Item{% endblocktrans %}');
+    	$("#add_id").val("-1");
+    	$("#quantity").val("");
+    	$("#addModal").modal('hide');
+    });
+	$("#btn_save").on('click', function(event){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-order-item" %}',
+			data: {
+				'stock_id': $("#stock").val(),
+				'quantity': $("#quantity").val(),
+				'add_id': $("#add_id").val(),
+				'purchase_id': $("#purchase_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#addModal").modal('hide');
+				if(currentState){
+		        	get_list_data();
+		        }else{
+		        	get_grid_data();
+		        }
+			}
+		});
+	});
+	$("#grid_view").on('click', function(){
+		$(this).addClass('active');
+		$("#list_view").removeClass('active');
+		get_grid_data();
+		currentState = false;
+	});
+	$("#list_view").on('click', function(){
+		$(this).addClass('active');
+		$("#grid_view").removeClass('active');
+		get_list_data();
+		currentState = true;
+	});
+	var currentState = true;
+	get_list_data();
+	function get_list_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-list-order-item" %}',
+			data: {
+				'purchase_id': $("#purchase_id").val(),
+				'page': 1,
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+			}
+		});
+	}
+	function get_grid_data(){
+
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-grid-order-item" %}',
+			data: {
+				'purchase_id': $("#purchase_id").val(),
+				'page': 1,
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+			}
+		});
+	}
+
+</script>
+{% endblock %}

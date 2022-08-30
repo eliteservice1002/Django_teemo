@@ -1,0 +1,88 @@
+{% load i18n %}
+<style type="text/css">
+    .card{
+        height: 140px;
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+</style>
+<div class="row">
+    {% for item in transports %}
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 col-12">
+            <div class="card">
+                <div class="row m-0 pb-1 pt-2">
+                    <div class="col-10">
+                        <a href="{% url 'detail-transport' item.id %}">
+                            <span>{{ item.name }}</span>
+                        </a>
+                    </div>
+                    <div class="col-2 p-0">
+                        {% if item.container == 0 %}
+                            <i class="fas fa-ship" style="font-size: 120%"></i>
+                        {% else %}
+                            <i class="fas fa-truck" style="font-size: 120%"></i>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row m-0">
+                  <div class="col-5 pr-0">
+                      <span style="font-size: 90%;">{% blocktrans %}Supplier{% endblocktrans %}</span>
+                  </div>
+                  <div class="col-7 pr-0">
+                      <span>{{ item.purchase.supplier.name }}</span>
+                  </div>
+                </div>
+                <div class="row m-0">
+                  <div class="col-5 pr-0">
+                      <span style="font-size: 90%;">{% blocktrans %}Purchase{% endblocktrans %}</span>
+                  </div>
+                  <div class="col-7 pr-0">
+                      <span>{{ item.purchase.name }}</span>
+                  </div>
+                </div>
+                <div class="row m-0">
+                  <div class="col-5 pr-0">
+                      <span style="font-size: 90%;">{% blocktrans %}Departure{% endblocktrans %}:</span>
+                  </div>
+                  <div class="col-7 pr-0">
+                      <span style="font-size: 90%;">{{ item.departure }}</span>
+                  </div>
+                </div>
+                <div class="row m-0">
+                  <div class="col-5 pr-0">
+                      <span style="font-size: 90%;">{% blocktrans %}Arrival{% endblocktrans %}:</span>
+                  </div>
+                  <div class="col-7 pr-0">
+                      <span style="font-size: 90%;">{{ item.arrival }}</span>
+                  </div>
+                </div>
+            </div>
+        </div>
+    {% endfor%}
+    {% if paginator.num_pages > 1 %}
+      {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-grid-transports" %}',
+            data: {
+              'search_key': $("#search_box").val(),
+              'page': $(this).data("id"),
+              'selected_supplier': $("#sel_supplier").val().join(),
+              'selected_owner': $("#sel_owner").val().join(),
+              'dep_start_date': dep_start_date,
+              'dep_end_date': dep_end_date,
+              'arr_start_date': arr_start_date,
+              'arr_end_date': arr_end_date,
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        });
+      </script>
+    {% endif %}
+</div>

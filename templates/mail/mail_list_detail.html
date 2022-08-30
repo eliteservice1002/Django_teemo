@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% block content %}
+<style>
+    [data-toggle="toggle"] {
+        display: none;
+    }
+</style>
+
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+
+
+<div class="" style="height: 1px; background-color: white">
+</div>
+
+<div class="block-header row m-0 p-3" style="background-color: #875a7b;">
+    <div class="col-12 col-md-7 mr-auto">
+		<h2 class="mr-auto text-white mb-0 text-uppercase">{% blocktrans %}Detail{% endblocktrans %}</h2>
+	</div>
+</div>
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="5%"></th>
+                                    <th width="10%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                                    <th width="25%">{% blocktrans %}Name{% endblocktrans %}</th>
+                                    <th width="25%">{% blocktrans %}Email{% endblocktrans %}</th>
+                                    <th width="10%">{% blocktrans %}Telephone{% endblocktrans %}</th>
+                                    <th width="10%">{% blocktrans %}Owner{% endblocktrans %}</th>
+                                    <th width="10%"></th>
+                                </tr>
+                            </thead>
+                            
+                                {% for contact in contacts %}
+                                    <tbody >
+                                        <tr>
+                                            <td>
+                                                <label class="mb-0" for="contact_{{ contact.id }}">{% if contact.childs %}<i class="fas fa-plus"></i>{% else %}<i class="fas fa-minus"></i>{% endif %}</label>
+                                                <input type="checkbox" id="contact_{{ contact.id }}" data-toggle="toggle"/>
+                                            </td>
+                                            <td class="text-center p-2">
+                                                {% if contact.picture %}
+                                                    <img src="{{contact.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+                                                {% else %}
+                                                {% if contact.parent %}
+                                                <i class="fas fa-3x fa-user" ></i>
+                                                {% else %}
+                                                    <i class="fas fa-3x fa-industry" ></i>
+                                                {% endif %}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ contact.name }}{% if contact.parent %}&nbsp;&nbsp;({{ contact.parent.name }}){% endif %}</td>
+                                            <td>{{ contact.email|default_if_none:"" }}</td>
+                                            <td>{{ contact.telephone|default_if_none:"" }}</td>
+                                            <td>{% if LANGUAGE_CODE == 'en' %}{{ contact.country.name }}{% else %}{{ contact.country.alternate_names }}{% endif %}</td>
+                                            <td width="10%">{% if contact.user.first_name %}{{ contact.user.first_name}} {{ contact.user.last_name }}{% else %}{{ contact.user.username }}{% endif %}</td>
+                                        </tr>
+                                    </tbody>
+                                    {% if contact.childs %}
+                                        <tbody class="hide-lead hide">
+                                            {% for child in contact.childs %}
+                                                <tr>
+                                                    <td></td>
+                                                    <td class="text-center p-2">
+                                                        {% if child.picture %}
+                                                            <img src="{{child.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+                                                        {% else %}
+                                                        {% if child.parent %}
+                                                        <i class="fas fa-3x fa-user" ></i>
+                                                        {% else %}
+                                                            <i class="fas fa-3x fa-industry" ></i>
+                                                        {% endif %}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{ child.name }}</td>
+                                                    <td>{{ child.email|default_if_none:"" }}</td>
+                                                    <td>{{ child.telephone|default_if_none:"" }}</td>
+                                                    <td>{% if LANGUAGE_CODE == 'en' %}{{ child.country.name }}{% else %}{{ child.country.alternate_names }}{% endif %}</td>
+                                                    <td>{% if child.user.first_name %}{{ child.user.first_name}} {{ child.user.last_name }}{% else %}{{ child.user.username }}{% endif %}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    {% endif %}
+                                {% endfor %}
+                            
+                        </table>
+                    </div>
+                </div>
+                {% if paginator.num_pages > 1 %}
+                    {% include 'widgets/pagination.html' %}
+                    <script type="text/javascript">
+                        $(".page_link").on('click', function(){
+                        $.ajax({
+                            headers: { "X-CSRFToken": '{{csrf_token}}' },
+                            url: '{% url "ajax-list-leads" %}',
+                            data: {
+                            'search_key': $("#search_box").val(),
+                            'page': $(this).data('id'),
+                            'selected_country': $("#sel_country").val().join(),
+                            'selected_owner': $("#sel_owner").val().join(),
+                            },
+                            type: 'POST',
+                            success: function (data) {
+                            $("#div_content").html(data);
+                            }
+                        });
+                        });
+                    </script>
+                {% endif %}
+                <script type="text/javascript">
+                    $('[data-toggle="toggle"]').change(function(){
+
+                        $(this).parents().next('.hide-lead').toggle();
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/datatables/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript">
+    $('#myTable').DataTable({
+		"order": [
+            [0, 'asc']
+        ],
+        "aoColumns": [
+		    { "bSortable": false },
+		    { "bSortable": true },
+            { "bSortable": true },
+            { "bSortable": true },
+            { "bSortable": true },
+            { "bSortable": true },
+		    { "bSortable": false },
+		],
+		{% if LANGUAGE_CODE == 'es' %}
+		"language": {
+			"url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Spanish.json"
+		},
+		{% endif %}
+	});
+</script>
+
+{% endblock %}

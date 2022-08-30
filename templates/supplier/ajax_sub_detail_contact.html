@@ -1,0 +1,47 @@
+{% load i18n %}
+<style type="text/css">
+    .small-card {
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border-radius: 0.25rem;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        position: relative;
+        padding:5px;
+    }
+</style>
+{% for item in contacts_inf %}
+    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-12 p-2">
+        <div class="card small-card">
+            <div class="row m-0">
+                <div class="col-3">
+                    <div class="pt-2 pb-2">
+                        <i class="fas fa-3x fa-user" ></i>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div class="pt-2 pb-2">
+                        <span>{{ item.name|default_if_none:"" }}</span>
+                    </div>
+                    <div class="pl-1">
+                        <span style="font-size: 80%;color:#00a09d;">{{ item.email|default_if_none:"" }}</span>
+                    </div>
+                    <div class="pl-1">
+                        <span style="font-size: 80%;">{% blocktrans %}Telephone{% endblocktrans %}: {{ item.mobile|default_if_none:"" }}</span>
+                    </div>
+                    <div class="pl-1">
+                        <span style="font-size: 80%;">{{ item.position|default_if_none:"" }}</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+{% endfor%}

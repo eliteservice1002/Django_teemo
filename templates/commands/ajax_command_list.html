@@ -1,0 +1,103 @@
+{% load i18n %}
+{% load mathfilters %}
+{% load staticfiles %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    	<th width="5%" class="text-center">
+                    		<input type="checkbox" class="check" id="chk_all">
+                    	</th>
+                      <th width="8%">{% blocktrans %}Date{% endblocktrans %}</th>
+                      <th width="10%">{% blocktrans %}Name{% endblocktrans %}</th>
+                    	<th width="8%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                      <th width="8%">{% blocktrans %}Ref{% endblocktrans %}</th>
+                      <th width="15%">{% blocktrans %}Product Name{% endblocktrans %}</th>
+                      <th width="8%">{% blocktrans %}Quantity{% endblocktrans %}</th>
+                      <th width="15%">{% blocktrans %}Category{% endblocktrans %}</th>
+                      <th width="10%">{% blocktrans %}Worker{% endblocktrans %}</th>
+                      <th width="10%">{% blocktrans %}Status{% endblocktrans %}</th>
+                      <th width="5%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                	{% for command in commands %}
+                		<tr>
+                			<td class="text-center">
+                				<input type="checkbox" class="check chk_sub" data-id="{{ command.id }}">
+                			</td>
+                      <td>{{ command.date|date:"yy-m-d" }}</td>
+                      <td>{{ command.name }}</td>
+                      <td class="text-center p-2">
+                      	{% if command.group.picture %}
+                          <img src="{{command.group.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+                      {% else %}
+                          <i class="far fa-4x fa-image pl-1 pr-1" ></i>
+                      {% endif %}
+                      </td>
+                      <td>{{ command.group.reference }}</td>
+                      <td>{{ command.group.name }}</td>
+                      <td>{{ command.quantity }} pcs</td>
+                      <td>{{ command.group.category.name }}</td>
+                      <td>{{ command.worker|default_if_none:"" }}</td>
+                      <td>
+                        {% if command.finished == 1 %}
+                          <span class="badge badge-primary p-2">{% blocktrans %}In Progress{% endblocktrans %}</span>
+                        {% elif command.finished == 2 %}
+                          <span class="badge badge-danger p-2">{% blocktrans %}Paused{% endblocktrans %}</span>
+                        {% elif command.finished == 3 %}
+                          <span class="badge badge-success p-2">{% blocktrans %}Finished{% endblocktrans %}</span>
+                        {% endif %}
+                      </td>
+                      <td class="text-center">
+                      	<a href="{% url 'detail-command' command.id %}"><span class="ml-2 mr-2 btn_edit" data-id="2"><i class="fas fa-edit"></i></span></a>
+                      </td>
+                  </tr>
+                	{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+        <script type="text/javascript">
+            $(".page_link").on('click', function(){
+                var selected_category = $("#sel_category").val().join();
+                var selected_work = $("#sel_worker").val().join();
+                $.ajax({
+                    headers: { "X-CSRFToken": '{{csrf_token}}' },
+                    url: '{% url "ajax-list-commands" %}',
+                    data: {
+                        'search_key': $("#search_box").val(),
+                        'page': $(this).data("id"),
+                        'selected_category': selected_category,
+                        'selected_work': selected_work,
+                        'from_package': from_package,
+                        'to_package': to_package,
+                        'start_date': start_date,
+                        'end_date': end_date,
+                        'in_progress': $("#chk_less_minium").prop('checked'),
+                        'finished': $("#chk_greater_minium").prop('checked')
+                    },
+                    type: 'POST',
+                    success: function (data) {
+                        $("#div_content").html(data);
+                        
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+    
+</div>
+<script src="{% static 'plugins/icheck/icheck.init.js' %}"></script>
+<script type="text/javascript">
+	$("#chk_all").on('ifChecked', function(){
+		$('.chk_sub').iCheck('check');
+	});
+	$("#chk_all").on('ifUnchecked', function(){
+		$('.chk_sub').iCheck('uncheck');
+	});
+</script>

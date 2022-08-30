@@ -1,0 +1,8 @@
+django==2.2.8
+django-mathfilters
+django-cities-light
+django-import-export
+sendgrid
+OdooRPC
+Pillow
+pandas

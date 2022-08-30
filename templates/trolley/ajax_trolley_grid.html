@@ -1,0 +1,105 @@
+{% load i18n %}
+<style type="text/css">
+    .card{
+        /*height: 100px;*/
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+</style>
+<div class="row">
+    {% for item in trolleys %}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-12">
+            <div class="card">
+                <div class="row m-0 pb-1 pt-2">
+                    <div class="col-9">
+                        <a href="{% url 'detail-trolley' item.id %}">
+                            <span>{{ item.name }}</span>
+                        </a>
+                    </div>
+                    <div class="col-3 p-0">
+                        {% if item.finished %}
+                            <span class="badge badge-success">Finished</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row m-0">
+                  <div class="col-5 pr-0">
+                      <span style="font-size: 90%;">{% blocktrans %}Order Date{% endblocktrans %}:</span>
+                  </div>
+                  <div class="col-7 pr-0">
+                      <span>{{ item.order_date}}</span>
+                  </div>
+                </div>
+                <div class="row m-0 pb-2 pt-2">
+                    <div class="col-5 pr-0">
+                        {% if item.client.picture %}
+                            <img src="{{item.client.picture.url}}" alt="" style="max-width: 99%;max-height: 78px;"/>
+                        {% else %}
+                          {% if item.client.parent %}
+                            <i class="fas fa-3x fa-user " ></i>
+                          {% else %}
+                            <i class="fas fa-3x fa-industry" ></i>
+                          {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="col-7 pr-0">
+                        <div class="col-12 p-0">
+                            <span >{{ item.client.name|default_if_none:"" }}</span>
+                        </div>
+                        <div class="col-12 p-0">
+                            <span style="font-size: 90%;">{{ item.client.email|default_if_none:"" }}</span>
+                        </div>
+                        <div class="col-12 text-right">
+                            <span >{% if LANGUAGE_CODE == 'en' %}{{ item.client.country.name }}{% else %}{{ item.client.country.alternate_names }}{% endif %}</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    {% endfor%}
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-grid-trolleys" %}',
+            data: {
+              'search_key': $("#search_box").val(),
+              'page': $(this).data("id"),
+              'selected_client': $("#sel_client").val().join(),
+              'selected_owner': $("#sel_owner").val().join(),
+              'start_date': start_date,
+              'end_date': end_date,
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        });
+      </script>
+    {% endif %}
+    <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-grid-trolleys" %}',
+            data: {
+              'search_key': $("#search_box").val(),
+              'page': 1,
+              'selected_client': $("#sel_client").val().join(),
+              'selected_owner': $("#sel_owner").val().join(),
+              'start_date': start_date,
+              'end_date': end_date,
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        })
+    </script>
+</div>

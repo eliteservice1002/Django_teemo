@@ -1,0 +1,324 @@
+{% load staticfiles %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shorcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">  
+    <title>{% block title %}{% blocktrans %}TeeMO{% endblocktrans %}{% endblock %}</title>
+    <link href="{% static 'css/bootstrap/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/flag-icon-css/flag-icon.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+    
+    
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> 
+        </svg>
+    </div>
+    <div id="main-wrapper">
+        <header class="topbar" style="background-color: #875a7b;">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <div class="navbar-header" style="background-color: #6f5468;">
+                    <a class="navbar-brand" href="{% url 'index' %}">
+                        <b>
+                            <img style="max-width: 130px;max-height: 65px;" draggable="false" src="{% static 'images/temoes.PNG'%}">
+                        </b>
+                        <!-- <span class="text-white">
+                            &nbsp;&nbsp;&nbsp;{% blocktrans %}TeeMO{% endblocktrans %}
+                        </span> -->
+                    </a>
+                </div>
+                <div class="navbar-collapse" >
+                    <ul class="navbar-nav mr-auto mt-md-0 ">
+                        <li class="nav-item"> 
+                            <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)">
+                                <i class="fa fa-bars nav_bar"></i>
+                            </a> 
+                        </li>
+
+                    </ul>
+                    <ul class="navbar-nav my-lg-0">
+                        <li class="nav-item version-text">
+                            <span class="pl-2 pr-3 badge badge-warning text-white">{% blocktrans %}Odoo 12.0+e Version Enterprise{% endblocktrans %}</span>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <b id="selected_lang" class="nav-link dropdown-toggle waves-effect waves-dark text-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-lang="{{LANGUAGE_CODE}}"> 
+                                <i class="flag-icon flag-icon-{% if LANGUAGE_CODE == 'en' %}us{% else %}es{% endif %}"></i> {% if LANGUAGE_CODE == 'en' %} {% blocktrans %}English{% endblocktrans %} {% else %} {% blocktrans %}Spanish{% endblocktrans %} {% endif %}
+                            </b>
+                            <div class="dropdown-menu  dropdown-menu-right animated bounceInDown"> 
+                                <b class="dropdown-item item_lang" href="#" data-lang="es"><i class="flag-icon flag-icon-es"></i> {% blocktrans %}Spanish{% endblocktrans %}</b>
+                                <b class="dropdown-item item_lang" href="#" data-lang="en"><i class="flag-icon flag-icon-us"></i> {% blocktrans %}English{% endblocktrans %}</b> 
+                            </div>
+                            <form id="langForm" action="{% url 'set_language' %}" method="POST">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ redirect_to }}" />
+                                <input name="language" id="val_lang" type="hidden" value="es" />
+                            </form>
+                        </li>
+                        <li class="nav-item dropdown">
+                            {% if user.is_authenticated %}
+                                <a class="nav-link waves-effect waves-dark pr-0" href="{% url 'profile' request.user.id %}">
+                                    {% if user.picture %}
+                                        <img style="height: 35px;width: 35px; border-radius: 50%;" src="{{user.picture.url}}">
+                                    {% else %}
+                                        <img style="height: 35px;width: 35px; border-radius: 50%;" src="{% static 'images/avatar-default.jpg' %}">
+                                    {% endif %}
+                                </a>
+                                <span class="pl-2 pr-3 text-white">{% if user.first_name %}{{ user.first_name}} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar">
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <!--li class="{% if 'index' in request.path %}active{% endif %}">
+                            <a href="{% url 'index' %}">
+                                <i class="fas fa-home text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Dashboard{% endblocktrans %}</span>
+                            </a>
+                        </li-->
+                        <li class="{% if 'supplier' in request.path or 'subproduct' in request.path %}active{% endif %}">
+                            <a class="has-arrow " href="#" aria-expanded="false">
+                                <i class="fas fa-dollar-sign text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Suppliers{% endblocktrans %}</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li class="{% if 'supplier' in request.path %}active{% endif %}">
+                                    <a href="{% url 'suppliers' %}" class="{% if 'supplier' in request.path %}active{% endif %}">
+                                        {% blocktrans %}Suppliers{% endblocktrans %}
+                                    </a>
+                                </li>
+                                <li class="{% if 'subproduct' in request.path %}active{% endif %}">
+                                    <a href="{% url 'subproduct' %}">
+                                        <span>{% blocktrans %}Products{% endblocktrans %}</span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li class="{% if 'lead' in request.path %}active{% endif %}">
+                            <a href="{% url 'leads' %}">
+                                <i class="far fa-address-book text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Leads{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                        <li class="{% if 'mailings' in request.path or 'maillist' in request.path or 'detail-maillist' in request.path %}active{% endif %}">
+                            <a class="has-arrow " href="#" aria-expanded="false">
+                                <i class="fas fa-paper-plane text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Mail Marketing{% endblocktrans %}</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li class="{% if 'mailings' in request.path %}active{% endif %}">
+                                    <a href="{% url 'mailings' %}" class="{% if 'mailings' in request.path %}active{% endif %}">
+                                        {% blocktrans %}Mailing{% endblocktrans %}
+                                    </a>
+                                </li>
+
+                                <li class="{% if 'maillist' in request.path %}active{% endif %}">
+                                    <a href="{% url 'maillist' %}" class="{% if 'maillist' in request.path %}active{% endif %}">
+                                        <span>{% blocktrans %}List{% endblocktrans %}</span>
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li class="{% if 'stock' in request.path %}active{% endif %}">
+                            <a href="{% url 'stocks' %}">
+                                <i class="fas fa-cube text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Products{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                        <li class="{% if 'purchase' in request.path or 'broken' in request.path %}active{% endif %}">
+                            <a href="{% url 'purchases' %}">
+                                <i class="fas fa-dollar-sign text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Purchase{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                        <li class="{% if 'transport' in request.path %}active{% endif %}">
+                            <a href="{% url 'transports' %}">
+                                <i class="fas fa-truck"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Transport{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                        <li class="{% if 'group' in request.path or 'command' in request.path %}active{% endif %}">
+                            <a class="has-arrow " href="#" aria-expanded="false">
+                                <i class="fas fa-wrench text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Manufacturing{% endblocktrans %}</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li class="{% if 'group' in request.path %}active{% endif %}">
+                                    <a href="{% url 'groups' %}" class="{% if 'group' in request.path %}active{% endif %}">{% blocktrans %}Groups{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'command' in request.path %}active{% endif %}">
+                                    <a href="{% url 'commands' %}" class="{% if 'command' in request.path %}active{% endif %}">{% blocktrans %}Command{% endblocktrans %}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="{% if 'outcome' in request.path or 'picking' in request.path %}active{% endif %}">
+                            <a class="has-arrow " href="#" aria-expanded="false">
+                                <i class="fas fa-dollar-sign text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Outcome{% endblocktrans %}</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li class="{% if 'outcome' in request.path %}active{% endif %}">
+                                    <a href="{% url 'outcomes' %}" class="{% if 'outcome' in request.path %}active{% endif %}">
+                                        <span>{% blocktrans %}Orders{% endblocktrans %}</span>
+                                    </a>
+                                </li>
+                                <li class="{% if 'picking' in request.path %}active{% endif %}">
+                                    <a href="{% url 'pickings' %}" class="{% if 'picking' in request.path %}active{% endif %}">
+                                        <span>{% blocktrans %}Picking{% endblocktrans %}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="{% if 'trolley' in request.path %}active{% endif %}">
+                            <a href="{% url 'trolleys' %}">
+                                <i class="fas fa-dollar-sign text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Trolley{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                        <li class="{% if 'adjust' in request.path %}active{% endif %}">
+                            <a href="{% url 'adjusts' %}">
+                                <i class="fas fa-adjust text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Inventory Adjustment{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                        <li class="{% if 'job' in request.path %}active{% endif %}">
+                            <a href="{% url 'jobs' %}">
+                                <i class="fas fa-male text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Job offer{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                        <li class="{% if 'timesheet' in request.path %}active{% endif %}">
+                            <a href="{% url 'timesheets' %}">
+                                <i class="far fa-clock text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Time Sheet{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                        <!-- <li class="{% if 'project' in request.path %}active{% endif %}">
+                            <a href="{% url 'projects' %}">
+                                <i class="far fa-clock text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Time Sheet{% endblocktrans %}</span>
+                            </a>
+                        </li> -->
+                        <li class="{% if 'category' in request.path or 'box' in request.path or 'wallstype' in request.path or 'castor' in request.path or 'color' in request.path or 'drawer' in request.path or 'strip' in request.path %}active{% endif %}">
+                            <a class="has-arrow " href="#" aria-expanded="false">
+                                <i class="fas fa-cog text-center"></i>
+                                <span class="hide-menu" style="font-weight: bold;">{% blocktrans %}Settings{% endblocktrans %}</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li class="{% if 'category' in request.path %}active{% endif %}">
+                                    <a href="{% url 'category' %}">{% blocktrans %}Category{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'location' in request.path %}active{% endif %}">
+                                    <a href="{% url 'locations' %}">{% blocktrans %}Locations{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'box' in request.path %}active{% endif %}">
+                                    <a href="{% url 'boxs' %}">{% blocktrans %}Box Container{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'wallstype' in request.path %}active{% endif %}">
+                                    <a href="{% url 'wallstype' %}">{% blocktrans %}Type inside walls{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'castor' in request.path %}active{% endif %}">
+                                    <a href="{% url 'castors' %}">{% blocktrans %}Castors{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'color' in request.path %}active{% endif %}">
+                                    <a href="{% url 'colors' %}">{% blocktrans %}Colors of the Sides{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'drawer' in request.path %}active{% endif %}">
+                                    <a href="{% url 'drawers' %}">{% blocktrans %}Colors of the Drawers{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'strip' in request.path %}active{% endif %}">
+                                    <a href="{% url 'strips' %}">{% blocktrans %}Strips{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'lock' in request.path %}active{% endif %}">
+                                    <a href="{% url 'locks' %}">{% blocktrans %}Lock{% endblocktrans %}</a>
+                                </li>
+                                <li class="{% if 'task' in request.path %}active{% endif %}">
+                                    <a href="{% url 'tasks' %}">{% blocktrans %}Task{% endblocktrans %}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="{% if 'profile' in request.path %}active{% endif %}">
+                            <a href="{% url 'profile' request.user.id %}">
+                                <i class="fas fa-user text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}My Profile{% endblocktrans %}</span>
+                            </a>
+
+                        </li>
+                        {% if user.is_staff == 1 %}
+                        <li class="{% if 'users' in request.path %}active{% endif %}">
+                            <a href="{% url 'users' %}">
+                                <i class="fas fa-users text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Registered Users{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li >
+                            <a class="nav-link waves-effect waves-dark" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt text-center"></i>
+                                <span style="font-weight: bold;">{% blocktrans %}Log Out{% endblocktrans %}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <div class="page-wrapper">
+            {% block content %}
+            {% endblock %}
+            
+            <footer class="footer">
+                © {% now "Y" %} {% blocktrans %}TeeMO{% endblocktrans %} Admin
+            </footer>
+        </div>
+    </div>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="{% static 'js/jquery.slimscroll.js' %}"></script>
+    <script src="{% static 'js/waves.js' %}"></script>
+    <script src="{% static 'js/sidebarmenu.js' %}"></script>
+    <script src="{% static 'js/sticky-kit.min.js' %}"></script>
+    <script src="{% static 'js/jquery.sticky.js' %}"></script>
+    <script src="{% static 'js/notify.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/notify.min.js' %}" type="text/javascript"></script> 
+
+    <script src="{% static 'js/custom.min.js' %}"></script>
+    <script type="text/javascript">
+        $(".item_lang").on('click', function(){
+            $("#selected_lang").html($(this).html());
+            $("#selected_lang").data('lang', $(this).data('lang'));
+            $("#val_lang").val($(this).data('lang'));
+            $("#langForm").submit();
+        });
+        $("#myStickHeader").sticky({
+            topSpacing: 70,
+            zIndex: '50'
+        });
+    </script>
+</body>
+</html>

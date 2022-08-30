@@ -1,0 +1,71 @@
+  span.fa {
+    transition: all 400ms;
+  }
+  span.fa:hover {
+    cursor: pointer !important;
+    color: #333;
+  }
+  .tr-selected > td:not(:first-child) {
+    background-color: #fff;
+    color: black;
+  }
+  .tr-detail > td {
+    padding: 0 !important;
+    padding-bottom: 10px !important;
+    border-top: none !important;
+  }
+  .tr-detail > td:not(:first-child) {
+    padding: 5px 5px 5px 5px;
+  }
+  .detail-content ul,
+  .detail-content li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .detail-content ul li {
+    border: 2px dashed #337ab7;
+    border-width: 0 0 0px 1px;
+    display: flex;
+  }
+  .detail-content ul li .detail {
+    margin: 0;
+    padding: 0 10px 5px 0;
+    margin-bottom: 10px;
+    flex-grow: 1;
+    flex-basis: 100%;
+  }
+  .detail-content ul li .detail fieldset {
+    border: 1px solid #77acd9;
+  }
+  .detail-content ul li .detail fieldset legend {
+    font-size: 90%;
+    margin-left: 5px;
+    width: auto;
+    margin-bottom: 0;
+    border: none;
+  }
+  .detail-content ul li .detail fieldset > div {
+    margin-left: 5px;
+    margin-right: 12px;
+  }
+  .detail-content ul li .detail fieldset > div table.table-condensed tbody > tr > td {
+    padding: 2px;
+  }
+  .detail-content ul li .detail:first-child {
+    border-top: 1px dashed #337ab7;
+    flex-basis: 2%;
+    margin-top: 15px;
+  }
+  .detail-content ul li:first-child {
+    padding-top: 5px;
+  }
+  .detail-content ul li:last-child {
+    margin-bottom: 20px;
+  }
+  .detail-content ul li:last-child > .detail {
+    margin-bottom: 0;
+  }
+  .detail-content ul li:last-child > .detail:first-child {
+    margin-left: -1px;
+  }

@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/icheck/skins/all.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/icheck/icheck.min.js' %}"></script>
+<style>
+	h2{
+		margin-bottom: 0px;
+	}
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-7 mr-auto">
+			<h2 class="mr-auto"><a href="{% url 'groups' %}">{% blocktrans %}Groups{% endblocktrans %}</a> / {{ group.name }}</h2>
+		</div>
+		<div class="col-12 col-md-5">
+			<a href="{% url 'update-group' group.id %}" class="btn btn-primary">{% blocktrans %}EDIT{% endblocktrans %}</a>
+		</div>
+	</div>
+	<div class="row clearfix ml-0 mr-0 mt-4">
+		<div class="col-6 col-lg-2 col-md-2 row m-0 p-0" style="border-bottom: 1px solid">
+			<div class="col-6 pl-1 pr-1">
+				<span>{% blocktrans %}Group Name{% endblocktrans %}</span>
+			</div>
+			<div class="col-6 pl-1 pr-1">
+				<span >{{ group.name }}</span>
+			</div>
+		</div>
+		<div class="col-1 col-lg-2">
+		</div>
+		<div class="col-5 col-lg-2 col-md-2 row m-0 p-0" style="border-bottom: 1px solid">
+			<div class="col-9 pl-1 pr-1">
+				<span>{% blocktrans %}Initial Quantity{% endblocktrans %}</span>
+			</div>
+			<div class="col-3 pl-1 pr-1">
+				<span >{{ group.quantity }}</span>
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix ml-0 mr-0 mt-3">
+		<div class="col-6 col-lg-2 col-md-2 row m-0 p-0" style="border-bottom: 1px solid">
+			<div class="col-6 pl-1">
+				<span>{% blocktrans %}Ref{% endblocktrans %}</span>
+			</div>
+			<div class="col-6 pl-1 pr-1">
+				<span >{{ group.reference }}</span>
+			</div>
+		</div>
+		<div class="col-1 col-lg-2">
+		</div>
+		{% if group.pdf %}
+			<div class="col-5 col-lg-2 col-md-2 row m-0 p-0" style="border-bottom: 1px solid">
+				<a href="{{ group.pdf.url}}" download>
+					<span >
+						<i class="far fa-file-pdf"></i>
+					</span>
+					<span class="ml-2 mr-1">{% if group.pdf %}{{ group.filename}}{% endif %}</span>
+					<i class="fas fa-file-download"></i>
+				</a>
+			</div>
+		{% endif %}
+	</div>
+	<div class="row clearfix mt-4">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-12 col-md-7">
+							<h2 >{% blocktrans %}Group Item List{% endblocktrans %}</h2>
+						</div>
+						<div class="col-6 col-md-3">
+							<button id="btn_add" class="btn btn-primary">{% blocktrans %}Add New Item{% endblocktrans %}</button>
+						</div>
+						<div class="col-6 col-md-2 text-right card_tool">
+							<span id="btn_delete" class="" style="font-weight: 700;"><i class="fas fa-trash-alt mr-2"></i></span>
+							<span id="grid_view" class="mr-2 ml-2"><i class="fas fa-2x fa-th"></i></span>
+							<span id="list_view" class="mr-2 active"><i class="fas fa-2x fa-list-ul"></i></span>
+						</div>
+					</div>
+				</div>
+				<div class="card-body" id="div_content">
+	        	    
+		        </div>
+		    </div>
+		</div>
+		
+	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="head_title">{% blocktrans %}Add Group Item{% endblocktrans %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<form novalidate="" id="myForm">
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+						<select  class="selectpicker form-control" id="stock" name="stock" required data-live-search="true">
+	                    	{% for stock in stocks %}
+	                    		<option value="{{ stock.id }}">{{ stock.name }}</option>
+	                    	{% endfor %}
+	                    </select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Quantity{% endblocktrans %}</label>
+						<input type="number" class="form-control" id="quantity" name="quantity" step="1" min="1">
+					</div>
+				</div>
+				<input type="hidden" id="group_id" value="{{ group.id }}">
+				<input type="hidden" id="add_id" value="-1">
+			</form>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_save" class="btn btn-primary mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+		<button id="btn_cancel" class="btn btn-light ml-2">{% blocktrans %}Cancel{% endblocktrans %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deletModalLabel" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<h5 class="modal-title">{% blocktrans %}DELETE GROUP ITEMS{% endblocktrans %}</h5>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        			<span aria-hidden="true">&times;</span>
+        		</button>
+      		</div>
+      		<div class="modal-body">
+        		<p>{% blocktrans %}Are you sure you want to delete this record?{% endblocktrans %}</p>
+        		<input type="hidden" id="arr_checked_val">
+      		</div>
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}No{% endblocktrans %}</button>
+        		<button id="del_confirm" type="button" class="btn btn-primary">{% blocktrans %}Yes{% endblocktrans %}</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+
+<script type="text/javascript">
+	$(".selectpicker").selectpicker();
+	
+	$("#btn_delete").on('click', function(){
+		var arr_checked = [];
+		$( ".chk_sub" ).each(function( index ) {
+		  if($( this ).prop('checked')){
+		  	arr_checked.push($(this).data("id"));
+		  }
+		});
+		if(arr_checked.length == 0){
+			return;
+		}
+		$("#arr_checked_val").val(arr_checked.join());
+		$("#deleteModal").modal();
+		
+	});
+	$("#del_confirm").on('click', function(e){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-delete-group-items" %}',
+			data: {
+				'checked_stocks': $("#arr_checked_val").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#arr_checked_val").val("");
+				$("#deleteModal").modal('hide');
+				
+				if(currentState){
+		        	get_list_data();
+		        }else{
+		        	get_grid_data();
+		        }
+			}
+		});
+	});
+
+    $("#btn_add").on('click', function(){
+    	$("#addModal").modal();
+    });
+    $("#btn_cancel").on('click', function(event){
+    	$("#head_title").html('{% blocktrans %}Add Group Item{% endblocktrans %}');
+    	$("#add_id").val("-1");
+    	$("#quantity").val("");
+    	$("#addModal").modal('hide');
+    });
+	$("#btn_save").on('click', function(event){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-add-group-item" %}',
+			data: {
+				'stock_id': $("#stock").val(),
+				'quantity': $("#quantity").val(),
+				'add_id': $("#add_id").val(),
+				'group_id': $("#group_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+				$("#addModal").modal('hide');
+			}
+		});
+	});
+	$("#grid_view").on('click', function(){
+		$(this).addClass('active');
+		$("#list_view").removeClass('active');
+		get_grid_data();
+		currentState = false;
+	});
+	$("#list_view").on('click', function(){
+		$(this).addClass('active');
+		$("#grid_view").removeClass('active');
+		get_list_data();
+		currentState = true;
+	});
+	var currentState = true;
+	get_list_data();
+	function get_list_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-list-group-item" %}',
+			data: {
+				'group_id': $("#group_id").val(),
+				'page': 1,
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+				
+			}
+		});
+	}
+	function get_grid_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-grid-group-item" %}',
+			data: {
+				'group_id': $("#group_id").val(),
+				'page': 1,
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+				
+			}
+		});
+	}
+</script>
+{% endblock %}

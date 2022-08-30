@@ -1,0 +1,2730 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-09 12:37-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\supplier\settings.py:125 .\templates\base.html:66 .\templates\base.html:69
+#: .\templates\dash.html:64 .\templates\dash.html:67
+msgid "Spanish"
+msgstr "Español"
+
+#: .\supplier\settings.py:126 .\templates\base.html:66 .\templates\base.html:70
+#: .\templates\dash.html:64 .\templates\dash.html:68
+msgid "English"
+msgstr "Inglés"
+
+#: .\templates\404.html:11 .\templates\404.html:24 .\templates\500.html:11
+#: .\templates\500.html:24 .\templates\base.html:17 .\templates\base.html:47
+#: .\templates\base.html:277 .\templates\dash.html:18
+msgid "TeeMO"
+msgstr ""
+
+#: .\templates\404.html:21
+msgid "Page Not Found!"
+msgstr "Pagina no encontrada"
+
+#: .\templates\404.html:22
+msgid "YOU SEEM TO BE TRYING TO FIND HIS WAY HOME"
+msgstr "Parece que intentas llegar a la home"
+
+#: .\templates\404.html:23 .\templates\500.html:23
+msgid "Back to home"
+msgstr "Volver a pagina principal"
+
+#: .\templates\500.html:21
+msgid "Internal Server Error !"
+msgstr "Error de servidor !"
+
+#: .\templates\500.html:22
+msgid "Please try after some time"
+msgstr "Por favor intente mas tarde"
+
+#: .\templates\adjust\adjusts.html:58 .\templates\base.html:188
+msgid "Inventory Adjustment"
+msgstr "Ajuste de inventario"
+
+#: .\templates\adjust\adjusts.html:61 .\templates\adjust\adjusts.html:123
+#: .\templates\boxs\boxs.html:55 .\templates\boxs\boxs.html:116
+#: .\templates\broken\brokens.html:61 .\templates\broken\brokens.html:122
+#: .\templates\broken\refund_history.html:61
+#: .\templates\broken\refund_history.html:122
+#: .\templates\commands\commands.html:60 .\templates\commands\commands.html:121
+#: .\templates\groups\groups.html:58 .\templates\groups\groups.html:120
+#: .\templates\job\jobs.html:53 .\templates\job\jobs.html:114
+#: .\templates\lead\leads.html:60 .\templates\lead\leads.html:149
+#: .\templates\outcome\outcomes.html:61 .\templates\outcome\outcomes.html:123
+#: .\templates\purchase\purchases.html:61
+#: .\templates\purchase\purchases.html:123 .\templates\stocks\stocks.html:55
+#: .\templates\stocks\stocks.html:117
+#: .\templates\supplier\supplier_product.html:51
+#: .\templates\supplier\suppliers.html:53
+#: .\templates\supplier\suppliers.html:116
+#: .\templates\timesheet\timesheets.html:61
+#: .\templates\timesheet\timesheets.html:123
+#: .\templates\transport\transports.html:61
+#: .\templates\transport\transports.html:122
+#: .\templates\trolley\trolleys.html:61 .\templates\trolley\trolleys.html:123
+msgid "Filter"
+msgstr "Filtro"
+
+#: .\templates\adjust\adjusts.html:65 .\templates\boxs\boxs.html:59
+#: .\templates\broken\brokens.html:65 .\templates\broken\refund_history.html:65
+#: .\templates\commands\commands.html:64 .\templates\groups\groups.html:62
+#: .\templates\job\jobs.html:57 .\templates\lead\leads.html:64
+#: .\templates\outcome\outcomes.html:65 .\templates\purchase\purchases.html:65
+#: .\templates\stocks\stocks.html:59
+#: .\templates\supplier\supplier_product.html:55
+#: .\templates\supplier\suppliers.html:57
+#: .\templates\timesheet\timesheets.html:65
+#: .\templates\transport\transports.html:65
+#: .\templates\trolley\trolleys.html:65
+msgid "Favorite"
+msgstr "Favoritos"
+
+#: .\templates\adjust\adjusts.html:71 .\templates\boxs\boxs.html:65
+#: .\templates\broken\brokens.html:71 .\templates\broken\refund_history.html:71
+#: .\templates\commands\commands.html:70 .\templates\groups\groups.html:68
+#: .\templates\job\jobs.html:63 .\templates\lead\leads.html:70
+#: .\templates\outcome\outcomes.html:71 .\templates\purchase\purchases.html:71
+#: .\templates\stocks\stocks.html:65
+#: .\templates\supplier\supplier_product.html:61
+#: .\templates\supplier\suppliers.html:63
+#: .\templates\timesheet\timesheets.html:71
+#: .\templates\transport\transports.html:71
+#: .\templates\trolley\trolleys.html:71
+msgid "Favorite Filter"
+msgstr "Añadir filtro"
+
+#: .\templates\adjust\adjusts.html:105 .\templates\boxs\boxs.html:99
+#: .\templates\commands\commands.html:104 .\templates\groups\groups.html:102
+#: .\templates\job\jobs.html:97 .\templates\lead\leads.html:104
+#: .\templates\outcome\outcomes.html:105
+#: .\templates\purchase\purchases.html:105 .\templates\stocks\stocks.html:99
+#: .\templates\supplier\supplier_product.html:95
+#: .\templates\supplier\suppliers.html:97
+#: .\templates\timesheet\timesheets.html:105
+#: .\templates\transport\transports.html:105
+#: .\templates\trolley\trolleys.html:105
+msgid "NEW"
+msgstr "NUEVO"
+
+#: .\templates\adjust\adjusts.html:106
+msgid "GET"
+msgstr ""
+
+#: .\templates\adjust\adjusts.html:109 .\templates\boxs\boxs.html:103
+#: .\templates\broken\brokens.html:108
+#: .\templates\broken\refund_history.html:108
+#: .\templates\commands\commands.html:107 .\templates\groups\groups.html:107
+#: .\templates\job\jobs.html:100 .\templates\lead\leads.html:111
+#: .\templates\outcome\outcomes.html:109
+#: .\templates\purchase\purchases.html:109 .\templates\stocks\stocks.html:104
+#: .\templates\supplier\suppliers.html:102
+#: .\templates\transport\transports.html:108
+#: .\templates\trolley\trolleys.html:109
+msgid "Search for..."
+msgstr "Buscar..."
+
+#: .\templates\adjust\adjusts.html:130
+#: .\templates\broken\refund_history.html:129
+#: .\templates\commands\commands.html:138 .\templates\outcome\outcomes.html:130
+#: .\templates\purchase\purchases.html:130
+#: .\templates\timesheet\timesheets.html:130
+#: .\templates\trolley\trolleys.html:130
+msgid "Date Range"
+msgstr "Rnago de fecha"
+
+#: .\templates\adjust\adjusts.html:135 .\templates\job\ajax_job_list.html:18
+#: .\templates\job\jobs.html:122 .\templates\lead\ajax_lead_client_list.html:25
+#: .\templates\lead\ajax_lead_list.html:25 .\templates\lead\leads.html:157
+#: .\templates\outcome\ajax_outcome_list.html:18
+#: .\templates\outcome\outcomes.html:135
+#: .\templates\purchase\ajax_purchase_list.html:16
+#: .\templates\purchase\purchases.html:135
+#: .\templates\supplier\ajax_contact_list.html:28
+#: .\templates\supplier\suppliers.html:124
+#: .\templates\transport\ajax_transport_list.html:19
+#: .\templates\transport\transports.html:138
+#: .\templates\trolley\ajax_trolley_list.html:16
+#: .\templates\trolley\trolleys.html:135
+msgid "Owner"
+msgstr "Propietario"
+
+#: .\templates\adjust\adjusts.html:145 .\templates\adjust\adjusts.html:199
+#: .\templates\adjust\ajax_adjust_list.html:15
+#: .\templates\broken\brokens.html:130 .\templates\broken\brokens.html:185
+#: .\templates\broken\refund_history.html:134
+msgid "Stock"
+msgstr "Stock"
+
+#: .\templates\lead\lead_detail.html:145
+msgid "Lists"
+msgstr "Listas"
+
+#: .\templates\lead\lead_new.html:165
+msgid "List"
+msgstr "Lista"
+
+#: .\templates\mail\mail_marketing.html:23
+msgid "NEW MAILING"
+msgstr "NUEVO MAILING"
+
+#: .\templates\mail\mail_marketing.html:37
+msgid "Date(Day and hour)"
+msgstr "Fecha de Creacion"
+
+#: .\templates\mail\mailing_new.html:77
+#: .\templates\mail\mailing_detail.html:71
+msgid "Content"
+msgstr "Contenido"
+
+#: .\templates\adjust\adjusts.html:157 .\templates\boxs\boxs.html:151
+#: .\templates\broken\brokens.html:152
+#: .\templates\broken\refund_history.html:156
+#: .\templates\commands\commands.html:171 .\templates\groups\groups.html:155
+#: .\templates\job\jobs.html:144 .\templates\lead\leads.html:179
+#: .\templates\outcome\outcomes.html:157
+#: .\templates\purchase\purchases.html:157 .\templates\stocks\stocks.html:152
+#: .\templates\supplier\suppliers.html:146
+#: .\templates\timesheet\timesheets.html:147
+#: .\templates\transport\transports.html:160
+#: .\templates\trolley\trolleys.html:157
+msgid "Add Favorite"
+msgstr "Añadir favorito"
+
+#: .\templates\adjust\adjusts.html:160 .\templates\boxs\boxs.html:154
+#: .\templates\broken\brokens.html:155
+#: .\templates\broken\refund_history.html:159
+#: .\templates\commands\commands.html:174 .\templates\groups\groups.html:158
+#: .\templates\job\jobs.html:147 .\templates\outcome\outcomes.html:160
+#: .\templates\purchase\purchases.html:160 .\templates\stocks\stocks.html:155
+#: .\templates\supplier\suppliers.html:149
+#: .\templates\timesheet\timesheets.html:150
+#: .\templates\transport\transports.html:163
+#: .\templates\trolley\trolleys.html:160
+msgid "Favorite Name"
+msgstr "Nombre de favoritos"
+
+#: .\templates\adjust\adjusts.html:167 .\templates\boxs\boxs.html:161
+#: .\templates\boxs\boxs.html:214 .\templates\broken\brokens.html:162
+#: .\templates\broken\refund_history.html:166
+#: .\templates\commands\commands.html:181 .\templates\groups\groups.html:165
+#: .\templates\groups\groups.html:218 .\templates\job\jobs.html:154
+#: .\templates\lead\leads.html:189 .\templates\lead\leads.html:243
+#: .\templates\outcome\outcomes.html:167
+#: .\templates\purchase\purchases.html:167 .\templates\stocks\stocks.html:162
+#: .\templates\stocks\stocks.html:215 .\templates\supplier\suppliers.html:156
+#: .\templates\supplier\suppliers.html:210
+#: .\templates\timesheet\timesheets.html:157
+#: .\templates\transport\transports.html:170
+#: .\templates\trolley\trolleys.html:167
+msgid "Close"
+msgstr "Cerrar"
+
+#: .\templates\adjust\adjusts.html:176 .\templates\adjust\adjusts.html:419
+msgid "Add New Adjust"
+msgstr "Añadir nuevo ajuste"
+
+#: .\templates\adjust\adjusts.html:185 .\templates\boxs\boxs.html:253
+#: .\templates\groups\groups.html:257 .\templates\stocks\stocks.html:254
+msgid "Already be adjusted."
+msgstr "Ya se ajusto."
+
+#: .\templates\adjust\adjusts.html:190
+#: .\templates\adjust\ajax_adjust_list.html:13
+#: .\templates\boxs\ajax_box_list.html:15 .\templates\boxs\box_new.html:79
+#: .\templates\boxs\box_new.html:176 .\templates\boxs\boxs.html:258
+#: .\templates\broken\ajax_broken_list.html:12
+#: .\templates\broken\ajax_refund_list.html:13
+#: .\templates\commands\ajax_command_list.html:14
+#: .\templates\commands\ajax_command_new_detail.html:59
+#: .\templates\commands\command_detail.html:49
+#: .\templates\commands\command_detail.html:143
+#: .\templates\commands\command_detail.html:256
+#: .\templates\commands\command_detail.html:348
+#: .\templates\commands\command_new.html:58
+#: .\templates\groups\ajax_group_item_list.html:13
+#: .\templates\groups\ajax_group_list.html:15
+#: .\templates\groups\group_detail.html:107
+#: .\templates\groups\group_new.html:89 .\templates\groups\group_new.html:186
+#: .\templates\groups\groups.html:262
+#: .\templates\job\ajax_candidates_list.html:12
+#: .\templates\job\ajax_job_list.html:13 .\templates\job\job_detail.html:67
+#: .\templates\job\job_detail.html:146 .\templates\job\job_new.html:65
+#: .\templates\lead\ajax_lead_client_list.html:19
+#: .\templates\lead\ajax_lead_list.html:19 .\templates\lead\lead_detail.html:63
+#: .\templates\lead\lead_new.html:80
+#: .\templates\outcome\ajax_outcome_item_list.html:13
+#: .\templates\outcome\ajax_outcome_list.html:13
+#: .\templates\outcome\outcome_detail.html:135
+#: .\templates\outcome\outcome_detail.html:173
+#: .\templates\outcome\outcomes.html:185 .\templates\outcome\pickings.html:87
+#: .\templates\outcome\pickings.html:125
+#: .\templates\purchase\ajax_order_item_list.html:13
+#: .\templates\purchase\ajax_purchase_list.html:13
+#: .\templates\purchase\purchase_detail.html:113
+#: .\templates\purchase\purchase_detail.html:151
+#: .\templates\purchase\purchase_new.html:63
+#: .\templates\purchase\purchases.html:185 .\templates\settings\castor.html:91
+#: .\templates\settings\category.html:91 .\templates\settings\color.html:91
+#: .\templates\settings\drawer_color.html:91
+#: .\templates\settings\location.html:91 .\templates\settings\lock.html:91
+#: .\templates\settings\strip.html:30 .\templates\settings\strip.html:91
+#: .\templates\settings\task.html:91 .\templates\settings\wallstype.html:91
+#: .\templates\stocks\ajax_stock_list.html:15
+#: .\templates\stocks\stock_edit.html:83 .\templates\stocks\stock_edit.html:217
+#: .\templates\stocks\stock_new.html:256 .\templates\stocks\stock_new.html:452
+#: .\templates\stocks\stock_new.html:526
+#: .\templates\stocks\stock_old_new.html:83
+#: .\templates\stocks\stock_old_new.html:217
+#: .\templates\stocks\stock_up.html:88 .\templates\stocks\stock_up.html:221
+#: .\templates\stocks\stocks.html:259
+#: .\templates\supplier\ajax_contact_list.html:22
+#: .\templates\supplier\ajax_nest_table.html:6
+#: .\templates\supplier\supplier_detail.html:65
+#: .\templates\supplier\supplier_new.html:67
+#: .\templates\supplier\supplier_new.html:205
+#: .\templates\supplier\supplier_product.html:173
+#: .\templates\timesheet\ajax_timesheet_list.html:13
+#: .\templates\timesheet\timesheet_detail.html:64
+#: .\templates\transport\ajax_departure_item_list.html:13
+#: .\templates\transport\ajax_transport_new_detail.html:25
+#: .\templates\transport\transport_detail.html:120
+#: .\templates\transport\transport_detail.html:243
+#: .\templates\trolley\ajax_accessories_item_list.html:13
+#: .\templates\trolley\ajax_trolley_item_list.html:13
+#: .\templates\trolley\trolley_detail.html:126
+#: .\templates\trolley\trolley_detail.html:164
+#: .\templates\trolley\trolley_item_add.html:630
+#: .\templates\trolley\trolley_item_add.html:665
+#: .\templates\trolley\trolley_item_add.html:700
+#: .\templates\trolley\trolley_item_add.html:735
+#: .\templates\trolley\trolley_item_add.html:770
+#: .\templates\trolley\trolley_item_add.html:805 .\templates\users.html:39
+msgid "Name"
+msgstr "Nombre"
+
+#: .\templates\adjust\adjusts.html:193 .\templates\boxs\box_new.html:82
+#: .\templates\boxs\box_new.html:179 .\templates\boxs\box_new.html:216
+#: .\templates\boxs\boxs.html:261 .\templates\groups\group_new.html:92
+#: .\templates\groups\group_new.html:189 .\templates\groups\group_new.html:226
+#: .\templates\groups\groups.html:265 .\templates\job\job_new.html:68
+#: .\templates\job\job_new.html:77 .\templates\lead\lead_new.html:83
+#: .\templates\outcome\outcome_detail.html:176
+#: .\templates\outcome\outcomes.html:188 .\templates\outcome\pickings.html:128
+#: .\templates\password_reset_form.html:20 .\templates\profile.html:96
+#: .\templates\profile.html:106 .\templates\profile.html:116
+#: .\templates\purchase\purchase_detail.html:154
+#: .\templates\purchase\purchase_detail.html:213
+#: .\templates\purchase\purchase_detail.html:257
+#: .\templates\purchase\purchase_new.html:66
+#: .\templates\purchase\purchase_new.html:75
+#: .\templates\purchase\purchases.html:188 .\templates\settings\castor.html:94
+#: .\templates\settings\category.html:94 .\templates\settings\color.html:94
+#: .\templates\settings\drawer_color.html:94
+#: .\templates\settings\location.html:94 .\templates\settings\lock.html:94
+#: .\templates\settings\strip.html:94 .\templates\settings\task.html:94
+#: .\templates\settings\wallstype.html:94 .\templates\stocks\stock_edit.html:86
+#: .\templates\stocks\stock_edit.html:220
+#: .\templates\stocks\stock_edit.html:257 .\templates\stocks\stock_new.html:259
+#: .\templates\stocks\stock_new.html:455 .\templates\stocks\stock_new.html:492
+#: .\templates\stocks\stock_new.html:542
+#: .\templates\stocks\stock_old_new.html:86
+#: .\templates\stocks\stock_old_new.html:220
+#: .\templates\stocks\stock_old_new.html:257
+#: .\templates\stocks\stock_up.html:91 .\templates\stocks\stock_up.html:224
+#: .\templates\stocks\stock_up.html:261 .\templates\stocks\stocks.html:262
+#: .\templates\supplier\supplier_new.html:70
+#: .\templates\supplier\supplier_product.html:176
+#: .\templates\trolley\trolley_detail.html:167
+#: .\templates\trolley\trolley_item_add.html:633
+#: .\templates\trolley\trolley_item_add.html:668
+#: .\templates\trolley\trolley_item_add.html:703
+#: .\templates\trolley\trolley_item_add.html:738
+#: .\templates\trolley\trolley_item_add.html:773
+#: .\templates\trolley\trolley_item_add.html:808
+#: .\templates\trolley\trolley_item_add.html:843
+#: .\templates\trolley\trolleys.html:188 .\templates\users.html:121
+#: .\templates\users.html:141 .\templates\users.html:151
+#: .\templates\users.html:202 .\templates\users.html:261
+#: .\templates\users.html:271
+msgid "This field is required."
+msgstr "Este campo es requerido."
+
+#: .\templates\adjust\adjusts.html:209
+#: .\templates\adjust\ajax_adjust_list.html:12
+#: .\templates\broken\brokens.html:191
+#: .\templates\commands\ajax_command_grid.html:49
+#: .\templates\commands\ajax_command_list.html:13
+#: .\templates\commands\command_detail.html:110
+#: .\templates\commands\command_detail.html:317
+#: .\templates\commands\command_new.html:86
+#: .\templates\outcome\ajax_outcome_list.html:12
+#: .\templates\outcome\outcome_detail.html:62
+#: .\templates\outcome\outcome_detail.html:192
+#: .\templates\outcome\outcomes.html:204
+#: .\templates\outcome\picking_detail.html:64
+#: .\templates\outcome\pickings.html:144
+#: .\templates\purchase\ajax_purchase_list.html:12
+#: .\templates\purchase\purchase_detail.html:62
+#: .\templates\purchase\purchase_detail.html:170
+#: .\templates\purchase\purchase_detail.html:204
+#: .\templates\purchase\purchase_detail.html:248
+#: .\templates\purchase\purchases.html:204
+#: .\templates\timesheet\ajax_timesheet_list.html:14
+#: .\templates\timesheet\timesheet_detail.html:54
+#: .\templates\timesheet\timesheet_detail.html:180
+#: .\templates\timesheet\timesheets.html:185
+#: .\templates\trolley\ajax_trolley_list.html:12
+#: .\templates\trolley\trolley_detail.html:62
+#: .\templates\trolley\trolley_detail.html:183
+#: .\templates\trolley\trolley_item_add.html:119
+#: .\templates\trolley\trolleys.html:204
+msgid "Date"
+msgstr "Fecha"
+
+#: .\templates\adjust\adjusts.html:215 .\templates\boxs\boxs.html:267
+#: .\templates\groups\groups.html:271 .\templates\stocks\stocks.html:268
+msgid "Current Quantity"
+msgstr "Cantidad Actual"
+
+#: .\templates\adjust\adjusts.html:219 .\templates\boxs\boxs.html:271
+#: .\templates\groups\groups.html:275 .\templates\stocks\stocks.html:272
+msgid "Adjust Quantity"
+msgstr "Ajuste de cantidad"
+
+#: .\templates\adjust\adjusts.html:225
+#: .\templates\adjust\ajax_adjust_list.html:18
+#: .\templates\boxs\box_new.html:185 .\templates\boxs\box_new.html:222
+#: .\templates\boxs\boxs.html:277 .\templates\broken\ajax_refund_list.html:15
+#: .\templates\broken\brokens.html:203
+#: .\templates\commands\ajax_command_work_history.html:7
+#: .\templates\commands\command_detail.html:225
+#: .\templates\commands\command_detail.html:414
+#: .\templates\commands\command_detail.html:452
+#: .\templates\groups\group_new.html:195 .\templates\groups\group_new.html:232
+#: .\templates\groups\groups.html:281
+#: .\templates\job\ajax_candidates_list.html:13
+#: .\templates\job\ajax_job_list.html:15 .\templates\job\job_detail.html:79
+#: .\templates\job\job_detail.html:152 .\templates\job\job_new.html:83
+#: .\templates\outcome\ajax_outcome_list.html:15
+#: .\templates\outcome\outcome_detail.html:198
+#: .\templates\outcome\outcomes.html:210 .\templates\outcome\pickings.html:150
+#: .\templates\purchase\ajax_purchase_list.html:15
+#: .\templates\purchase\purchase_detail.html:176
+#: .\templates\purchase\purchase_detail.html:219
+#: .\templates\purchase\purchase_detail.html:263
+#: .\templates\purchase\purchase_new.html:81
+#: .\templates\purchase\purchases.html:210 .\templates\settings\castor.html:31
+#: .\templates\settings\castor.html:100 .\templates\settings\category.html:31
+#: .\templates\settings\category.html:100 .\templates\settings\color.html:31
+#: .\templates\settings\color.html:100
+#: .\templates\settings\drawer_color.html:31
+#: .\templates\settings\drawer_color.html:100
+#: .\templates\settings\location.html:31 .\templates\settings\location.html:100
+#: .\templates\settings\lock.html:31 .\templates\settings\lock.html:100
+#: .\templates\settings\strip.html:31 .\templates\settings\strip.html:100
+#: .\templates\settings\task.html:31 .\templates\settings\task.html:100
+#: .\templates\settings\wallstype.html:31
+#: .\templates\settings\wallstype.html:100
+#: .\templates\stocks\stock_edit.html:226
+#: .\templates\stocks\stock_edit.html:263 .\templates\stocks\stock_new.html:461
+#: .\templates\stocks\stock_new.html:498 .\templates\stocks\stock_new.html:548
+#: .\templates\stocks\stock_old_new.html:226
+#: .\templates\stocks\stock_old_new.html:263
+#: .\templates\stocks\stock_up.html:230 .\templates\stocks\stock_up.html:267
+#: .\templates\stocks\stocks.html:278
+#: .\templates\supplier\supplier_product.html:107
+#: .\templates\supplier\supplier_product.html:182
+#: .\templates\timesheet\ajax_timesheet_item_list.html:14
+#: .\templates\transport\ajax_transport_list.html:15
+#: .\templates\transport\transport_new.html:95
+#: .\templates\trolley\ajax_accessories_item_list.html:15
+#: .\templates\trolley\ajax_trolley_list.html:15
+#: .\templates\trolley\trolley_detail.html:189
+#: .\templates\trolley\trolley_item_add.html:584
+#: .\templates\trolley\trolley_item_add.html:639
+#: .\templates\trolley\trolley_item_add.html:674
+#: .\templates\trolley\trolley_item_add.html:709
+#: .\templates\trolley\trolley_item_add.html:744
+#: .\templates\trolley\trolley_item_add.html:779
+#: .\templates\trolley\trolley_item_add.html:814
+#: .\templates\trolley\trolleys.html:210
+msgid "Description"
+msgstr "Descripcion"
+
+#: .\templates\adjust\adjusts.html:234 .\templates\boxs\box_new.html:153
+#: .\templates\boxs\box_new.html:194 .\templates\boxs\box_new.html:231
+#: .\templates\boxs\boxs.html:212 .\templates\boxs\boxs.html:286
+#: .\templates\broken\brokens.html:214
+#: .\templates\commands\command_detail.html:460
+#: .\templates\commands\command_new.html:99
+#: .\templates\groups\group_detail.html:127
+#: .\templates\groups\group_new.html:163 .\templates\groups\group_new.html:204
+#: .\templates\groups\group_new.html:241 .\templates\groups\groups.html:216
+#: .\templates\groups\groups.html:290 .\templates\job\job_detail.html:193
+#: .\templates\job\job_new.html:117 .\templates\lead\lead_detail.html:263
+#: .\templates\lead\lead_new.html:196 .\templates\lead\leads.html:241
+#: .\templates\lead\leads.html:292 .\templates\outcome\outcome_detail.html:155
+#: .\templates\outcome\outcome_detail.html:207
+#: .\templates\outcome\outcomes.html:219 .\templates\outcome\pickings.html:107
+#: .\templates\outcome\pickings.html:159 .\templates\profile.html:125
+#: .\templates\purchase\purchase_detail.html:133
+#: .\templates\purchase\purchase_detail.html:185
+#: .\templates\purchase\purchase_detail.html:229
+#: .\templates\purchase\purchase_detail.html:272
+#: .\templates\purchase\purchase_new.html:94
+#: .\templates\purchase\purchases.html:219 .\templates\settings\castor.html:109
+#: .\templates\settings\category.html:109 .\templates\settings\color.html:109
+#: .\templates\settings\drawer_color.html:109
+#: .\templates\settings\location.html:109 .\templates\settings\lock.html:109
+#: .\templates\settings\strip.html:109 .\templates\settings\task.html:109
+#: .\templates\settings\wallstype.html:109
+#: .\templates\stocks\stock_edit.html:194
+#: .\templates\stocks\stock_edit.html:235
+#: .\templates\stocks\stock_edit.html:272 .\templates\stocks\stock_new.html:366
+#: .\templates\stocks\stock_new.html:470 .\templates\stocks\stock_new.html:507
+#: .\templates\stocks\stock_new.html:556
+#: .\templates\stocks\stock_old_new.html:194
+#: .\templates\stocks\stock_old_new.html:235
+#: .\templates\stocks\stock_old_new.html:272
+#: .\templates\stocks\stock_up.html:198 .\templates\stocks\stock_up.html:239
+#: .\templates\stocks\stock_up.html:276 .\templates\stocks\stocks.html:213
+#: .\templates\stocks\stocks.html:287
+#: .\templates\supplier\supplier_new.html:174
+#: .\templates\supplier\supplier_new.html:233
+#: .\templates\supplier\supplier_product.html:191
+#: .\templates\supplier\suppliers.html:208
+#: .\templates\timesheet\timesheet_detail.html:152
+#: .\templates\timesheet\timesheet_detail.html:188
+#: .\templates\timesheet\timesheets.html:193
+#: .\templates\transport\transport_detail.html:263
+#: .\templates\transport\transport_new.html:110
+#: .\templates\trolley\trolley_detail.html:146
+#: .\templates\trolley\trolley_detail.html:198
+#: .\templates\trolley\trolley_item_add.html:612
+#: .\templates\trolley\trolley_item_add.html:646
+#: .\templates\trolley\trolley_item_add.html:681
+#: .\templates\trolley\trolley_item_add.html:716
+#: .\templates\trolley\trolley_item_add.html:751
+#: .\templates\trolley\trolley_item_add.html:786
+#: .\templates\trolley\trolley_item_add.html:821
+#: .\templates\trolley\trolley_item_add.html:866
+#: .\templates\trolley\trolley_item_add.html:921
+#: .\templates\trolley\trolleys.html:219 .\templates\users.html:160
+#: .\templates\users.html:227 .\templates\users.html:280
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: .\templates\adjust\adjusts.html:235 .\templates\boxs\box_new.html:152
+#: .\templates\boxs\box_new.html:195 .\templates\boxs\box_new.html:232
+#: .\templates\boxs\boxs.html:287 .\templates\broken\brokens.html:215
+#: .\templates\commands\command_detail.html:461
+#: .\templates\commands\command_new.html:98
+#: .\templates\groups\group_detail.html:126
+#: .\templates\groups\group_new.html:162 .\templates\groups\group_new.html:205
+#: .\templates\groups\group_new.html:242 .\templates\groups\groups.html:291
+#: .\templates\job\job_detail.html:192 .\templates\job\job_new.html:116
+#: .\templates\lead\lead_detail.html:264 .\templates\lead\lead_new.html:195
+#: .\templates\outcome\outcome_detail.html:154
+#: .\templates\outcome\outcome_detail.html:208
+#: .\templates\outcome\outcomes.html:220 .\templates\outcome\pickings.html:106
+#: .\templates\outcome\pickings.html:160
+#: .\templates\password_reset_confirm.html:45 .\templates\profile.html:66
+#: .\templates\profile.html:126 .\templates\purchase\purchase_detail.html:132
+#: .\templates\purchase\purchase_detail.html:186
+#: .\templates\purchase\purchase_detail.html:230
+#: .\templates\purchase\purchase_detail.html:273
+#: .\templates\purchase\purchase_new.html:93
+#: .\templates\purchase\purchases.html:220 .\templates\settings\castor.html:108
+#: .\templates\settings\category.html:108 .\templates\settings\color.html:108
+#: .\templates\settings\drawer_color.html:108
+#: .\templates\settings\location.html:108 .\templates\settings\lock.html:108
+#: .\templates\settings\strip.html:108 .\templates\settings\task.html:108
+#: .\templates\settings\wallstype.html:108
+#: .\templates\stocks\stock_edit.html:193
+#: .\templates\stocks\stock_edit.html:236
+#: .\templates\stocks\stock_edit.html:273 .\templates\stocks\stock_new.html:365
+#: .\templates\stocks\stock_new.html:391 .\templates\stocks\stock_new.html:471
+#: .\templates\stocks\stock_new.html:508 .\templates\stocks\stock_new.html:557
+#: .\templates\stocks\stock_old_new.html:193
+#: .\templates\stocks\stock_old_new.html:236
+#: .\templates\stocks\stock_old_new.html:273
+#: .\templates\stocks\stock_up.html:197 .\templates\stocks\stock_up.html:240
+#: .\templates\stocks\stock_up.html:277 .\templates\stocks\stocks.html:288
+#: .\templates\supplier\supplier_new.html:173
+#: .\templates\supplier\supplier_new.html:232
+#: .\templates\supplier\supplier_product.html:190
+#: .\templates\timesheet\timesheet_detail.html:151
+#: .\templates\timesheet\timesheet_detail.html:189
+#: .\templates\timesheet\timesheets.html:194
+#: .\templates\transport\transport_detail.html:262
+#: .\templates\transport\transport_new.html:109
+#: .\templates\trolley\trolley_detail.html:145
+#: .\templates\trolley\trolley_detail.html:199
+#: .\templates\trolley\trolley_item_add.html:311
+#: .\templates\trolley\trolley_item_add.html:611
+#: .\templates\trolley\trolley_item_add.html:647
+#: .\templates\trolley\trolley_item_add.html:682
+#: .\templates\trolley\trolley_item_add.html:717
+#: .\templates\trolley\trolley_item_add.html:752
+#: .\templates\trolley\trolley_item_add.html:787
+#: .\templates\trolley\trolley_item_add.html:822
+#: .\templates\trolley\trolley_item_add.html:867
+#: .\templates\trolley\trolleys.html:220 .\templates\users.html:161
+#: .\templates\users.html:228 .\templates\users.html:281
+msgid "Save"
+msgstr "Guardar"
+
+#: .\templates\adjust\adjusts.html:244
+msgid "DELETE ADJUSTS"
+msgstr "Borrar ajustes"
+
+#: .\templates\adjust\adjusts.html:250 .\templates\boxs\boxs.html:229
+#: .\templates\commands\commands.html:196
+#: .\templates\groups\group_detail.html:142 .\templates\groups\groups.html:233
+#: .\templates\job\job_detail.html:208 .\templates\job\jobs.html:169
+#: .\templates\lead\leads.html:310 .\templates\outcome\outcome_detail.html:223
+#: .\templates\outcome\outcomes.html:235
+#: .\templates\purchase\purchase_detail.html:288
+#: .\templates\purchase\purchases.html:235 .\templates\settings\castor.html:68
+#: .\templates\settings\category.html:68 .\templates\settings\color.html:68
+#: .\templates\settings\drawer_color.html:68
+#: .\templates\settings\location.html:68 .\templates\settings\lock.html:68
+#: .\templates\settings\strip.html:68 .\templates\settings\task.html:68
+#: .\templates\settings\wallstype.html:68 .\templates\stocks\stocks.html:230
+#: .\templates\supplier\supplier_product.html:150
+#: .\templates\supplier\suppliers.html:225
+#: .\templates\timesheet\timesheet_detail.html:204
+#: .\templates\timesheet\timesheets.html:209
+#: .\templates\transport\transport_detail.html:278
+#: .\templates\transport\transports.html:185
+#: .\templates\trolley\trolley_detail.html:214
+#: .\templates\trolley\trolley_item_add.html:882
+#: .\templates\trolley\trolleys.html:235 .\templates\users.html:88
+msgid "Are you sure you want to delete this record?"
+msgstr "Estas seguro que quieres terminar el pedido?"
+
+#: .\templates\adjust\adjusts.html:254 .\templates\boxs\boxs.html:233
+#: .\templates\commands\commands.html:200
+#: .\templates\groups\group_detail.html:146 .\templates\groups\groups.html:237
+#: .\templates\job\job_detail.html:212 .\templates\job\jobs.html:173
+#: .\templates\lead\leads.html:314 .\templates\outcome\outcome_detail.html:227
+#: .\templates\outcome\outcomes.html:239
+#: .\templates\outcome\picking_detail.html:240
+#: .\templates\purchase\purchase_detail.html:292
+#: .\templates\purchase\purchases.html:239 .\templates\settings\castor.html:72
+#: .\templates\settings\category.html:72 .\templates\settings\color.html:72
+#: .\templates\settings\drawer_color.html:72
+#: .\templates\settings\location.html:72 .\templates\settings\lock.html:72
+#: .\templates\settings\strip.html:72 .\templates\settings\task.html:72
+#: .\templates\settings\wallstype.html:72 .\templates\stocks\stocks.html:234
+#: .\templates\supplier\supplier_product.html:154
+#: .\templates\supplier\suppliers.html:229
+#: .\templates\timesheet\timesheet_detail.html:208
+#: .\templates\timesheet\timesheets.html:213
+#: .\templates\transport\transport_detail.html:282
+#: .\templates\transport\transports.html:189
+#: .\templates\trolley\trolley_detail.html:218
+#: .\templates\trolley\trolley_item_add.html:886
+#: .\templates\trolley\trolleys.html:239 .\templates\users.html:92
+msgid "No"
+msgstr "No"
+
+#: .\templates\adjust\adjusts.html:255 .\templates\boxs\boxs.html:234
+#: .\templates\commands\commands.html:201
+#: .\templates\groups\group_detail.html:147 .\templates\groups\groups.html:238
+#: .\templates\job\job_detail.html:213 .\templates\job\jobs.html:174
+#: .\templates\lead\leads.html:315 .\templates\outcome\outcome_detail.html:228
+#: .\templates\outcome\outcomes.html:240
+#: .\templates\outcome\picking_detail.html:241
+#: .\templates\purchase\purchase_detail.html:293
+#: .\templates\purchase\purchases.html:240 .\templates\settings\castor.html:73
+#: .\templates\settings\category.html:73 .\templates\settings\color.html:73
+#: .\templates\settings\drawer_color.html:73
+#: .\templates\settings\location.html:73 .\templates\settings\lock.html:73
+#: .\templates\settings\strip.html:73 .\templates\settings\task.html:73
+#: .\templates\settings\wallstype.html:73 .\templates\stocks\stocks.html:235
+#: .\templates\supplier\supplier_product.html:155
+#: .\templates\supplier\suppliers.html:230
+#: .\templates\timesheet\timesheet_detail.html:209
+#: .\templates\timesheet\timesheets.html:214
+#: .\templates\transport\transport_detail.html:283
+#: .\templates\transport\transports.html:190
+#: .\templates\trolley\trolley_detail.html:219
+#: .\templates\trolley\trolley_item_add.html:887
+#: .\templates\trolley\trolley_item_add.html:922
+#: .\templates\trolley\trolleys.html:240 .\templates\users.html:93
+msgid "Yes"
+msgstr "Si"
+
+#: .\templates\adjust\ajax_adjust_grid.html:23
+msgid "Adjusted Date"
+msgstr "Ajustar fecha"
+
+#: .\templates\adjust\ajax_adjust_grid.html:42
+#: .\templates\adjust\ajax_adjust_list.html:16
+msgid "Origin Qt"
+msgstr "Cantidad de origine"
+
+#: .\templates\adjust\ajax_adjust_grid.html:45
+#: .\templates\adjust\ajax_adjust_list.html:17
+msgid "Adjusted Qt"
+msgstr "Ajustar cantidad"
+
+#: .\templates\adjust\ajax_adjust_grid.html:48
+#: .\templates\adjust\ajax_adjust_list.html:19
+msgid "Adjusted By"
+msgstr "Ajustado por"
+
+#: .\templates\adjust\ajax_adjust_list.html:14
+#: .\templates\boxs\ajax_box_list.html:13
+#: .\templates\broken\ajax_broken_list.html:10
+#: .\templates\broken\ajax_refund_list.html:11
+#: .\templates\commands\ajax_command_list.html:15
+#: .\templates\commands\ajax_command_new_detail.html:57
+#: .\templates\commands\command_detail.html:141
+#: .\templates\commands\command_detail.html:346
+#: .\templates\groups\ajax_group_item_list.html:11
+#: .\templates\groups\ajax_group_list.html:13
+#: .\templates\job\ajax_candidates_list.html:11
+#: .\templates\job\ajax_job_list.html:12
+#: .\templates\lead\ajax_lead_client_list.html:18
+#: .\templates\lead\ajax_lead_list.html:18
+#: .\templates\outcome\ajax_outcome_item_list.html:11
+#: .\templates\purchase\ajax_order_item_list.html:11
+#: .\templates\stocks\ajax_stock_list.html:13
+#: .\templates\supplier\ajax_contact_list.html:21
+#: .\templates\timesheet\ajax_timesheet_item_list.html:11
+#: .\templates\timesheet\ajax_timesheet_list.html:12
+#: .\templates\transport\ajax_departure_item_list.html:11
+#: .\templates\transport\ajax_transport_new_detail.html:23
+#: .\templates\transport\transport_detail.html:118
+#: .\templates\trolley\ajax_accessories_item_list.html:11
+#: .\templates\trolley\ajax_trolley_item_list.html:11
+msgid "Picture"
+msgstr "Foto"
+
+#: .\templates\adjust\ajax_adjust_list.html:77
+msgid "Edit Adjust"
+msgstr "Editas ajustes"
+
+#: .\templates\base.html:62
+msgid "Odoo 12.0+e Version Enterprise"
+msgstr "Odoo 12.0 + e Versión Enterprise"
+
+#: .\templates\base.html:101
+msgid "Dashboard"
+msgstr "Menu"
+
+#: .\templates\base.html:107 .\templates\base.html:112
+#: .\templates\dashboard.html:17 .\templates\supplier\supplier_detail.html:50
+#: .\templates\supplier\suppliers.html:50
+msgid "Suppliers"
+msgstr "Proveedores"
+
+#: .\templates\base.html:117 .\templates\base.html:132
+#: .\templates\dashboard.html:46 .\templates\lead\lead_detail.html:138
+#: .\templates\lead\lead_new.html:150 .\templates\stocks\stock_edit.html:28
+#: .\templates\stocks\stock_new.html:199
+#: .\templates\stocks\stock_old_new.html:28 .\templates\stocks\stock_up.html:33
+#: .\templates\stocks\stocks.html:52
+#: .\templates\supplier\supplier_detail.html:128
+#: .\templates\supplier\supplier_new.html:130
+#: .\templates\supplier\supplier_product.html:106
+msgid "Products"
+msgstr "Productos"
+
+#: .\templates\base.html:126 .\templates\dashboard.html:32
+#: .\templates\lead\lead_detail.html:49 .\templates\lead\lead_new.html:37
+#: .\templates\lead\leads.html:57 .\templates\lead\leads.html:120
+msgid "Leads"
+msgstr "Leads"
+
+#: .\templates\base.html:138 .\templates\broken\ajax_broken_detail_list.html:10
+#: .\templates\dashboard.html:107 .\templates\purchase\purchases.html:58
+#: .\templates\transport\ajax_transport_grid.html:38
+msgid "Purchase"
+msgstr "Compra"
+
+#: .\templates\base.html:144 .\templates\dashboard.html:122
+#: .\templates\transport\transport_detail.html:37
+#: .\templates\transport\transports.html:58
+msgid "Transport"
+msgstr "Transporte"
+
+#: .\templates\base.html:150
+msgid "Manufacturing"
+msgstr "Fabricación"
+
+#: .\templates\base.html:154 .\templates\dashboard.html:62
+#: .\templates\groups\group_detail.html:19 .\templates\groups\groups.html:55
+msgid "Groups"
+msgstr "Grupos"
+
+#: .\templates\base.html:157 .\templates\dashboard.html:77
+msgid "Command"
+msgstr "Instrucción"
+
+#: .\templates\base.html:164
+msgid "Outcome"
+msgstr "Salidas"
+
+#: .\templates\base.html:169 .\templates\dashboard.html:92
+#: .\templates\outcome\outcome_detail.html:37
+#: .\templates\outcome\outcomes.html:58
+#: .\templates\outcome\picking_detail.html:37
+#: .\templates\trolley\trolley_detail.html:37
+#: .\templates\trolley\trolley_item_add.html:73
+msgid "Orders"
+msgstr "Pedidos"
+
+#: .\templates\base.html:174 .\templates\outcome\pickings.html:48
+msgid "Picking"
+msgstr "Picking"
+
+#: .\templates\base.html:182
+msgid "Trolley"
+msgstr "Carros"
+
+#: .\templates\base.html:194
+msgid "Job offer"
+msgstr "Oferta de trabajo"
+
+#: .\templates\base.html:200 .\templates\base.html:206
+msgid "Time Sheet"
+msgstr "TIempo de hoja"
+
+#: .\templates\base.html:212
+msgid "Settings"
+msgstr "Ajustes"
+
+#: .\templates\base.html:216 .\templates\boxs\ajax_box_list.html:20
+#: .\templates\boxs\box_new.html:133 .\templates\boxs\boxs.html:138
+#: .\templates\broken\ajax_broken_list.html:14
+#: .\templates\broken\ajax_refund_list.html:14
+#: .\templates\commands\ajax_command_list.html:19
+#: .\templates\commands\ajax_command_new_detail.html:39
+#: .\templates\commands\ajax_command_new_detail.html:63
+#: .\templates\commands\command_detail.html:94
+#: .\templates\commands\command_detail.html:146
+#: .\templates\commands\command_detail.html:301
+#: .\templates\commands\command_detail.html:351
+#: .\templates\commands\commands.html:158 .\templates\dashboard.html:138
+#: .\templates\groups\ajax_group_item_list.html:18
+#: .\templates\groups\ajax_group_list.html:21
+#: .\templates\groups\group_new.html:143 .\templates\groups\groups.html:142
+#: .\templates\job\ajax_job_grid.html:40 .\templates\job\ajax_job_list.html:14
+#: .\templates\job\job_detail.html:73 .\templates\job\job_new.html:74
+#: .\templates\job\jobs.html:132
+#: .\templates\outcome\ajax_outcome_item_list.html:17
+#: .\templates\purchase\ajax_order_item_list.html:14
+#: .\templates\purchase\purchase_new.html:72
+#: .\templates\settings\category.html:16 .\templates\settings\category.html:30
+#: .\templates\stocks\ajax_stock_list.html:20
+#: .\templates\stocks\stock_edit.html:137 .\templates\stocks\stock_new.html:310
+#: .\templates\stocks\stock_old_new.html:137
+#: .\templates\stocks\stock_up.html:142 .\templates\stocks\stocks.html:139
+#: .\templates\transport\ajax_departure_item_list.html:14
+#: .\templates\transport\ajax_transport_new_detail.html:26
+#: .\templates\transport\transport_detail.html:121
+msgid "Category"
+msgstr "Categoria"
+
+#: .\templates\base.html:219 .\templates\settings\location.html:16
+msgid "Locations"
+msgstr "Posición"
+
+#: .\templates\base.html:222 .\templates\boxs\boxs.html:52
+msgid "Box Container"
+msgstr "Caja"
+
+#: .\templates\base.html:225 .\templates\settings\wallstype.html:30
+#: .\templates\trolley\ajax_trolley_item_list.html:15
+#: .\templates\trolley\trolley_item_add.html:173
+msgid "Type inside walls"
+msgstr "Tipo de paredes"
+
+#: .\templates\base.html:228 .\templates\settings\castor.html:16
+#: .\templates\trolley\ajax_trolley_item_list.html:16
+#: .\templates\trolley\trolley_item_add.html:189
+msgid "Castors"
+msgstr "Ruedas"
+
+#: .\templates\base.html:231 .\templates\settings\color.html:16
+msgid "Colors of the Sides"
+msgstr "Color de los laterales"
+
+#: .\templates\base.html:234
+msgid "Colors of the Drawers"
+msgstr "Color de los cajones"
+
+#: .\templates\base.html:237 .\templates\settings\strip.html:16
+#: .\templates\trolley\trolley_item_add.html:237
+msgid "Strips"
+msgstr "Tiras"
+
+#: .\templates\base.html:240 .\templates\settings\lock.html:16
+#: .\templates\settings\lock.html:30
+#: .\templates\trolley\trolley_item_add.html:253
+msgid "Lock"
+msgstr "Cerradura"
+
+#: .\templates\base.html:243 .\templates\settings\task.html:16
+#: .\templates\settings\task.html:30
+#: .\templates\timesheet\ajax_timesheet_item_list.html:13
+#: .\templates\timesheet\timesheet_detail.html:127
+msgid "Task"
+msgstr "Tarea"
+
+#: .\templates\base.html:250 .\templates\profile.html:26
+msgid "My Profile"
+msgstr "Mi perfil"
+
+#: .\templates\base.html:258 .\templates\users.html:23
+msgid "Registered Users"
+msgstr "Usuarios Registrados"
+
+#: .\templates\base.html:265
+msgid "Log Out"
+msgstr "Cerrar sesión"
+
+#: .\templates\boxs\ajax_box_grid.html:44
+#: .\templates\boxs\ajax_box_list.html:17 .\templates\boxs\box_new.html:100
+#: .\templates\boxs\box_new.html:213
+#: .\templates\broken\ajax_broken_list.html:13
+#: .\templates\commands\ajax_command_new_detail.html:62
+#: .\templates\commands\command_detail.html:145
+#: .\templates\commands\command_detail.html:350
+#: .\templates\groups\ajax_group_grid.html:44
+#: .\templates\groups\ajax_group_item_grid.html:40
+#: .\templates\groups\ajax_group_item_list.html:15
+#: .\templates\groups\ajax_group_list.html:17
+#: .\templates\groups\group_new.html:110 .\templates\groups\group_new.html:223
+#: .\templates\outcome\ajax_outcome_item_grid.html:45
+#: .\templates\outcome\ajax_outcome_item_list.html:14
+#: .\templates\outcome\picking_detail.html:195
+#: .\templates\outcome\pickings_list.html:124
+#: .\templates\settings\location.html:30
+#: .\templates\stocks\ajax_stock_grid.html:47
+#: .\templates\stocks\ajax_stock_list.html:17
+#: .\templates\stocks\stock_edit.html:104
+#: .\templates\stocks\stock_edit.html:254 .\templates\stocks\stock_new.html:277
+#: .\templates\stocks\stock_new.html:489
+#: .\templates\stocks\stock_old_new.html:104
+#: .\templates\stocks\stock_old_new.html:254
+#: .\templates\stocks\stock_up.html:109 .\templates\stocks\stock_up.html:258
+#: .\templates\trolley\ajax_accessories_item_grid.html:48
+#: .\templates\trolley\ajax_accessories_item_list.html:14
+#: .\templates\trolley\ajax_trolley_item_grid.html:50
+#: .\templates\trolley\ajax_trolley_item_list.html:14
+msgid "Location"
+msgstr "Posición"
+
+#: .\templates\boxs\ajax_box_grid.html:52
+#: .\templates\boxs\ajax_box_list.html:18
+#: .\templates\groups\ajax_group_grid.html:52
+#: .\templates\groups\ajax_group_item_grid.html:48
+#: .\templates\groups\ajax_group_item_list.html:16
+#: .\templates\groups\ajax_group_list.html:18
+#: .\templates\outcome\ajax_outcome_item_grid.html:53
+#: .\templates\outcome\ajax_outcome_item_list.html:15
+#: .\templates\outcome\picking_detail.html:177
+#: .\templates\outcome\pickings_list.html:106
+#: .\templates\stocks\ajax_stock_grid.html:55
+#: .\templates\stocks\ajax_stock_list.html:18
+#: .\templates\trolley\ajax_accessories_item_grid.html:56
+#: .\templates\trolley\ajax_trolley_item_grid.html:58
+msgid "Size"
+msgstr "Medidas"
+
+#: .\templates\boxs\ajax_box_grid.html:60
+#: .\templates\boxs\ajax_box_list.html:19 .\templates\boxs\box_new.html:127
+#: .\templates\groups\ajax_group_grid.html:60
+#: .\templates\groups\ajax_group_item_grid.html:56
+#: .\templates\groups\ajax_group_item_list.html:17
+#: .\templates\groups\ajax_group_list.html:19
+#: .\templates\groups\group_new.html:137
+#: .\templates\outcome\ajax_outcome_grid.html:52
+#: .\templates\outcome\ajax_outcome_item_grid.html:61
+#: .\templates\outcome\ajax_outcome_item_list.html:16
+#: .\templates\outcome\ajax_outcome_list.html:17
+#: .\templates\outcome\picking_detail.html:185
+#: .\templates\outcome\pickings_list.html:46
+#: .\templates\outcome\pickings_list.html:114
+#: .\templates\stocks\ajax_stock_grid.html:63
+#: .\templates\stocks\ajax_stock_list.html:19
+#: .\templates\stocks\stock_edit.html:131 .\templates\stocks\stock_new.html:304
+#: .\templates\stocks\stock_old_new.html:131
+#: .\templates\stocks\stock_up.html:136
+#: .\templates\trolley\ajax_trolley_item_grid.html:66
+msgid "Weight"
+msgstr "Peso"
+
+#: .\templates\boxs\ajax_box_list.html:14 .\templates\boxs\box_new.html:73
+#: .\templates\broken\ajax_broken_list.html:11
+#: .\templates\broken\ajax_refund_list.html:12
+#: .\templates\commands\ajax_command_list.html:16
+#: .\templates\commands\ajax_command_new_detail.html:23
+#: .\templates\commands\ajax_command_new_detail.html:58
+#: .\templates\commands\command_detail.html:78
+#: .\templates\commands\command_detail.html:142
+#: .\templates\commands\command_detail.html:285
+#: .\templates\commands\command_detail.html:347
+#: .\templates\groups\ajax_group_item_list.html:12
+#: .\templates\groups\ajax_group_list.html:14
+#: .\templates\groups\group_detail.html:48 .\templates\groups\group_new.html:83
+#: .\templates\outcome\ajax_outcome_item_grid.html:31
+#: .\templates\outcome\ajax_outcome_item_list.html:12
+#: .\templates\outcome\picking_detail.html:160
+#: .\templates\outcome\pickings_list.html:89
+#: .\templates\purchase\ajax_order_item_grid.html:31
+#: .\templates\purchase\ajax_order_item_list.html:12
+#: .\templates\stocks\ajax_stock_list.html:14
+#: .\templates\stocks\stock_edit.html:77 .\templates\stocks\stock_new.html:250
+#: .\templates\stocks\stock_new.html:403
+#: .\templates\stocks\stock_old_new.html:77 .\templates\stocks\stock_up.html:82
+#: .\templates\timesheet\ajax_timesheet_item_grid.html:31
+#: .\templates\timesheet\ajax_timesheet_item_list.html:12
+#: .\templates\timesheet\timesheet_detail.html:117
+#: .\templates\transport\ajax_departure_item_grid.html:31
+#: .\templates\transport\ajax_departure_item_list.html:12
+#: .\templates\transport\ajax_transport_new_detail.html:24
+#: .\templates\transport\transport_detail.html:119
+#: .\templates\trolley\ajax_accessories_item_grid.html:31
+#: .\templates\trolley\ajax_accessories_item_list.html:12
+#: .\templates\trolley\ajax_trolley_item_grid.html:36
+#: .\templates\trolley\ajax_trolley_item_list.html:12
+msgid "Ref"
+msgstr "Referencia"
+
+#: .\templates\boxs\ajax_box_list.html:16 .\templates\broken\brokens.html:197
+#: .\templates\commands\ajax_command_list.html:18
+#: .\templates\commands\ajax_command_new_detail.html:31
+#: .\templates\commands\ajax_command_new_detail.html:60
+#: .\templates\commands\command_detail.html:86
+#: .\templates\commands\command_detail.html:293
+#: .\templates\commands\command_new.html:74
+#: .\templates\groups\ajax_group_item_list.html:14
+#: .\templates\groups\ajax_group_list.html:16
+#: .\templates\groups\group_detail.html:117
+#: .\templates\outcome\ajax_outcome_item_list.html:18
+#: .\templates\outcome\outcome_detail.html:145
+#: .\templates\outcome\pickings.html:97
+#: .\templates\purchase\ajax_order_item_list.html:15
+#: .\templates\purchase\purchase_detail.html:123
+#: .\templates\purchase\purchase_detail.html:210
+#: .\templates\purchase\purchase_detail.html:254
+#: .\templates\stocks\ajax_stock_list.html:16
+#: .\templates\transport\ajax_departure_item_list.html:15
+#: .\templates\transport\ajax_transport_new_detail.html:27
+#: .\templates\transport\transport_detail.html:122
+#: .\templates\transport\transport_detail.html:253
+#: .\templates\trolley\ajax_accessories_item_list.html:18
+#: .\templates\trolley\ajax_trolley_item_list.html:19
+#: .\templates\trolley\trolley_detail.html:136
+#: .\templates\trolley\trolley_item_add.html:578
+msgid "Quantity"
+msgstr "Cantidad"
+
+#: .\templates\boxs\box_new.html:28
+msgid "Edit Box Container"
+msgstr "Editar caja"
+
+#: .\templates\boxs\box_new.html:28
+msgid "Add New Box Container"
+msgstr "Añadir caja"
+
+#: .\templates\boxs\box_new.html:88 .\templates\groups\group_detail.html:38
+#: .\templates\groups\group_new.html:98 .\templates\stocks\stock_edit.html:92
+#: .\templates\stocks\stock_new.html:265 .\templates\stocks\stock_new.html:378
+#: .\templates\stocks\stock_old_new.html:92 .\templates\stocks\stock_up.html:97
+msgid "Initial Quantity"
+msgstr "Cantidad Inicial"
+
+#: .\templates\boxs\box_new.html:94 .\templates\groups\group_new.html:104
+#: .\templates\stocks\stock_edit.html:98 .\templates\stocks\stock_new.html:271
+#: .\templates\stocks\stock_new.html:384
+#: .\templates\stocks\stock_old_new.html:98
+#: .\templates\stocks\stock_up.html:103
+msgid "Minium Quantity"
+msgstr "Cantidad Minima"
+
+#: .\templates\boxs\box_new.html:110 .\templates\boxs\box_new.html:142
+#: .\templates\groups\group_new.html:120 .\templates\groups\group_new.html:152
+#: .\templates\lead\lead_new.html:38 .\templates\stocks\stock_edit.html:29
+#: .\templates\stocks\stock_edit.html:114
+#: .\templates\stocks\stock_edit.html:146 .\templates\stocks\stock_new.html:200
+#: .\templates\stocks\stock_new.html:287 .\templates\stocks\stock_new.html:319
+#: .\templates\stocks\stock_old_new.html:29
+#: .\templates\stocks\stock_old_new.html:114
+#: .\templates\stocks\stock_old_new.html:146
+#: .\templates\stocks\stock_up.html:119 .\templates\stocks\stock_up.html:151
+#: .\templates\supplier\supplier_new.html:184
+#: .\templates\trolley\trolley_item_add.html:184
+#: .\templates\trolley\trolley_item_add.html:200
+#: .\templates\trolley\trolley_item_add.html:216
+#: .\templates\trolley\trolley_item_add.html:232
+#: .\templates\trolley\trolley_item_add.html:248
+#: .\templates\trolley\trolley_item_add.html:264
+msgid "Add"
+msgstr "Añadir"
+
+#: .\templates\boxs\box_new.html:115 .\templates\groups\group_new.html:125
+#: .\templates\stocks\stock_edit.html:119 .\templates\stocks\stock_new.html:292
+#: .\templates\stocks\stock_old_new.html:119
+#: .\templates\stocks\stock_up.html:124
+msgid "Width"
+msgstr "Ancho"
+
+#: .\templates\boxs\box_new.html:119 .\templates\groups\group_new.html:129
+#: .\templates\stocks\stock_edit.html:123 .\templates\stocks\stock_new.html:296
+#: .\templates\stocks\stock_old_new.html:123
+#: .\templates\stocks\stock_up.html:128
+msgid "Height"
+msgstr "Alto"
+
+#: .\templates\boxs\box_new.html:123 .\templates\groups\group_new.html:133
+#: .\templates\stocks\stock_edit.html:127 .\templates\stocks\stock_new.html:300
+#: .\templates\stocks\stock_old_new.html:127
+#: .\templates\stocks\stock_up.html:132
+msgid "Depth"
+msgstr "Fondo"
+
+#: .\templates\boxs\box_new.html:167
+#: .\templates\commands\command_detail.html:443
+#: .\templates\groups\group_new.html:177 .\templates\stocks\stock_edit.html:208
+#: .\templates\stocks\stock_new.html:443
+#: .\templates\stocks\stock_old_new.html:208
+#: .\templates\stocks\stock_up.html:212
+msgid "ADD CATEGORY"
+msgstr "Añadir categoria"
+
+#: .\templates\boxs\box_new.html:204 .\templates\groups\group_new.html:214
+#: .\templates\stocks\stock_edit.html:245 .\templates\stocks\stock_new.html:480
+#: .\templates\stocks\stock_old_new.html:245
+#: .\templates\stocks\stock_up.html:249
+msgid "ADD LOCATION"
+msgstr "Añadir Posición"
+
+#: .\templates\boxs\boxs.html:100 .\templates\groups\groups.html:103
+#: .\templates\lead\leads.html:105 .\templates\stocks\stocks.html:100
+#: .\templates\supplier\suppliers.html:98
+msgid "IMPORT"
+msgstr "IMPORTAR"
+
+#: .\templates\boxs\boxs.html:125 .\templates\groups\groups.html:129
+#: .\templates\stocks\stocks.html:126
+msgid "Less than Minium"
+msgstr "Menos del minimo"
+
+#: .\templates\boxs\boxs.html:129 .\templates\groups\groups.html:133
+#: .\templates\stocks\stocks.html:130
+msgid "Greater than Minium"
+msgstr "Mayor que el minimo"
+
+#: .\templates\boxs\boxs.html:133 .\templates\commands\commands.html:142
+#: .\templates\groups\groups.html:137 .\templates\stocks\stocks.html:134
+msgid "Quantity Range"
+msgstr "Rango de cantidad"
+
+#: .\templates\boxs\boxs.html:170 .\templates\groups\groups.html:174
+#: .\templates\lead\leads.html:198 .\templates\stocks\stocks.html:171
+#: .\templates\supplier\suppliers.html:165
+msgid "Import CSV"
+msgstr "Importar CSV"
+
+#: .\templates\boxs\boxs.html:179 .\templates\groups\groups.html:183
+#: .\templates\stocks\stocks.html:180
+msgid ""
+"CSV file should have Ref, Name, Quantity, Minium, Location, Width, Height, "
+"Depth, Weight, Category."
+msgstr ""
+"CSV deben contener Ref, Name, Quantity, Minium, Location, Width, Height, "
+"Depth, Weight, Category."
+
+#: .\templates\boxs\boxs.html:180 .\templates\groups\groups.html:184
+#: .\templates\stocks\stocks.html:181
+msgid "Category' name should be equal to name of Settings/Category page."
+msgstr ""
+"Nombre de Category debe ser igual al nombre en pagina de Ajustes/Categoria"
+
+#: .\templates\boxs\boxs.html:181 .\templates\groups\groups.html:185
+#: .\templates\stocks\stocks.html:182
+msgid "Location's name should be equal to name of Settings/Location page."
+msgstr ""
+"Nombre de Posición debe ser igual al nombre en pagina de Ajustes/Posición"
+
+#: .\templates\boxs\boxs.html:200 .\templates\groups\groups.html:204
+#: .\templates\lead\leads.html:229 .\templates\stocks\stocks.html:201
+#: .\templates\supplier\suppliers.html:196
+msgid "please click csv icon"
+msgstr "Porfavor clic en icono csv"
+
+#: .\templates\boxs\boxs.html:205 .\templates\groups\groups.html:209
+#: .\templates\lead\leads.html:234 .\templates\stocks\stocks.html:206
+#: .\templates\supplier\suppliers.html:201
+msgid "Result"
+msgstr "Resultado"
+
+#: .\templates\boxs\boxs.html:213 .\templates\groups\groups.html:217
+#: .\templates\lead\leads.html:242 .\templates\stocks\stocks.html:214
+#: .\templates\supplier\suppliers.html:209
+msgid "Submit"
+msgstr "Enviar"
+
+#: .\templates\boxs\boxs.html:223
+msgid "DELETE BOXES"
+msgstr "Borrar caja"
+
+#: .\templates\boxs\boxs.html:243 .\templates\groups\groups.html:247
+#: .\templates\stocks\stocks.html:244
+msgid "Adjustment"
+msgstr "Ajustes"
+
+#: .\templates\boxs\boxs.html:558 .\templates\groups\groups.html:562
+#: .\templates\lead\leads.html:489 .\templates\stocks\stocks.html:560
+#: .\templates\supplier\suppliers.html:404
+msgid "You must select csv file"
+msgstr "Debe seleccionar el fichero CSV"
+
+#: .\templates\boxs\boxs.html:574 .\templates\groups\groups.html:578
+#: .\templates\stocks\stocks.html:576
+msgid ""
+"Your csv file must have Ref, Name, Quantity, Minium, Location, Width, "
+"Height, Depth, Weight, Category"
+msgstr ""
+"CSV deben contener Ref, Name, Quantity, Minium, Location, Width, Height, "
+"Depth, Weight, Category"
+
+#: .\templates\boxs\boxs.html:580 .\templates\groups\groups.html:584
+#: .\templates\lead\leads.html:511 .\templates\stocks\stocks.html:582
+#: .\templates\supplier\suppliers.html:426
+msgid "Total Record"
+msgstr "Total registros"
+
+#: .\templates\boxs\boxs.html:580 .\templates\groups\groups.html:584
+#: .\templates\lead\leads.html:511 .\templates\stocks\stocks.html:582
+#: .\templates\supplier\suppliers.html:426
+msgid "Success"
+msgstr "Exito"
+
+#: .\templates\boxs\boxs.html:580 .\templates\groups\groups.html:584
+#: .\templates\lead\leads.html:511 .\templates\stocks\stocks.html:582
+#: .\templates\supplier\suppliers.html:426
+msgid "Failed"
+msgstr "Fallo"
+
+#: .\templates\boxs\boxs.html:580 .\templates\groups\groups.html:584
+#: .\templates\lead\leads.html:511 .\templates\stocks\stocks.html:582
+#: .\templates\supplier\suppliers.html:426
+msgid "Update"
+msgstr "Actualizar"
+
+#: .\templates\broken\ajax_broken_detail_list.html:11
+msgid "Orderd Date"
+msgstr "Fecha de la orden"
+
+#: .\templates\broken\ajax_broken_detail_list.html:12
+msgid "Income Date"
+msgstr "Fecha de entrada"
+
+#: .\templates\broken\ajax_broken_detail_list.html:13
+#: .\templates\purchase\ajax_order_item_grid.html:45
+msgid "Income Qt"
+msgstr "Cantidad entrada"
+
+#: .\templates\broken\ajax_broken_detail_list.html:14
+msgid "Valid Date"
+msgstr "Fecha de validación"
+
+#: .\templates\broken\ajax_broken_detail_list.html:15
+#: .\templates\purchase\ajax_order_item_grid.html:55
+msgid "Valid Qt"
+msgstr "Cantidad de validación"
+
+#: .\templates\broken\ajax_broken_detail_list.html:16
+msgid "Broken Qt"
+msgstr "Cantidad estropeada"
+
+#: .\templates\broken\ajax_broken_list.html:9
+#: .\templates\broken\ajax_refund_list.html:10
+#: .\templates\broken\broken_detail.html:25 .\templates\broken\brokens.html:140
+#: .\templates\broken\brokens.html:180
+#: .\templates\broken\refund_history.html:144
+#: .\templates\purchase\ajax_purchase_grid.html:31
+#: .\templates\purchase\ajax_purchase_list.html:14
+#: .\templates\purchase\purchase_detail.html:52
+#: .\templates\purchase\purchase_detail.html:160
+#: .\templates\purchase\purchases.html:145
+#: .\templates\purchase\purchases.html:194
+#: .\templates\transport\ajax_transport_grid.html:30
+#: .\templates\transport\ajax_transport_list.html:12
+#: .\templates\transport\ajax_transport_new_detail.html:6
+#: .\templates\transport\transport_detail.html:61
+#: .\templates\transport\transports.html:148
+msgid "Supplier"
+msgstr "Proovedores"
+
+#: .\templates\broken\ajax_broken_list.html:15
+msgid "Broken Quantity"
+msgstr "Cantidad estropeada"
+
+#: .\templates\broken\ajax_broken_list.html:37
+msgid "Refund"
+msgstr "Reembolso"
+
+#: .\templates\broken\ajax_refund_list.html:9
+msgid "Refund Date"
+msgstr "Fecha de reembolso"
+
+#: .\templates\broken\ajax_refund_list.html:16
+msgid "Refund Qt"
+msgstr "Cantidad reembolsada"
+
+#: .\templates\broken\broken_detail.html:16 .\templates\broken\brokens.html:58
+msgid "Brokens"
+msgstr "Estropeados"
+
+#: .\templates\broken\brokens.html:105
+#: .\templates\broken\refund_history.html:58
+msgid "Refund History"
+msgstr "Historial de reembolso"
+
+#: .\templates\broken\brokens.html:171
+msgid "Refund Broken Stocks"
+msgstr "Estropeados reembolsados"
+
+#: .\templates\commands\ajax_command_grid.html:22
+#: .\templates\commands\ajax_command_list.html:47
+#: .\templates\commands\command_detail.html:184
+#: .\templates\commands\command_detail.html:481
+#: .\templates\commands\commands.html:130
+msgid "In Progress"
+msgstr "En proceso"
+
+#: .\templates\commands\ajax_command_grid.html:24
+#: .\templates\commands\ajax_command_list.html:49
+#: .\templates\commands\command_detail.html:188
+#: .\templates\commands\command_detail.html:520
+msgid "Paused"
+msgstr "Parado"
+
+#: .\templates\commands\ajax_command_grid.html:26
+#: .\templates\commands\ajax_command_list.html:51
+#: .\templates\commands\command_detail.html:192
+#: .\templates\commands\command_detail.html:501
+#: .\templates\commands\commands.html:134
+#: .\templates\outcome\picking_detail.html:41
+#: .\templates\outcome\picking_detail.html:214
+#: .\templates\trolley\ajax_trolley_item_grid.html:22
+#: .\templates\trolley\ajax_trolley_item_list.html:47
+#: .\templates\trolley\trolley_item_add.html:133
+msgid "Finished"
+msgstr "Terminado"
+
+#: .\templates\commands\ajax_command_grid.html:43
+#: .\templates\transport\ajax_departure_item_grid.html:34
+#: .\templates\trolley\ajax_accessories_item_grid.html:34
+msgid "Qt"
+msgstr "Cantidad"
+
+#: .\templates\commands\ajax_command_grid.html:46
+#: .\templates\commands\ajax_command_list.html:20
+#: .\templates\commands\command_detail.html:102
+#: .\templates\commands\command_detail.html:309
+#: .\templates\commands\command_new.html:80
+#: .\templates\commands\commands.html:147
+msgid "Worker"
+msgstr "Trabajador"
+
+#: .\templates\commands\ajax_command_list.html:17
+#: .\templates\commands\command_detail.html:58
+#: .\templates\commands\command_detail.html:265
+#: .\templates\commands\command_new.html:64
+msgid "Product Name"
+msgstr "Nombre de producto"
+
+#: .\templates\commands\ajax_command_list.html:21
+#: .\templates\trolley\ajax_trolley_item_list.html:20
+msgid "Status"
+msgstr "Estado"
+
+#: .\templates\commands\ajax_command_new_detail.html:51
+msgid "You can't manufature this Product!"
+msgstr "No puedes fabricar este producto"
+
+#: .\templates\commands\ajax_command_new_detail.html:61
+#: .\templates\commands\command_detail.html:144
+#: .\templates\commands\command_detail.html:349
+msgid "Required"
+msgstr "Requerido"
+
+#: .\templates\commands\ajax_command_work_history.html:5
+#: .\templates\commands\command_detail.html:223
+#: .\templates\commands\command_detail.html:412 .\templates\lead\leads.html:262
+#: .\templates\timesheet\timesheet_detail.html:138
+msgid "From"
+msgstr "De"
+
+#: .\templates\commands\ajax_command_work_history.html:6
+#: .\templates\commands\command_detail.html:224
+#: .\templates\commands\command_detail.html:413 .\templates\lead\leads.html:268
+#: .\templates\timesheet\timesheet_detail.html:142
+msgid "To"
+msgstr "Para"
+
+#: .\templates\commands\ajax_command_work_history.html:8
+#: .\templates\commands\command_detail.html:226
+#: .\templates\commands\command_detail.html:415
+msgid "Duaration"
+msgstr "Duracion"
+
+#: .\templates\commands\command_detail.html:31
+#: .\templates\commands\commands.html:57
+msgid "Commands"
+msgstr "Instrucciones"
+
+#: .\templates\commands\command_detail.html:35
+#: .\templates\groups\group_detail.html:22 .\templates\job\job_detail.html:56
+#: .\templates\lead\lead_detail.html:52
+#: .\templates\outcome\outcome_detail.html:40
+#: .\templates\purchase\purchase_detail.html:40
+#: .\templates\supplier\supplier_detail.html:53
+#: .\templates\timesheet\timesheet_detail.html:42
+#: .\templates\transport\transport_detail.html:40
+#: .\templates\trolley\trolley_detail.html:40
+msgid "EDIT"
+msgstr "Editar"
+
+#: .\templates\commands\command_detail.html:37
+#: .\templates\commands\command_detail.html:118
+#: .\templates\commands\command_detail.html:325
+#: .\templates\groups\ajax_group_list.html:20
+#: .\templates\job\ajax_candidates_list.html:14
+#: .\templates\trolley\trolley_item_add.html:78
+msgid "PDF"
+msgstr "PDF"
+
+#: .\templates\commands\command_detail.html:176
+#: .\templates\commands\command_detail.html:381
+msgid "Work History"
+msgstr "Histotial de trabajo"
+
+#: .\templates\commands\command_detail.html:182
+#: .\templates\commands\command_detail.html:480
+msgid "Pause"
+msgstr "Parado"
+
+#: .\templates\commands\command_detail.html:183
+#: .\templates\commands\command_detail.html:187
+#: .\templates\commands\command_detail.html:191
+#: .\templates\commands\command_detail.html:195
+msgid "Stop"
+msgstr "Stop"
+
+#: .\templates\commands\command_detail.html:186
+#: .\templates\commands\command_detail.html:190
+msgid "Resume"
+msgstr "Resumen"
+
+#: .\templates\commands\command_detail.html:194
+#: .\templates\commands\command_detail.html:494
+msgid "Start"
+msgstr "Empezar"
+
+#: .\templates\commands\command_detail.html:204
+#: .\templates\commands\command_detail.html:387
+msgid "Working Time"
+msgstr "Tiempo trabajado"
+
+#: .\templates\commands\command_detail.html:209
+#: .\templates\commands\command_detail.html:397
+msgid "Break Duration"
+msgstr "Tiempo de pausa"
+
+#: .\templates\commands\command_detail.html:213
+#: .\templates\commands\command_detail.html:392
+msgid "Working Duration"
+msgstr "Tiempo de trabajo"
+
+#: .\templates\commands\command_detail.html:404
+msgid "Broken History"
+msgstr "Historial de estropeados"
+
+#: .\templates\commands\command_new.html:28
+msgid "Edit Command"
+msgstr "Editar pedido"
+
+#: .\templates\commands\command_new.html:28
+msgid "Add New Command"
+msgstr "Añadir nuevo pedido"
+
+#: .\templates\commands\commands.html:190
+msgid "DELETE COMMANDS"
+msgstr "Borrar instruccion"
+
+#: .\templates\dashboard.html:153
+msgid "Job Offer"
+msgstr "Oferta de empleo"
+
+#: .\templates\dashboard.html:168
+#, fuzzy
+#| msgid "Log Out"
+msgid "Log out"
+msgstr "Cerrar sesión"
+
+#: .\templates\groups\group_detail.html:28
+msgid "Group Name"
+msgstr "Nombre de grupo"
+
+#: .\templates\groups\group_detail.html:74
+msgid "Group Item List"
+msgstr "Lista de grupo"
+
+#: .\templates\groups\group_detail.html:77
+#: .\templates\timesheet\timesheets.html:166
+#: .\templates\transport\transport_detail.html:210
+msgid "Add New Item"
+msgstr "Añadir nuevo elemento"
+
+#: .\templates\groups\group_detail.html:98
+#: .\templates\groups\group_detail.html:195
+msgid "Add Group Item"
+msgstr "Añadir elemento de grupo"
+
+#: .\templates\groups\group_detail.html:136
+msgid "DELETE GROUP ITEMS"
+msgstr "Borrar item de grupo"
+
+#: .\templates\groups\group_new.html:25
+msgid "Edit Group"
+msgstr "Editar grupo"
+
+#: .\templates\groups\group_new.html:25
+msgid "Add New Group"
+msgstr "Añadir grupo"
+
+#: .\templates\groups\groups.html:104 .\templates\stocks\stocks.html:101
+#: .\templates\supplier\suppliers.html:99
+msgid "EXPORT"
+msgstr "EXPORTAR"
+
+#: .\templates\groups\groups.html:227
+msgid "DELETE GROUPS"
+msgstr "Borrar grupo"
+
+#: .\templates\groups\groups.html:543 .\templates\lead\leads.html:471
+#: .\templates\supplier\suppliers.html:386
+msgid "Should be CSV file"
+msgstr "Debe ser en formato csv"
+
+#: .\templates\job\ajax_candidates_list.html:15
+#: .\templates\job\job_detail.html:158
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: .\templates\job\ajax_job_grid.html:32
+msgid "Candidate"
+msgstr "Candidato"
+
+#: .\templates\job\ajax_job_list.html:16 .\templates\job\job_detail.html:85
+#: .\templates\job\job_new.html:89 .\templates\purchase\purchase_new.html:87
+msgid "Skills"
+msgstr "Habilidades"
+
+#: .\templates\job\ajax_job_list.html:17
+msgid "Candidates"
+msgstr "Candidatos"
+
+#: .\templates\job\job_detail.html:53
+msgid "Jobs"
+msgstr "Trabajos"
+
+#: .\templates\job\job_detail.html:110
+msgid "Candidates List"
+msgstr "Lista de candidatos"
+
+#: .\templates\job\job_detail.html:113
+msgid "Add New Candidate"
+msgstr "Añadir nuevo candidato"
+
+#: .\templates\job\job_detail.html:137 .\templates\job\job_detail.html:267
+msgid "Add Candidate"
+msgstr "Añadir candidato"
+
+#: .\templates\job\job_detail.html:160
+msgid "Normal"
+msgstr "Normal"
+
+#: .\templates\job\job_detail.html:161
+msgid "Preselected"
+msgstr "Preseleccion"
+
+#: .\templates\job\job_detail.html:162
+msgid "Selected"
+msgstr "Seleccionado"
+
+#: .\templates\job\job_detail.html:202
+msgid "DELETE CANDIDATES"
+msgstr "Borrar candidatos"
+
+#: .\templates\job\job_new.html:37
+msgid "Edit Job"
+msgstr "Editar trabajo"
+
+#: .\templates\job\job_new.html:37
+msgid "Add New Job"
+msgstr "Añadir trabajo"
+
+#: .\templates\job\jobs.html:50
+msgid "Jobs Offer"
+msgstr "Oferta de empleo"
+
+#: .\templates\job\jobs.html:163
+msgid "DELETE JOBS"
+msgstr "Borrar trabajos"
+
+#: .\templates\lead\ajax_lead_address.html:25
+msgid "Edit Address"
+msgstr "Editar dirección"
+
+#: .\templates\lead\ajax_lead_client_list.html:20
+#: .\templates\lead\ajax_lead_list.html:20 .\templates\lead\lead_detail.html:70
+#: .\templates\lead\lead_new.html:89
+#: .\templates\supplier\ajax_contact_list.html:23
+#: .\templates\supplier\supplier_detail.html:71
+#: .\templates\supplier\supplier_new.html:76
+msgid "NIF"
+msgstr ""
+
+#: .\templates\lead\ajax_lead_client_list.html:21
+#: .\templates\lead\ajax_lead_list.html:21
+#: .\templates\lead\lead_detail.html:124 .\templates\lead\lead_new.html:138
+#: .\templates\outcome\picking_detail.html:76
+#: .\templates\password_reset_form.html:18 .\templates\profile.html:45
+#: .\templates\supplier\ajax_contact_list.html:24
+#: .\templates\supplier\ajax_nest_table.html:8
+#: .\templates\supplier\supplier_detail.html:115
+#: .\templates\supplier\supplier_new.html:118
+#: .\templates\supplier\supplier_new.html:211 .\templates\users.html:40
+#: .\templates\users.html:129 .\templates\users.html:210
+msgid "Email"
+msgstr "Email"
+
+#: .\templates\lead\ajax_lead_client_list.html:22
+#: .\templates\lead\ajax_lead_list.html:22
+#: .\templates\lead\lead_detail.html:112 .\templates\lead\lead_new.html:126
+#: .\templates\outcome\picking_detail.html:86
+#: .\templates\supplier\ajax_contact_list.html:25
+#: .\templates\supplier\ajax_sub_contact.html:32
+#: .\templates\supplier\ajax_sub_detail_contact.html:37
+#: .\templates\supplier\subproduct_detail.html:38
+#: .\templates\supplier\supplier_detail.html:103
+#: .\templates\supplier\supplier_new.html:106
+msgid "Telephone"
+msgstr "Telefono"
+
+#: .\templates\lead\ajax_lead_client_list.html:23
+#: .\templates\lead\ajax_lead_list.html:23 .\templates\lead\lead_detail.html:97
+#: .\templates\lead\lead_new.html:113 .\templates\lead\leads.html:167
+#: .\templates\outcome\picking_detail.html:98
+#: .\templates\supplier\ajax_contact_list.html:26
+#: .\templates\supplier\subproduct_detail.html:41
+#: .\templates\supplier\supplier_detail.html:83
+#: .\templates\supplier\supplier_new.html:88
+#: .\templates\supplier\suppliers.html:134
+msgid "Country"
+msgstr "Pais"
+
+#: .\templates\lead\ajax_lead_client_list.html:24
+#: .\templates\lead\ajax_lead_list.html:24
+#: .\templates\supplier\ajax_contact_list.html:27
+msgid "Product"
+msgstr "Producto"
+
+#: .\templates\lead\ajax_lead_client_list.html:60
+msgid "Make Lead"
+msgstr "Crear lead"
+
+#: .\templates\lead\ajax_lead_list.html:60
+msgid "Make Client"
+msgstr "Crear cliente"
+
+#: .\templates\lead\lead_detail.html:77 .\templates\lead\lead_detail.html:226
+#: .\templates\lead\lead_detail.html:254
+#: .\templates\supplier\supplier_detail.html:77
+#: .\templates\supplier\supplier_new.html:82
+msgid "Address"
+msgstr "Dirección"
+
+#: .\templates\lead\lead_detail.html:83 .\templates\lead\lead_new.html:101
+msgid "POSTAL CODE"
+msgstr "Codigo Postal"
+
+#: .\templates\lead\lead_detail.html:90 .\templates\lead\lead_new.html:107
+msgid "STATE"
+msgstr "Estado"
+
+#: .\templates\lead\lead_detail.html:104
+#: .\templates\supplier\supplier_detail.html:95
+msgid "Created by"
+msgstr "Creado por"
+
+#: .\templates\lead\lead_detail.html:118 .\templates\lead\lead_new.html:132
+#: .\templates\supplier\ajax_nest_table.html:9
+#: .\templates\supplier\supplier_detail.html:109
+#: .\templates\supplier\supplier_new.html:112
+#: .\templates\supplier\supplier_new.html:217
+msgid "Mobile"
+msgstr "Movil"
+
+#: .\templates\lead\lead_detail.html:130 .\templates\lead\lead_new.html:144
+#: .\templates\supplier\supplier_detail.html:121
+#: .\templates\supplier\supplier_new.html:124
+msgid "Web"
+msgstr "Web"
+
+#: .\templates\lead\lead_detail.html:145 .\templates\lead\lead_new.html:156
+#: .\templates\supplier\supplier_detail.html:89
+#: .\templates\supplier\supplier_new.html:98
+msgid "Notes"
+msgstr "Notas"
+
+#: .\templates\lead\lead_detail.html:220
+msgid "Add contact person"
+msgstr "Añadir persona de contacto"
+
+#: .\templates\lead\lead_detail.html:229
+msgid "Add alternate address"
+msgstr "Añadir dirección alternativa"
+
+#: .\templates\lead\lead_detail.html:245 .\templates\lead\lead_detail.html:288
+msgid "Add Address"
+msgstr "Añadir Dirección"
+
+#: .\templates\lead\lead_new.html:38
+msgid "Edit"
+msgstr "Editar trabajo"
+
+#: .\templates\lead\lead_new.html:41
+msgid "Edit Lead"
+msgstr "Editar cliente"
+
+#: .\templates\lead\lead_new.html:41
+msgid "Add New Lead"
+msgstr "Añadir nuevo cliente"
+
+#: .\templates\lead\lead_new.html:71
+msgid "Company or Related Partner"
+msgstr "Empresa o Socio Relacionado"
+
+#: .\templates\mail\mail_list.html:72
+msgid "DELETE LIST"
+msgstr "BORRAR LISTA"
+
+#: .\templates\lead\lead_new.html:95
+msgid "ADDRESS"
+msgstr "Direccion"
+
+#: .\templates\lead\leads.html:106
+msgid "EXPORT LEADS"
+msgstr "EXPORTAR LEADS"
+
+#: .\templates\lead\leads.html:107
+msgid "EXPORT CLIENTS"
+msgstr "EXPORTAR CLIENTES"
+
+#: .\templates\lead\leads.html:108
+msgid "SEND EMAIL"
+msgstr "Enviar email"
+
+#: .\templates\lead\leads.html:123
+msgid "Clients"
+msgstr "Cliente"
+
+#: .\templates\lead\leads.html:207
+msgid ""
+"CSV file should have Name, NIF, Country, Notes, Telephone, Mobile, Email, "
+"Web, Products, Company."
+msgstr ""
+"CSV deben contener Name, NIF, Country, Notes, Telephone, Mobile, Email, Web, "
+"Products, Company."
+
+#: .\templates\lead\leads.html:208 .\templates\supplier\suppliers.html:175
+msgid "Country should be equal to name of Country."
+msgstr "Pais debe ser igual a nombre de pais"
+
+#: .\templates\lead\leads.html:209 .\templates\supplier\suppliers.html:176
+msgid "Products have seperator '_'. f.e Wheel Chair_Manual WheelChair."
+msgstr ""
+"Productos estan separados `` por ejemplo Silla de ruedas manual Silla de "
+"ruedas"
+
+#: .\templates\lead\leads.html:210 .\templates\supplier\suppliers.html:177
+msgid "Company should be equal to name of Company or Company can be empty."
+msgstr "Empresa debe ser igual a nombre de empresa."
+
+#: .\templates\lead\leads.html:253
+msgid "Send Email"
+msgstr "Enviar email"
+
+#: .\templates\lead\leads.html:278
+msgid "Subject"
+msgstr "Asunto"
+
+#: .\templates\lead\leads.html:284
+msgid "Message"
+msgstr "Mensaje"
+
+#: .\templates\lead\leads.html:293 .\templates\password_reset_form.html:26
+msgid "Send"
+msgstr "Enviar"
+
+#: .\templates\lead\leads.html:304
+msgid "DELETE LEADS"
+msgstr "Borrar lead"
+
+#: .\templates\lead\leads.html:505
+msgid ""
+"Your csv file must have Name, NIF, Country, Notes, Telephone, Mobile, Email, "
+"Web, Products, Company"
+msgstr ""
+"CSV deben contener Name, NIF, Country, Notes, Telephone, Mobile, Email, Web, "
+"Products, Company"
+
+#: .\templates\outcome\ajax_outcome_grid.html:28
+#: .\templates\outcome\pickings_list.html:30
+#: .\templates\purchase\ajax_purchase_grid.html:23
+#: .\templates\transport\ajax_transport_new_detail.html:13
+#: .\templates\transport\transport_detail.html:71
+#: .\templates\trolley\ajax_trolley_grid.html:28
+msgid "Order Date"
+msgstr "Fecha de pedido"
+
+#: .\templates\outcome\ajax_outcome_grid.html:36
+#: .\templates\outcome\ajax_outcome_list.html:14
+#: .\templates\outcome\outcome_detail.html:52
+#: .\templates\outcome\outcome_detail.html:182
+#: .\templates\outcome\outcomes.html:145 .\templates\outcome\outcomes.html:194
+#: .\templates\outcome\picking_detail.html:54
+#: .\templates\outcome\pickings.html:134
+#: .\templates\outcome\pickings_list.html:22
+#: .\templates\trolley\ajax_trolley_list.html:14
+#: .\templates\trolley\trolley_detail.html:74
+#: .\templates\trolley\trolley_detail.html:173
+#: .\templates\trolley\trolley_item_add.html:107
+#: .\templates\trolley\trolleys.html:145 .\templates\trolley\trolleys.html:194
+msgid "Client"
+msgstr "Cliente"
+
+#: .\templates\outcome\ajax_outcome_grid.html:44
+#: .\templates\outcome\ajax_outcome_list.html:16
+#: .\templates\outcome\outcome_detail.html:74
+#: .\templates\outcome\picking_detail.html:110
+#: .\templates\outcome\pickings_list.html:38
+msgid "Cube"
+msgstr "Cubico"
+
+#: .\templates\outcome\ajax_outcome_item_grid.html:35
+#: .\templates\outcome\picking_detail.html:168
+#: .\templates\outcome\pickings_list.html:97
+#: .\templates\purchase\ajax_order_item_grid.html:35
+#: .\templates\trolley\ajax_trolley_item_grid.html:40
+msgid "Ordered Qt"
+msgstr "Cantidad pedida"
+
+#: .\templates\outcome\ajax_outcome_item_grid.html:91
+#: .\templates\outcome\ajax_outcome_item_list.html:74
+#: .\templates\timesheet\ajax_timesheet_item_grid.html:64
+#: .\templates\timesheet\ajax_timesheet_item_list.html:68
+#: .\templates\trolley\ajax_trolley_item_grid.html:96
+#: .\templates\trolley\ajax_trolley_item_list.html:83
+#: .\templates\trolley\trolley_item_add.html:1302
+msgid "Edit Order Item"
+msgstr "Editar"
+
+#: .\templates\outcome\ajax_outcome_item_list.html:19
+#: .\templates\purchase\ajax_order_item_list.html:17
+#: .\templates\settings\castor.html:32 .\templates\settings\category.html:32
+#: .\templates\settings\color.html:32 .\templates\settings\drawer_color.html:32
+#: .\templates\settings\location.html:32 .\templates\settings\lock.html:32
+#: .\templates\settings\strip.html:32 .\templates\settings\task.html:32
+#: .\templates\settings\wallstype.html:32
+#: .\templates\supplier\supplier_product.html:108
+#: .\templates\timesheet\ajax_timesheet_item_list.html:16
+#: .\templates\transport\ajax_departure_item_list.html:16
+#: .\templates\trolley\ajax_accessories_item_list.html:19
+#: .\templates\trolley\ajax_trolley_item_list.html:21
+msgid "Action"
+msgstr "Accion"
+
+#: .\templates\outcome\outcome_detail.html:84
+#: .\templates\outcome\picking_detail.html:120
+msgid "Sum of Weight"
+msgstr "Suma de pesos"
+
+#: .\templates\outcome\outcome_detail.html:99
+#: .\templates\purchase\purchase_detail.html:77
+#: .\templates\trolley\trolley_detail.html:90
+msgid "Order Item List"
+msgstr "Elementos pedidos"
+
+#: .\templates\outcome\outcome_detail.html:102
+#: .\templates\purchase\purchase_detail.html:80
+#: .\templates\trolley\trolley_detail.html:93
+#: .\templates\trolley\trolley_item_add.html:73
+msgid "Add New Order Item"
+msgstr "Añadir nuevo producto"
+
+#: .\templates\outcome\outcome_detail.html:126
+#: .\templates\outcome\outcome_detail.html:307
+#: .\templates\outcome\pickings.html:78
+#: .\templates\purchase\purchase_detail.html:104
+#: .\templates\purchase\purchase_detail.html:436
+#: .\templates\trolley\trolley_detail.html:117
+#: .\templates\trolley\trolley_detail.html:300
+msgid "Add Order Item"
+msgstr "Añadir nuevo producto"
+
+#: .\templates\outcome\outcome_detail.html:164
+#: .\templates\outcome\pickings.html:116
+msgid "Edit Outcome"
+msgstr "Editar salidas"
+
+#: .\templates\outcome\outcome_detail.html:217
+#: .\templates\purchase\purchase_detail.html:282
+msgid "DELETE ORDER ITEM"
+msgstr "Borrar item"
+
+#: .\templates\outcome\outcomes.html:176 .\templates\trolley\trolleys.html:176
+msgid "Add New Order"
+msgstr "Añadir nuevo pedido"
+
+#: .\templates\outcome\outcomes.html:229
+msgid "DELETE ORDERS"
+msgstr "Borrar instruccion"
+
+#: .\templates\outcome\picking_detail.html:134
+#: .\templates\outcome\pickings_list.html:64
+msgid "Order Items"
+msgstr "Elementos pedidos"
+
+#: .\templates\outcome\picking_detail.html:208
+#: .\templates\outcome\pickings_list.html:137
+msgid "Available Box Container"
+msgstr "Cajas disponibles"
+
+#: .\templates\outcome\picking_detail.html:230
+msgid "Finish Order"
+msgstr "Terminar pedido"
+
+#: .\templates\outcome\picking_detail.html:236
+msgid "Are you sure you want to finish this order?"
+msgstr "Estas seguro que quieres terminar el pedido?"
+
+#: .\templates\outcome\pickings.html:63
+msgid "Today Orders"
+msgstr "Pedidos de hoy"
+
+#: .\templates\outcome\pickings_list.html:57
+msgid "There is no any Orders"
+msgstr "No hay pedidos"
+
+#: .\templates\password_reset_complete.html:6
+msgid "Your password has been modified."
+msgstr "Su contraseña a cambiado"
+
+#: .\templates\password_reset_complete.html:7
+msgid "You can now log in again"
+msgstr "Ahora puede volver a iniciar sesión"
+
+#: .\templates\password_reset_complete.html:10
+#: .\templates\password_reset_form.html:30
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: .\templates\password_reset_confirm.html:8
+msgid "Please enter your new password."
+msgstr "Porfavor inserta tu nuevo password"
+
+#: .\templates\password_reset_confirm.html:24 .\templates\profile.html:104
+msgid "New Password"
+msgstr "Nueva contraseña"
+
+#: .\templates\password_reset_confirm.html:41
+msgid "New Password Confirm"
+msgstr "Nueva contraseña confirmar"
+
+#: .\templates\password_reset_done.html:8
+msgid ""
+"We have sent the instructions on how to recover the password to the "
+"specified email address"
+msgstr "Hemos enviado las instrucciones para el reseteo del password al email"
+
+#: .\templates\password_reset_done.html:11
+msgid "You will be receiving the mail soon"
+msgstr "Recibira el email pronto"
+
+#: .\templates\password_reset_form.html:12
+msgid "Specify your email to send you the instructions for password recovery."
+msgstr ""
+"Especifique su email para recibir instrucciones de recuperación de contraseña"
+
+#: .\templates\profile.html:17
+msgid "Admin"
+msgstr "Administrador"
+
+#: .\templates\profile.html:17
+msgid "User"
+msgstr "Usuario"
+
+#: .\templates\profile.html:35 .\templates\users.html:186
+msgid "First Name"
+msgstr "Nombre"
+
+#: .\templates\profile.html:39 .\templates\users.html:193
+msgid "Last Name"
+msgstr "Apellido"
+
+#: .\templates\profile.html:49 .\templates\users.html:119
+#: .\templates\users.html:200
+msgid "User Name"
+msgstr "Nombre"
+
+#: .\templates\profile.html:55 .\templates\users.html:41
+#: .\templates\users.html:220
+msgid "Phone"
+msgstr "Telefono"
+
+#: .\templates\profile.html:67
+msgid "Reset Password"
+msgstr "Resetear contraseña"
+
+#: .\templates\profile.html:78 .\templates\users.html:237
+msgid "RESET PASSWORD"
+msgstr "Resetear contraseña"
+
+#: .\templates\profile.html:94
+msgid "Old Password"
+msgstr "Contraseña antigua"
+
+#: .\templates\profile.html:114 .\templates\users.html:149
+#: .\templates\users.html:269
+msgid "Confirm Password"
+msgstr "Confirmar contraseña"
+
+#: .\templates\profile.html:160 .\templates\users.html:321
+#: .\templates\users.html:356
+msgid "Passwords are not matched."
+msgstr "Password no concuerda"
+
+#: .\templates\profile.html:179
+msgid "Old Password is not matched"
+msgstr "Contraseña antigua no coincide"
+
+#: .\templates\purchase\ajax_order_item_list.html:16
+#: .\templates\transport\ajax_transport_new_detail.html:28
+#: .\templates\transport\transport_detail.html:123
+msgid "Income & Valid"
+msgstr "Recepción y validación"
+
+#: .\templates\purchase\ajax_order_item_list.html:39
+#: .\templates\transport\ajax_transport_new_detail.html:47
+#: .\templates\transport\transport_detail.html:142
+msgid "Ordered"
+msgstr "Pedido"
+
+#: .\templates\purchase\ajax_order_item_list.html:48
+#: .\templates\purchase\ajax_order_item_list.html:107
+#: .\templates\transport\ajax_transport_new_detail.html:56
+#: .\templates\transport\transport_detail.html:151
+msgid "Income"
+msgstr "Entrada"
+
+#: .\templates\purchase\ajax_order_item_list.html:58
+#: .\templates\purchase\ajax_order_item_list.html:81
+#: .\templates\transport\ajax_transport_new_detail.html:66
+#: .\templates\transport\transport_detail.html:161
+msgid "Valid"
+msgstr "Validado"
+
+#: .\templates\purchase\ajax_order_item_list.html:146
+#: .\templates\purchase\purchase_detail.html:195
+msgid "Income Item"
+msgstr "Producto entrante"
+
+#: .\templates\purchase\ajax_order_item_list.html:154
+msgid "Edit Income Item"
+msgstr "Editar elemento recibido"
+
+#: .\templates\purchase\purchase_detail.html:37
+msgid "Purchases"
+msgstr "Compras"
+
+#: .\templates\purchase\purchase_detail.html:142
+#: .\templates\purchase\purchase_new.html:35
+msgid "Edit Purchase"
+msgstr "Editar compras"
+
+#: .\templates\purchase\purchase_detail.html:239
+msgid "Valid Item"
+msgstr "Producto valido"
+
+#: .\templates\purchase\purchase_new.html:35
+#: .\templates\purchase\purchases.html:176
+msgid "Add New Purchase"
+msgstr "Añadir nueva compra"
+
+#: .\templates\purchase\purchases.html:106
+msgid "Broken"
+msgstr "Estropeado"
+
+#: .\templates\purchase\purchases.html:229
+msgid "DELETE PURCHASES"
+msgstr "Borrar compra"
+
+#: .\templates\settings\castor.html:19
+msgid "Add New Castor"
+msgstr "Añadir nueva rueda"
+
+#: .\templates\settings\castor.html:30
+msgid "Castor"
+msgstr "Rueda"
+
+#: .\templates\settings\castor.html:62 .\templates\settings\color.html:62
+#: .\templates\settings\drawer_color.html:62
+#: .\templates\settings\location.html:62 .\templates\settings\lock.html:62
+#: .\templates\settings\strip.html:62 .\templates\settings\task.html:62
+#: .\templates\settings\wallstype.html:62
+msgid "DELETE RECORD"
+msgstr "Borrar"
+
+#: .\templates\settings\castor.html:82 .\templates\settings\castor.html:160
+msgid "Add Castor"
+msgstr "Añadir rueda"
+
+#: .\templates\settings\castor.html:153
+msgid "Edit Castor"
+msgstr "Editar rueda"
+
+#: .\templates\settings\category.html:19
+msgid "Add New Category"
+msgstr "Añadir nueva categoria"
+
+#: .\templates\settings\category.html:62
+msgid "DELETE CATEGORY"
+msgstr "Borrar categoria"
+
+#: .\templates\settings\category.html:82 .\templates\settings\category.html:160
+#: .\templates\supplier\supplier_product.html:258
+msgid "Add Category"
+msgstr "Añadir categoria"
+
+#: .\templates\settings\category.html:153
+#: .\templates\supplier\supplier_product.html:251
+msgid "Edit Category"
+msgstr "Editar categoria"
+
+#: .\templates\settings\color.html:19 .\templates\settings\drawer_color.html:19
+msgid "Add New Color"
+msgstr "Añadir nuevo color"
+
+#: .\templates\settings\color.html:30 .\templates\settings\drawer_color.html:30
+msgid "Color"
+msgstr "Color"
+
+#: .\templates\settings\color.html:82 .\templates\settings\color.html:160
+#: .\templates\settings\drawer_color.html:82
+#: .\templates\settings\drawer_color.html:160
+msgid "Add Color"
+msgstr "Añadir color"
+
+#: .\templates\settings\color.html:153
+#: .\templates\settings\drawer_color.html:153
+msgid "Edit Color"
+msgstr "Editar color"
+
+#: .\templates\settings\drawer_color.html:16
+msgid "Colors of Drawer"
+msgstr "Color de los cajones"
+
+#: .\templates\settings\location.html:19
+msgid "Add New Location"
+msgstr "Añadir nuevo Posición"
+
+#: .\templates\settings\location.html:82 .\templates\settings\location.html:160
+msgid "Add Location"
+msgstr "Añadir Posición"
+
+#: .\templates\settings\location.html:153
+msgid "Edit Location"
+msgstr "Editar Posición"
+
+#: .\templates\settings\lock.html:19
+msgid "Add New Lock"
+msgstr "Añadir nuevo Cerradura"
+
+#: .\templates\settings\lock.html:82 .\templates\settings\lock.html:160
+#: .\templates\settings\task.html:160
+#: .\templates\trolley\trolley_item_add.html:796
+msgid "Add Lock"
+msgstr "Añadir Cerradura"
+
+#: .\templates\settings\lock.html:153 .\templates\settings\task.html:153
+msgid "Edit Lock"
+msgstr "Editar Cerradura"
+
+#: .\templates\settings\strip.html:19
+msgid "Add New Strip"
+msgstr "Añadir Nueva Tira"
+
+#: .\templates\settings\strip.html:82 .\templates\settings\strip.html:160
+#: .\templates\trolley\trolley_item_add.html:761
+msgid "Add Strip"
+msgstr "Añadir Tira"
+
+#: .\templates\settings\strip.html:153
+msgid "Edit Strip"
+msgstr "Editar Tira"
+
+#: .\templates\settings\task.html:19
+#: .\templates\timesheet\timesheet_detail.html:84
+msgid "Add New Task"
+msgstr "Añadir nueva Tarea"
+
+#: .\templates\settings\task.html:82
+#: .\templates\timesheet\timesheet_detail.html:108
+#: .\templates\timesheet\timesheet_detail.html:287
+msgid "Add Task"
+msgstr "Añadir Tarea"
+
+#: .\templates\settings\wallstype.html:16
+msgid "Type Inside Walls"
+msgstr "Tipo de paredes interiores"
+
+#: .\templates\settings\wallstype.html:19
+msgid "Add New Type inside walls"
+msgstr "Añadir nuevo tipo de paredes interiores"
+
+#: .\templates\settings\wallstype.html:82
+#: .\templates\settings\wallstype.html:160
+msgid "Add Type inside walls"
+msgstr "Añadir tipo de paredes interior"
+
+#: .\templates\settings\wallstype.html:153
+msgid "Edit Type inside walls"
+msgstr "Editar tipo de paredes interiores"
+
+#: .\templates\stocks\stock_edit.html:32 .\templates\stocks\stock_new.html:203
+#: .\templates\stocks\stock_old_new.html:32
+msgid "Add New Stock"
+msgstr "Añadir nuevo stock"
+
+#: .\templates\stocks\stock_edit.html:169 .\templates\stocks\stock_new.html:342
+#: .\templates\stocks\stock_old_new.html:169
+#: .\templates\stocks\stock_up.html:174
+msgid "Sale Price"
+msgstr ""
+
+#: .\templates\stocks\stock_edit.html:175 .\templates\stocks\stock_new.html:348
+#: .\templates\stocks\stock_old_new.html:175
+#: .\templates\stocks\stock_up.html:180
+msgid "Taxes"
+msgstr ""
+
+#: .\templates\stocks\stock_new.html:203 .\templates\stocks\stock_up.html:37
+msgid "Edit Stock"
+msgstr "Editar Stock"
+
+#: .\templates\stocks\stock_new.html:402
+msgid "Proovedor"
+msgstr ""
+
+#: .\templates\stocks\stock_new.html:404 .\templates\stocks\stock_new.html:539
+msgid "Precio"
+msgstr ""
+
+#: .\templates\stocks\stock_new.html:405
+msgid "Cantidad minima"
+msgstr ""
+
+#: .\templates\stocks\stock_new.html:422
+msgid "Agregar registro"
+msgstr ""
+
+#: .\templates\stocks\stock_new.html:429
+msgid "Informacion General"
+msgstr ""
+
+#: .\templates\stocks\stock_new.html:430
+msgid "Inventario"
+msgstr ""
+
+#: .\templates\stocks\stock_new.html:431
+msgid "Compras"
+msgstr ""
+
+#: .\templates\stocks\stock_new.html:432
+msgid "Contabilidad"
+msgstr ""
+
+#: .\templates\stocks\stock_new.html:517
+#, fuzzy
+#| msgid "ADD USER"
+msgid "ADD PROVIDER"
+msgstr "Añadir usuario"
+
+#: .\templates\stocks\stock_new.html:675
+msgid "Actualización exitosa!"
+msgstr ""
+
+#: .\templates\stocks\stocks.html:224
+msgid "DELETE STOCKS"
+msgstr "Borrar stock"
+
+#: .\templates\supplier\ajax_contact_list.html:44
+msgid "Contacts"
+msgstr ""
+
+#: .\templates\supplier\ajax_nest_table.html:7
+#: .\templates\supplier\supplier_new.html:223
+#, fuzzy
+#| msgid "Description"
+msgid "Position"
+msgstr "Descripcion"
+
+#: .\templates\supplier\ajax_sub_contact.html:53
+#, fuzzy
+#| msgid "Edit Castor"
+msgid "Edit Contact"
+msgstr "Editar rueda"
+
+#: .\templates\supplier\supplier_detail.html:166
+#: .\templates\supplier\supplier_new.html:181
+#: .\templates\supplier\supplier_new.html:196
+msgid "Contacts and Addresses"
+msgstr ""
+
+#: .\templates\supplier\supplier_new.html:39
+msgid "Edit Supplier"
+msgstr "Editar proovedor"
+
+#: .\templates\supplier\supplier_new.html:39
+msgid "Add New Supplier"
+msgstr "Añadir nuevo proovedor"
+
+#: .\templates\supplier\supplier_new.html:262
+#, fuzzy
+#| msgid "Add contact person"
+msgid "Add Contact"
+msgstr "Añadir persona de contacto"
+
+#: .\templates\supplier\supplier_product.html:48
+#, fuzzy
+#| msgid "Products"
+msgid "Productos"
+msgstr "Productos"
+
+#: .\templates\supplier\supplier_product.html:144
+msgid "DELETE PRODUCT"
+msgstr "BORRAR PRODUCTO"
+
+#: .\templates\supplier\supplier_product.html:164
+msgid "Add Product"
+msgstr "Agregar producto"
+
+#: .\templates\supplier\suppliers.html:174
+msgid ""
+"CSV file should have Name, NIF, Address, Country, Notes, Telephone, Mobile, "
+"Email, Web, Products, Company."
+msgstr ""
+"CSV deben contener Name, NIF, Address, Country, Notes, Telephone, Mobile, "
+"Email, Web, Products, Company."
+
+#: .\templates\supplier\suppliers.html:219
+msgid "DELETE SUPPLIERS"
+msgstr "Borrar proovedor"
+
+#: .\templates\supplier\suppliers.html:420
+msgid ""
+"Your csv file must have Name, NIF, Address, Country, Notes, Telephone, "
+"Mobile, Email, Web, Products, Company"
+msgstr ""
+"CSV deben contener Name, NIF, Address, Country, Notes, Telephone, Mobile, "
+"Email, Web, Products, Company"
+
+#: .\templates\timesheet\ajax_timesheet_item_list.html:15
+msgid "Time"
+msgstr "Tiempo"
+
+#: .\templates\timesheet\timesheet_detail.html:39
+#: .\templates\timesheet\timesheets.html:58
+msgid "Time Sheets"
+msgstr "TIempo de hoja"
+
+#: .\templates\timesheet\timesheet_detail.html:81
+msgid "Task List"
+msgstr "Lista de tareas"
+
+#: .\templates\timesheet\timesheet_detail.html:161
+msgid "Edit Time Sheet"
+msgstr "Editar tiempo"
+
+#: .\templates\timesheet\timesheet_detail.html:170
+#: .\templates\timesheet\timesheets.html:135
+#: .\templates\timesheet\timesheets.html:175
+msgid "User / Operator"
+msgstr "Usuario /Operario"
+
+#: .\templates\timesheet\timesheet_detail.html:198
+msgid "DELETE Task"
+msgstr "Borrar Tarea"
+
+#: .\templates\timesheet\timesheets.html:203
+msgid "DELETE ITEMS"
+msgstr "Borrar item"
+
+#: .\templates\transport\ajax_departure_item_list.html:68
+msgid "Edit Departure Item"
+msgstr "Editar elemento de salida"
+
+#: .\templates\transport\ajax_transport_grid.html:46
+#: .\templates\transport\ajax_transport_list.html:16
+#: .\templates\transport\transport_detail.html:81
+#: .\templates\transport\transport_new.html:83
+msgid "Departure"
+msgstr "Salida"
+
+#: .\templates\transport\ajax_transport_grid.html:54
+#: .\templates\transport\ajax_transport_list.html:18
+#: .\templates\transport\transport_detail.html:98
+#: .\templates\transport\transport_new.html:89
+msgid "Arrival"
+msgstr "Llegada"
+
+#: .\templates\transport\ajax_transport_list.html:13
+#: .\templates\transport\transport_detail.html:51
+#: .\templates\transport\transport_new.html:58
+msgid "Purchase Name"
+msgstr "Nombre de compra"
+
+#: .\templates\transport\ajax_transport_list.html:14
+#: .\templates\transport\transport_new.html:68
+msgid "Transport Name"
+msgstr "Nombre de transporte"
+
+#: .\templates\transport\transport_detail.html:111
+msgid "Ordered Item List"
+msgstr "Lista de productos pedidos"
+
+#: .\templates\transport\transport_detail.html:207
+msgid "Departure Item List"
+msgstr "Lista de productos salientes"
+
+#: .\templates\transport\transport_detail.html:234
+#: .\templates\transport\transport_detail.html:329
+msgid "Add Departure Item"
+msgstr "Añadir producto de salida"
+
+#: .\templates\transport\transport_detail.html:272
+msgid "DELETE DEPARTURE ITEM"
+msgstr "Borrar item saliente"
+
+#: .\templates\transport\transport_new.html:28
+msgid "Edit Transport"
+msgstr "Editar transporte"
+
+#: .\templates\transport\transport_new.html:28
+msgid "Add New Transport"
+msgstr "Añadir nuevo transporte"
+
+#: .\templates\transport\transport_new.html:74
+msgid "Container"
+msgstr "Contenedor"
+
+#: .\templates\transport\transport_new.html:76
+msgid "Ship"
+msgstr "Barco"
+
+#: .\templates\transport\transport_new.html:77
+msgid "Truck"
+msgstr "Camion"
+
+#: .\templates\transport\transports.html:129
+msgid "Departure Date Range"
+msgstr "Rango fecha salida"
+
+#: .\templates\transport\transports.html:133
+msgid "Arrival Date Range"
+msgstr "Fecha de llegada"
+
+#: .\templates\transport\transports.html:179
+msgid "DELETE TRANSPORTS"
+msgstr "Borrar transporte"
+
+#: .\templates\trolley\ajax_accessories_item_grid.html:38
+#: .\templates\trolley\ajax_accessories_item_list.html:16
+#: .\templates\trolley\trolley_item_add.html:590
+msgid "Direction"
+msgstr "Direccion"
+
+#: .\templates\trolley\ajax_accessories_item_grid.html:64
+#: .\templates\trolley\ajax_accessories_item_list.html:17
+#: .\templates\trolley\trolley_item_add.html:602
+msgid "Packaging"
+msgstr "Packaging"
+
+#: .\templates\trolley\ajax_accessories_item_grid.html:94
+#: .\templates\trolley\ajax_accessories_item_list.html:74
+msgid "Edit Accessories"
+msgstr "Editar accesorios"
+
+#: .\templates\trolley\ajax_trolley_item_list.html:17
+#: .\templates\trolley\trolley_item_add.html:205
+msgid "Colour of the sides"
+msgstr "Color de los laterales"
+
+#: .\templates\trolley\ajax_trolley_item_list.html:18
+#: .\templates\trolley\trolley_item_add.html:221
+msgid "Colour of the drawers"
+msgstr "Color de los cajones"
+
+#: .\templates\trolley\ajax_trolley_list.html:13
+#: .\templates\trolley\trolley_detail.html:52
+#: .\templates\trolley\trolley_item_add.html:97
+#: .\templates\trolley\trolleys.html:185
+msgid "Order Number"
+msgstr "Numero de pedido"
+
+#: .\templates\trolley\trolley_detail.html:155
+msgid "Edit Trolley"
+msgstr "Editar Carros"
+
+#: .\templates\trolley\trolley_detail.html:208
+#: .\templates\trolley\trolleys.html:229
+msgid "DELETE ORDER ITEMS"
+msgstr "Borrar item de pedido"
+
+#: .\templates\trolley\trolley_item_add.html:77
+msgid "Duplicate"
+msgstr "Duplicar carro"
+
+#: .\templates\trolley\trolley_item_add.html:83
+#: .\templates\widgets\pagination.html:17
+#: .\templates\widgets\pagination.html:21
+msgid "Previous"
+msgstr "Previo"
+
+#: .\templates\trolley\trolley_item_add.html:84
+#: .\templates\widgets\pagination.html:42
+#: .\templates\widgets\pagination.html:46
+msgid "Next"
+msgstr "Siguiente"
+
+#: .\templates\trolley\trolley_item_add.html:137
+msgid "Total Minutes"
+msgstr "Minutos totales"
+
+#: .\templates\trolley\trolley_item_add.html:153
+msgid "Ref of the trolley"
+msgstr "Ref del carro"
+
+#: .\templates\trolley\trolley_item_add.html:165
+msgid "Number of trolleys"
+msgstr "Numero de carros"
+
+#: .\templates\trolley\trolley_item_add.html:269
+msgid "Configuration of the trolley"
+msgstr "Configuracion "
+
+#: .\templates\trolley\trolley_item_add.html:286
+msgid "Manufacturing Workers"
+msgstr "Trabajadores de fabricación"
+
+#: .\templates\trolley\trolley_item_add.html:292
+msgid "Cleaning Worker"
+msgstr "Trabajador encargado limpieza"
+
+#: .\templates\trolley\trolley_item_add.html:300
+msgid "Checking Worker"
+msgstr "Encargado de calidad"
+
+#: .\templates\trolley\trolley_item_add.html:312
+msgid "Finish"
+msgstr "Terminado"
+
+#: .\templates\trolley\trolley_item_add.html:321
+msgid "Accesories List"
+msgstr "Lista de accesorios"
+
+#: .\templates\trolley\trolley_item_add.html:324
+msgid "Add New Accesories"
+msgstr "Añadir nuevos accesorios"
+
+#: .\templates\trolley\trolley_item_add.html:342
+msgid "Finished Result"
+msgstr "Resultados finales"
+
+#: .\templates\trolley\trolley_item_add.html:559
+#: .\templates\trolley\trolley_item_add.html:985
+msgid "Add Accesories"
+msgstr "Añadir accesorios"
+
+#: .\templates\trolley\trolley_item_add.html:568
+msgid "Accesories"
+msgstr "Accesorios"
+
+#: .\templates\trolley\trolley_item_add.html:592
+msgid "Left"
+msgstr "Izquierda"
+
+#: .\templates\trolley\trolley_item_add.html:593
+msgid "Right"
+msgstr "Derecha"
+
+#: .\templates\trolley\trolley_item_add.html:594
+msgid "Top"
+msgstr "Arriba"
+
+#: .\templates\trolley\trolley_item_add.html:595
+msgid "Inside"
+msgstr "Dentro"
+
+#: .\templates\trolley\trolley_item_add.html:621
+msgid "ADD WALL TYPE"
+msgstr "Añadir tipo de pared"
+
+#: .\templates\trolley\trolley_item_add.html:656
+msgid "ADD CASTOR"
+msgstr "Añadir rueda"
+
+#: .\templates\trolley\trolley_item_add.html:691
+msgid "Add Color of Side"
+msgstr "Añadir color de lateral"
+
+#: .\templates\trolley\trolley_item_add.html:726
+msgid "Add Color of Drawers"
+msgstr "Añadir color de cajon"
+
+#: .\templates\trolley\trolley_item_add.html:831
+msgid "FINISH THIS ORDER ITEM"
+msgstr "Terminar pedido de este elemento"
+
+#: .\templates\trolley\trolley_item_add.html:840
+msgid "Finished Time (minutes)"
+msgstr "Hora finalizada"
+
+#: .\templates\trolley\trolley_item_add.html:849
+msgid "Checking Description"
+msgstr "Check descripciones"
+
+#: .\templates\trolley\trolley_item_add.html:855
+msgid "Upload Photos"
+msgstr "Subit fotos"
+
+#: .\templates\trolley\trolley_item_add.html:876
+msgid "DELETE ACCESSORIES"
+msgstr "Borrar accesorios"
+
+#: .\templates\trolley\trolley_item_add.html:896
+msgid "Duplicate Trolley"
+msgstr "Duplicar carro"
+
+#: .\templates\trolley\trolley_item_add.html:905
+msgid "How many times you wish to duplicate?"
+msgstr "Cuantas veces deseas duplicar"
+
+#: .\templates\trolley\trolley_item_add.html:910
+msgid "Times of Duplicate"
+msgstr "Veces duplicado"
+
+#: .\templates\trolley\trolleys.html:58
+msgid "Trolleys"
+msgstr "Carros"
+
+#: .\templates\users.html:26
+msgid "Add New User"
+msgstr "Añadir nuevo usuario"
+
+#: .\templates\users.html:38
+msgid "Users"
+msgstr "Usuarios"
+
+#: .\templates\users.html:42
+msgid "Creation Date"
+msgstr "Fecha de creacion"
+
+#: .\templates\users.html:82
+msgid "DELETE USER"
+msgstr "Eliminar usuario"
+
+#: .\templates\users.html:103
+msgid "ADD USER"
+msgstr "Añadir usuario"
+
+#: .\templates\users.html:131 .\templates\users.html:212
+msgid "Please fill correct email type."
+msgstr "Por favor utilice el email correcto"
+
+#: .\templates\users.html:139 .\templates\users.html:259
+msgid "Password"
+msgstr "Contraseña"
+
+#: .\templates\users.html:170
+msgid "EDIT USER"
+msgstr "Editar Usuario"
+
+#: .\templates\users.html:373 .\templates\users.html:433
+msgid "Already exists email"
+msgstr "Ya existe el email"
+
+#: .\templates\widgets\pagination.html:7 .\templates\widgets\pagination.html:11
+msgid "First"
+msgstr "Primero"
+
+#: .\templates\widgets\pagination.html:52
+#: .\templates\widgets\pagination.html:56
+msgid "Last"
+msgstr "Ultimo"
+
+#~ msgid "Add New Products"
+#~ msgstr "Agregar Nuevos Productos"
+
+#, fuzzy
+#~| msgid "Leads"
+#~ msgid "Lead"
+#~ msgstr "Leads"
+
+#~ msgid "Supplier Company"
+#~ msgstr "Empresa proovedora"
+
+#~ msgid "Stocks"
+#~ msgstr "Stock"
+
+#~ msgid "Minium Stocks"
+#~ msgstr "Stock minimo"
+
+#~ msgid "Minium Groups"
+#~ msgstr "Grupos minimo"
+
+#~ msgid "Detail Order Item"
+#~ msgstr "Detalle de elementos pedidos"
+
+#~ msgid "Colors"
+#~ msgstr "Colores"

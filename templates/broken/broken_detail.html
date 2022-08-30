@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<style type="text/css">
+	.form-group{
+		margin-bottom: 15px;
+	}
+</style>
+
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-7">
+			<h2 class="mr-auto"><a href="{% url 'brokens' %}">{% blocktrans %}Brokens{% endblocktrans %}</a> / {{ supplier.name }} - {{ stock.name }}</h2>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-body">
+			<div class="row clearfix m-0">
+				<div class="col-12 col-md-3">
+					<div class="row m-0">
+						<div class="col-6" style="border-bottom: 1px solid;">
+							<span>{% blocktrans %}Supplier{% endblocktrans %}</span>
+						</div>
+						<div class="col-6" style="border-bottom: 1px solid;">
+							<span>{{ supplier.name }}</span>
+						</div>
+					</div>
+					<div style="border:1px solid; border-radius: 20px;" class="mt-3 p-2">
+				        <div class="row m-0">
+				            <div class="col-12 text-center">
+				                {% if stock.picture %}
+				                    <img src="{{stock.picture.url}}" alt="" style="max-width: 99%;max-height: 90px;"/>
+				                {% else %}
+				                    <i class="far fa-6x fa-image" ></i>
+				                {% endif %}
+				            </div>
+				            <div class="col-12 pt-4">
+				                <div class="form-group row">
+				                    <div class="col-4 pr-0">
+				                        <span >Ref:</span>
+				                    </div>
+				                    <div class="col-8 pr-0">
+				                        <span style="color:blue;">{{ stock.reference }}</span>
+				                    </div>
+				                </div>
+				                <div class="form-group row">
+				                    <div class="col-4 pr-0">
+				                        <span >Name:</span>
+				                    </div>
+				                    <div class="col-8 pr-0">
+				                        <span style="color:blue;">{{ stock.name }} pcs</span>
+				                    </div>
+				                </div>
+				                <div class="form-group row">
+				                    <div class="col-4 pr-0">
+				                        <span >Location:</span>
+				                    </div>
+				                    <div class="col-8 pr-0">
+				                        <span style="color:blue;">{% if stock.location %}{{ stock.location.name }}{% endif %}</span>
+				                    </div>
+				                </div>
+				                <div class="form-group row">
+				                    <div class="col-4 pr-0">
+				                        <span >Category:</span>
+				                    </div>
+				                    <div class="col-8 pr-0">
+				                        <span style="color:blue;">{{ stock.category.name }}</span>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+				<div class="col-12 col-md-9" id="div_content">
+
+				</div>
+				<input type="hidden" id="supplier_id" value="{{ supplier.id }}">
+				<input type="hidden" id="stock_id" value="{{ stock.id }}">
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	
+	get_list_data();
+
+	function get_list_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-list-broken-detail" %}',
+			data: {
+				'page': 1,
+				'supplier_id': $("#supplier_id").val(),
+				'stock_id': $("#stock_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+			}
+		});
+	}
+	
+</script>
+{% endblock %}

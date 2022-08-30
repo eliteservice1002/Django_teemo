@@ -1,0 +1,56 @@
+{% load i18n %}
+{% load staticfiles %}
+{% load mathfilters %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    	<th width="10%">{% blocktrans %}Purchase{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Orderd Date{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Income Date{% endblocktrans %}</th>
+                        <th width="15%">{% blocktrans %}Income Qt{% endblocktrans %}</th>
+                        <th width="15%">{% blocktrans %}Valid Date{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Valid Qt{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Broken Qt{% endblocktrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	{% for item in broken_details %}
+                		<tr>
+                			<td>{{ item.orderitem.purchase.name }}</td>
+                            <td>{{ item.orderitem.purchase.order_date }}</td>
+                            <td>{{ item.income_date }}</td>
+                            <td>{{ item.income_quantity }} pcs</td>
+                            <td>{{ item.valid_date }}</td>
+                            <td>{{ item.valid_quantity }} pcs</td>
+                            <td style="color:red;">{{ item.income_quantity|sub:item.valid_quantity }} pcs</td>
+                        </tr>
+                	{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+        <script type="text/javascript">
+            $(".page_link").on('click', function(){
+                $.ajax({
+                    headers: { "X-CSRFToken": '{{csrf_token}}' },
+                    url: '{% url "ajax-list-broken-detail" %}',
+                    data: {
+                        'page': $(this).data('id'),
+                        'supplier_id': $("#supplier_id").val(),
+                        'stock_id': $("#stock_id").val(),
+                    },
+                    type: 'POST',
+                    success: function (data) {
+                      $("#div_content").html(data);
+                    }
+                });
+            });
+      </script>
+    {% endif %}
+    
+</div>

@@ -1,0 +1,397 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/icheck/skins/all.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+<script src="{% static 'plugins/icheck/icheck.min.js' %}"></script>
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	.bootstrap-tagsinput{
+		font-size: 1rem;
+		width: 100%;
+		line-height: 1.5;
+		min-height: 38px;
+	}
+	.bootstrap-tagsinput .tag {
+	    line-height: 23px;
+	    font-size: 100%;
+	    margin: 1px;
+	}
+	.form-control[readonly] {
+		background-color: #fff;
+		outline: none; 
+		opacity: 1;
+	}
+    .child-card{
+        height: 100px;
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        margin-bottom: 15px;
+    }
+    h2{
+		margin-bottom: 0px;
+	}
+
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12 col-md-7">
+			<h2 class="mr-auto"><a href="{% url 'jobs' %}">{% blocktrans %}Jobs{% endblocktrans %}</a> / {{ job.name }}</h2>
+		</div>
+		<div class="col-12 col-md-5">
+			<a href="{% url 'update-job' job.id %}" class="btn btn-primary">{% blocktrans %}EDIT{% endblocktrans %}</a>
+		</div>
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+	            	<div class="row m-0">
+	            		<div class="col-12 col-md-4">
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Name{% endblocktrans %}</label>
+					                    <input type="text" class="form-control" readonly value="{{ job.name }}">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="category">{% blocktrans %}Category{% endblocktrans %}</label>
+					                    <input type="text" class="form-control" readonly value="{{ job.category }}">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="description">{% blocktrans %}Description{% endblocktrans %}</label>
+					                    <textarea  class="form-control" readonly row="5">{{ job.description }}</textarea>
+			                        </div>
+					            </div>
+					             <div class="form-group div_products">
+					                <div class="col-xs-12">
+					                	<label for="skills">{% blocktrans %}Skills{% endblocktrans %}</label>
+					                    <input type="text" class="form-control" data-role="tagsinput" readonly value="{{ job.skills }}">
+			                        </div>
+					            </div>
+		            		</div>
+		            		<div class="col-12 col-md-4 pl-md-4">
+		            			<div class="form-group text-center mt-4">
+		            				<div class="mb-3">
+		            					<span class="">
+		            						<i class="fas fa-6x fa-male p-5" style="border:1px solid;{% if job.picture %}display: none;{% endif %}"></i>
+		            						<img src="{% if job.picture %}{{ job.picture.url }}{% else %}{% static 'images/avatar-default.jpg' %}{% endif %}" style="{% if job.picture %}display: inline-block;{% else %}display: none;{% endif %}max-width: 260px;max-height: 260px;padding: 3px;border: 1px solid;">
+		            						
+		            					</span>
+		            				</div>
+		            			</div>
+		            			
+		            		</div>
+	            	</div>
+	            	<hr>
+            		<div class="row m-0">
+	            		<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="row">
+										<div class="col-12 col-md-7">
+											<h2 >{% blocktrans %}Candidates List{% endblocktrans %}</h2>
+										</div>
+										<div class="col-6 col-md-3">
+											<button id="btn_add" class="btn btn-primary">{% blocktrans %}Add New Candidate{% endblocktrans %}</button>
+										</div>
+										<div class="col-6 col-md-2 text-right card_tool">
+											<span id="btn_delete" class="" style="font-weight: 700;"><i class="fas fa-trash-alt mr-2"></i></span>
+											<span id="grid_view" class="mr-2 ml-2 active"><i class="fas fa-2x fa-th"></i></span>
+											<span id="list_view" class="mr-2 "><i class="fas fa-2x fa-list-ul"></i></span>
+										</div>
+									</div>
+								</div>
+								<div class="card-body" id="div_content">
+					        	    
+						        </div>
+						    </div>
+						</div>
+					</div>
+	            </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="head_title">{% blocktrans %}Add Candidate{% endblocktrans %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<form novalidate="" id="myForm">
+        		<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+						<input type="text" class="form-control" id="name" name="name" required>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Description{% endblocktrans %}</label>
+						<textarea class="form-control" id="description" name="description"></textarea>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+						<label>{% blocktrans %}Tag{% endblocktrans %}</label>
+						<select  class="selectpicker form-control" id="tag" name="tag" required>
+                    		<option value="Normal">{% blocktrans %}Normal{% endblocktrans %}</option>
+                    		<option value="Preselected">{% blocktrans %}Preselected{% endblocktrans %}</option>
+                    		<option value="Selected">{% blocktrans %}Selected{% endblocktrans %}</option>
+	                    </select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-5 text-center"> 
+						<span class="img_upload">
+    						<i class="fas fa-3x fa-male p-4" style="border:1px solid;"></i>
+    						<img src="{% static 'images/avatar-default.jpg' %}" style="display: none;max-width: 99%; max-height: 70px;">
+    						
+    					</span>
+    					<a class="img-clear" href="javascript:void(0);" data-id="1"><span><i class="fas fa-trash-alt"></i></span></a>
+						<input type="file" name="picture" id="picture" onchange="readURL(this);" style="display: none">
+						<input type="hidden" id="exist" name="exist">
+					</div>
+					<div class="col-7">
+						<span class="pdf_upload">
+    						<i class="far fa-3x fa-file-pdf p-2"></i>
+    					</span>
+    					<label class="ml-2 uploaded_pdf_name"></label>
+						<a class="ml-4 pdf_clear" href="javascript:void(0);" data-id="2"><span><i class="fas fa-trash-alt"></i></span></a>
+						<input type="file" name="pdf" id="pdf" onchange="readPDFURL(this);" style="display: none">
+    					<input type="hidden" id="exist_pdf" name="exist_pdf">
+					</div>
+				</div>
+				<input type="hidden" id="job_id" value="{{ job.id }}">
+				<input type="hidden" id="add_id" value="-1">
+			</form>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_save" class="btn btn-primary mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+		<button id="btn_cancel" class="btn btn-light ml-2">{% blocktrans %}Cancel{% endblocktrans %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deletModalLabel" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<h5 class="modal-title">{% blocktrans %}DELETE CANDIDATES{% endblocktrans %}</h5>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        			<span aria-hidden="true">&times;</span>
+        		</button>
+      		</div>
+      		<div class="modal-body">
+        		<p>{% blocktrans %}Are you sure you want to delete this record?{% endblocktrans %}</p>
+        		<input type="hidden" id="arr_checked_val">
+      		</div>
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-secondary" data-dismiss="modal">{% blocktrans %}No{% endblocktrans %}</button>
+        		<button id="del_confirm" type="button" class="btn btn-primary">{% blocktrans %}Yes{% endblocktrans %}</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<script type="text/javascript">
+	
+	
+	$("#btn_delete").on('click', function(){
+		var arr_checked = [];
+		$( ".chk_sub" ).each(function( index ) {
+		  if($( this ).prop('checked')){
+		  	arr_checked.push($(this).data("id"));
+		  }
+		});
+		if(arr_checked.length == 0){
+			return;
+		}
+		$("#arr_checked_val").val(arr_checked.join());
+		$("#deleteModal").modal();
+		
+	});
+	$("#del_confirm").on('click', function(e){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-delete-candidates" %}',
+			data: {
+				'checked_stocks': $("#arr_checked_val").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#arr_checked_val").val("");
+				$("#deleteModal").modal('hide');
+				if(currentState){
+		        	get_list_data();
+		        }else{
+		        	get_grid_data();
+		        }
+			}
+		});
+	});
+    $("#btn_add").on('click', function(){
+    	$("#add_id").val("-1");
+	    $("#name").val("");
+	    $("#description").val("");
+	    $('.img_upload img').css('display', 'none');
+        $('.img_upload i').css('display', 'inline-block');
+        $(".img-clear").hide();
+        $('#picture').empty();
+        $('#pdf').empty();
+        $(".pdf_clear").hide();
+    	$("#addModal").modal();
+    });
+    $("#btn_cancel").on('click', function(event){
+    	$("#head_title").html('{% blocktrans %}Add Candidate{% endblocktrans %}');
+    	$("#add_id").val("-1");
+    	$("#quantity").val("");
+    	$("#addModal").modal('hide');
+    });
+	$("#btn_save").on('click', function(event){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault()
+			event.stopPropagation()
+			form.addClass('was-validated');
+			return;
+		}
+		var pic_data = $('#picture').prop('files')[0];
+		var pdf_data = $('#pdf').prop('files')[0];   
+        var form_data = new FormData();                  
+        form_data.append('picture', pic_data);
+        form_data.append('pdf', pdf_data);
+        form_data.append('job_id', $("#job_id").val());
+        form_data.append('name', $("#name").val());
+        form_data.append('description', $("#description").val());
+        form_data.append('tag', $("#tag").val());
+        form_data.append('add_id', $("#add_id").val());
+        form_data.append('exist', $("#exist").val());
+        form_data.append('exist_pdf', $("#exist_pdf").val());
+        $.ajax({
+            headers:{ 'X-CSRFToken': "{{csrf_token}}" },
+            url: "{% url 'ajax-add-candidates' %}",
+            type: 'POST',
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $("#addModal").modal('hide');
+                if(currentState){
+                	get_list_data();
+                }else{
+                	get_grid_data();
+                }
+            }
+        });
+		
+	});
+	$("#grid_view").on('click', function(){
+		$(this).addClass('active');
+		$("#list_view").removeClass('active');
+		get_grid_data();
+		currentState = false;
+	});
+	$("#list_view").on('click', function(){
+		$(this).addClass('active');
+		$("#grid_view").removeClass('active');
+		get_list_data();
+		currentState = true;
+	});
+	var currentState = false;
+	get_grid_data();
+	function get_list_data(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-list-candidates" %}',
+			data: {
+				'job_id': $("#job_id").val(),
+				'page': 1,
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+				
+			}
+		});
+	}
+	function get_grid_data(){
+
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-grid-candidates" %}',
+			data: {
+				'job_id': $("#job_id").val(),
+				'page': 1,
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_content").html(data);
+				
+			}
+		});
+	}
+
+	$(".img-clear").on('click', function(){
+		$(".img_upload img").attr('src', '');
+		$('.img_upload img').css('display', 'none');
+		$('.img_upload i').css('display', 'inline-block');
+		$("#picture").empty();
+		$("#exist").val('NO'); 
+	});
+    $(".img_upload").on('click', function(){
+        $("#picture").click();
+    })
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.img_upload img').attr('src', e.target.result);
+                $('.img_upload img').css('display', 'inline-block');
+                $('.img_upload i').css('display', 'none');
+                $("#exist").val('YES');
+                $(".img-clear").show();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $(".pdf_clear").on('click', function(){
+		$("#pdf").empty();
+		$("#exist_pdf").val('NO');
+		$(".uploaded_pdf_name").html("");
+		$(this).hide();
+	});
+    $(".pdf_upload").on('click', function(){
+        $("#pdf").click();
+    });
+    function readPDFURL(input) {
+        if (input.files && input.files[0]) {
+        	$('.uploaded_pdf_name').html(input.files[0].name);
+        	$("#exist_pdf").val('YES');
+        	$(".pdf_clear").show();
+        }
+    }
+</script>
+{% endblock %}

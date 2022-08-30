@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+
+<link href="{% static 'css/bootstrap/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/app.css' %}" rel="stylesheet">
+
+<script src="{% static 'js/bootstrap/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+
+<style>
+	label{
+		margin-bottom: 0px;
+		text-transform: uppercase;
+		font-size: 80%;
+	}
+	.form-group{
+		margin-bottom: 15px;
+	}
+	
+</style>
+<div class="container-fluid">
+	<div class="block-header row m-0">
+		<div class="col-12">
+			<h2 class="mr-auto">{% if command %}{% blocktrans %}Edit Command{% endblocktrans %}{% else %}{% blocktrans %}Add New Command{% endblocktrans %}{% endif %}</h2>
+		</div>
+		
+	</div>
+	<div class="row clearfix mt-2">
+		<div class="col-12">
+			<div class="card">
+		        <div class="card-body">
+		            <form class="pt-3 pb-3" novalidate id="myForm" method="POST">
+		            	{% csrf_token %}
+		            	<div class="row m-0">
+		            		<div class="col-12 col-md-3">
+		            			<div class="form-group">
+		            				{% if form.errors %}
+									    {% for field in form %}
+									        {% for error in field.errors %}
+									            <div class="alert alert-danger">
+									                <strong>{{ error|escape }}</strong>
+									            </div>
+									        {% endfor %}
+									    {% endfor %}
+									    {% for error in form.non_field_errors %}
+									        <div class="alert alert-danger">
+									            <strong>{{ error|escape }}</strong>
+									        </div>
+									    {% endfor %}
+									{% endif %}
+		            			</div>
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="name" name="name" value="{{ command.name|default_if_none:'' }}" required="">
+			                        </div>
+					            </div>
+		            			<div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="name">{% blocktrans %}Product Name{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <select  class="selectpicker form-control" id="group" name="group" required data-live-search="true">
+					                    	{% for group in groups %}
+					                    		<option value="{{ group.id }}">{{ group.name }}</option>
+					                    	{% endfor %}
+					                    </select>
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="quantity">{% blocktrans %}Quantity{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="number" class="form-control" id="quantity" name="quantity" step="1" min="1" required="" value="{% if command %}{{ command.quantity }}{% else %}1{% endif %}">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="quantity">{% blocktrans %}Worker{% endblocktrans %}</label>
+					                    <input type="text" class="form-control" id="worker" name="worker" value="{{ command.worker|default_if_none:'' }}">
+			                        </div>
+					            </div>
+					            <div class="form-group">
+					                <div class="col-xs-12">
+					                	<label for="date">{% blocktrans %}Date{% endblocktrans %}</label><span class="text-danger">&nbsp;*&nbsp;</span>
+					                    <input type="text" class="form-control" id="date" name="date" required="">
+			                        </div>
+					            </div>
+					        </div>
+					        <input type="hidden" name="user" value="{{ user.id }}">
+		            		<div class="col-12 col-md-9 row m-0 pr-0" id="div_detail">
+
+		            		</div>
+		            	</div>
+		            	<div class="row m-0">
+		            		<div class="col-12 text-center mt-3">
+		            			<button type="submit" class="btn btn-new mr-2">{% blocktrans %}Save{% endblocktrans %}</button>
+		            			<a href="{% if command %}{% url 'detail-command' command.id %}{% else %}{% url 'commands' %}{% endif %}" class="btn btn-import ml-2">{% blocktrans %}Cancel{% endblocktrans %}</a>
+		            		</div>
+		            	</div>
+		            	<input type="hidden" id="comm_id" value="{% if command %}{{ command.id }}{% else %}-1{% endif %}">
+		            </form>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(".selectpicker").selectpicker();
+	var date = new Date();
+ 	var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+ 	function formatDate(date) {
+	    var d = new Date(date),
+	        month = '' + (d.getMonth() + 1),
+	        day = '' + d.getDate(),
+	        year = d.getFullYear();
+
+	    if (month.length < 2) 
+	        month = '0' + month;
+	    if (day.length < 2) 
+	        day = '0' + day;
+
+	    return [year, month, day].join('-');
+	}
+	$("#date").datepicker({
+		format: "yyyy-mm-dd",
+		todayHighlight: true,
+	});
+	{% if command %}
+		$("#date").val('{{ command.date|date:"yy-m-d"}}');
+		$("#date").datepicker('setDate', '{{ command.date|date:"yy-m-d"}}');
+		$("#group").val('{{ command.group_id }}');
+		$("#group").selectpicker("refresh");
+	{% else %}
+		$("#date").val(formatDate(today));
+		$("#date").datepicker('setDate', formatDate(today));
+	{% endif %}
+
+	get_detail_view();
+
+	$("#myForm").submit(function( event ){
+		var form = $("#myForm")
+		if (form[0].checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+			form.addClass('was-validated');
+			return;
+		}
+		var errors_count = $('.quantiy_error').length;
+		if (errors_count > 0){
+			event.preventDefault();
+			event.stopPropagation();
+			return;
+		}
+		
+	});
+
+	$("#quantity").on('change', function(){
+		get_detail_view();
+	});
+	$("#group").on('change', function(){
+		get_detail_view();
+	});
+	function get_detail_view(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-command-new-detail" %}',
+			data: {
+				'group_id': $("#group").val(),
+				'quantity': $("#quantity").val(),
+				'comm_id': $("#comm_id").val(),
+			},
+			type: 'POST',
+			success: function (data) {
+				$("#div_detail").html(data);
+				var errors_count = $('.quantiy_error').length;
+				console.log(errors_count);
+				if (errors_count > 0){
+					$(".div_quantity_error").show();
+				}else{
+					$(".div_quantity_error").hide();
+				}
+			}	
+		});
+	}
+	
+</script>
+{% endblock %}

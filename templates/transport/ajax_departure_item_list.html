@@ -1,0 +1,85 @@
+{% load mathfilters %}
+{% load i18n %}
+{% load staticfiles %}
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th width="3%" class="text-center">
+                    <input type="checkbox" class="check" id="chk_all">
+                </th>
+                <th width="7%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                <th width="9%">{% blocktrans %}Ref{% endblocktrans %}</th>
+                <th width="13%">{% blocktrans %}Name{% endblocktrans %}</th>
+                <th width="12%">{% blocktrans %}Category{% endblocktrans %}</th>
+                <th width="12%">{% blocktrans %}Quantity{% endblocktrans %}</th>
+                <th width="8%">{% blocktrans %}Action{% endblocktrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+                <td class="text-center">
+                    <input type="checkbox" class="check chk_sub" data-id="{{ item.id }}">
+                </td>
+                <td class="text-center p-2">
+                    {% if item.stock.picture %}
+                      <img src="{{item.stock.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+                    {% else %}
+                      <i class="far fa-4x fa-image pl-1 pr-1" ></i>
+                    {% endif %}
+                </td>
+                <td>{{ item.stock.reference }}</td>
+                <td>{{ item.stock.name }}</td>
+                <td>{{ item.stock.category.name }}</td>
+                <td>{{ item.quantity }}</td>
+                
+                <td class="text-center p-0">
+                    <a href="javascript:void(0);">
+                      <span class='btn_edit' data-id='{{item.id}}' data-stock='{{item.stock.id}}' data-quantity='{{item.quantity}}'><i class="fas fa-edit mr-2"></i></span>
+                    </a>
+                </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+    {% endif %}
+    <script type="text/javascript">
+        $('[data-toggle="tooltip"]').tooltip();
+        $(".page_link").on('click', function(){
+            $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                url: '{% url "ajax-list-departure-item" %}',
+                data: {
+                    'page': $(this).data("id"),
+                    'transport_id': $("#transport_id").val(),
+                },
+                type: 'POST',
+                success: function (data) {
+                    $("#div_content").html(data);
+                    
+                }
+            });
+        })
+        $(".btn_edit").on('click', function(event){
+            $("#head_title").html('{% blocktrans %}Edit Departure Item{% endblocktrans %}');
+            $("#add_id").val($(this).data('id'));
+            $("#stock").val($(this).data('stock'));
+            $("#stock").selectpicker('refresh');
+            $("#quantity").val($(this).data('quantity'));
+            $("#addModal").modal();
+        });
+    </script>
+</div>
+<script src="{% static 'plugins/icheck/icheck.init.js' %}"></script>
+<script type="text/javascript">
+  $("#chk_all").on('ifChecked', function(){
+    $('.chk_sub').iCheck('check');
+  });
+  $("#chk_all").on('ifUnchecked', function(){
+    $('.chk_sub').iCheck('uncheck');
+  });
+</script>

@@ -1,0 +1,74 @@
+{% load i18n %}
+<style type="text/css">
+    .card{
+        height: 100px;
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+</style>
+<div class="row">
+    {% for job in jobs %}
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 col-12">
+            <div class="card">
+                <div class="row m-0 pb-1 pt-2">
+                    <div class="col-12 text-right">
+                        <a href="{% url 'detail-job' job.id %}">
+                            <span>{{ job.name }}</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-3 pl-2 pr-1">
+                        {% if job.picture %}
+                            <img src="{{job.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 58px;"/>
+                        {% else %}
+                          <i class="fas fa-3x fa-male p-2" ></i>
+                        {% endif %}
+                    </div>
+                    <div class="col-9 pr-0">
+                      <div class="row">
+                        <div class="col-5 pr-0">
+                            <span style="font-size: 80%;">{% blocktrans %}Candidate{% endblocktrans %}:</span>
+                        </div>
+                        <div class="col-7 pr-0">
+                            <span>{{ job.candidate_count}}</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-5 pr-0">
+                            <span style="font-size: 80%;">{% blocktrans %}Category{% endblocktrans %}:</span>
+                        </div>
+                        <div class="col-7 pr-0">
+                            <span style="font-size: 80%;">{{ job.category }}</span>
+                        </div>
+                      </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor%}
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+        <script type="text/javascript">
+        $(".page_link").on('click', function(){
+            $.ajax({
+                headers: { "X-CSRFToken": '{{csrf_token}}' },
+                url: '{% url "ajax-grid-jobs" %}',
+                data: {
+                  'search_key': $("#search_box").val(),
+                  'page': $(this).data('id'),
+                  'selected_category': $("#sel_category").val().join(),
+                  'selected_owner': $("#sel_owner").val().join(),
+                },
+                type: 'POST',
+                success: function (data) {
+                  $("#div_content").html(data);
+                }
+            });
+        });
+    </script>    
+    {% endif %}
+    
+</div>

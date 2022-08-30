@@ -1,0 +1,141 @@
+
+{% load i18n %}
+<div class="row m-0">
+	{% if orders %}
+		{% for item in orders %}
+	        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 col-12">
+	            <div class="card child-card">
+	                <div class="row m-0 pb-1 pt-2">
+	                    <div class="col-9">
+	                        <a href="{% url 'detail-picking' item.id %}">
+	                            <span>{{ item.name }}</span>
+	                        </a>
+	                    </div>
+	                    <div class="col-3 p-0">
+	                    	{% if item.finished %}
+	                        	<span class="badge badge-success">Finished</span>
+	                    	{% endif %}
+	                    </div>
+	                </div>
+	                <div class="row m-0">
+	                  <div class="col-5 pr-0">
+	                      <span style="font-size: 90%;">{% blocktrans %}Client{% endblocktrans %}:</span>
+	                  </div>
+	                  <div class="col-7 pr-0">
+	                      <span class="bold-span" style="font-size: 90%;font-weight: 600;">{{ item.client.name }}</span>
+	                  </div>
+	                </div>
+	                <div class="row m-0">
+	                  <div class="col-5 pr-0">
+	                      <span style="font-size: 90%;">{% blocktrans %}Order Date{% endblocktrans %}:</span>
+	                  </div>
+	                  <div class="col-7 pr-0">
+	                      <span class="bold-span" style="font-size: 90%;">{{ item.order_date}}</span>
+	                  </div>
+	                </div>
+	                <div class="row m-0">
+	                  <div class="col-5 pr-0">
+	                      <span style="font-size: 90%;">{% blocktrans %}Cube{% endblocktrans %}:</span>
+	                  </div>
+	                  <div class="col-7 pr-0">
+	                      <span class="bold-span" style="font-size: 90%;">{{ item.cube }} mm<sup>3</sup></span>
+	                  </div>
+	                </div>
+	                <div class="row m-0">
+	                  <div class="col-5 pr-0">
+	                      <span style="font-size: 90%;">{% blocktrans %}Weight{% endblocktrans %}:</span>
+	                  </div>
+	                  <div class="col-7 pr-0">
+	                      <span class="bold-span" style="font-size: 90%;">{{ item.sum_weight }} g</span>
+	                  </div>
+	                </div>
+	            </div>
+	        </div>
+	    {% endfor%}
+	{% else %}
+		<div class="col-12 p-4 ">
+			<span class="text-danger">{% blocktrans %}There is no any Orders{% endblocktrans %}</span>
+		</div>
+	{% endif %}
+</div>
+{% if orders %}
+    <div class="row m-0">
+		<div class="col-12 pb-2">
+			<h2 class="mr-auto">{% blocktrans %}Order Items{% endblocktrans %}</h2>
+		</div>
+	</div>
+	<div class="row m-0">
+		{% for item in order_items %}
+	        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 col-12">
+	            <div class="card card-child">
+	                <div class="row m-0 pt-1">
+	                    <div class="col-12 pr-0">
+	                        <a href="javascript:void(0);">
+	                            <span class='btn_edit' data-id='{{item.id}}' data-stock='{{item.stock.id}}' data-quantity='{{item.order_quantity}}'>{{ item.stock.name }}</span>
+	                        </a>
+	                    </div>
+	                </div>
+	                <div class="row m-0">
+	                    <div class="col-5 pl-2 pr-2">
+	                        {% if item.stock.picture %}
+	                            <img src="{{item.stock.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 78px;"/>
+	                        {% else %}
+	                            <i class="far fa-5x fa-image" ></i>
+	                        {% endif %}
+	                    </div>
+	                    <div class="col-7 pl-0 pr-0">
+	                    	<div class="row m-0">
+			                    <div class="col-5 pl-0 pr-1">
+			                        <span style="font-size: 90%;">{% blocktrans %}Ref{% endblocktrans %}:</span>
+			                    </div>
+			                    <div class="col-7 pl-0 pr-1">
+			                        <span class="bold-span" style="font-size: 90%;">{{ item.stock.reference }}</span>
+			                    </div>
+			                </div>
+	                       	<div class="row m-0">
+			                    <div class="col-5 pl-0 pr-1">
+			                        <span style="font-size: 90%;">{% blocktrans %}Ordered Qt{% endblocktrans %}:</span>
+			                    </div>
+			                    <div class="col-7 pl-0 pr-1">
+			                        <span class="bold-span" style="font-weight: 700;">{{ item.quantity }} pcs</span>
+			                    </div>
+			                </div>
+	                       
+	                        <div class="row m-0">
+			                    <div class="col-5 pl-0 pr-1">
+			                        <span style="font-size: 90%;">{% blocktrans %}Size{% endblocktrans %}:</span>
+			                    </div>
+			                    <div class="col-7 pl-0 pr-1">
+			                        <span class="bold-span" style="font-size: 90%;">{{ item.stock.width }} * {{ item.stock.height }} * {{ item.stock.depth }} mm<sup>3</sup></span>
+			                    </div>
+			                </div>
+			                <div class="row m-0">
+			                    <div class="col-5 pl-0 pr-1">
+			                        <span style="font-size: 90%;">{% blocktrans %}Weight{% endblocktrans %}:</span>
+			                    </div>
+			                    <div class="col-7 pl-0 pr-1">
+			                        <span class="bold-span" style="font-size: 90%;">{{ item.stock.weight }} g</span>
+			                    </div>
+			                </div>
+	                    </div>
+	                </div>
+	                <div class="row ml-0 mr-0 mt-1">
+	                    <div class="col-3 pr-0 pl-2">
+	                        <span style="font-size: 90%;">{% blocktrans %}Location{% endblocktrans %}:</span>
+	                    </div>
+	                    <div class="col-9 pr-0 pl-1">
+	                        <span class="bold-span" style="font-size: 90%;">{% if item.stock.location %}{{ item.stock.location.name }}{% endif %}</span>
+	                    </div>
+	                </div>
+	                
+	            </div>
+	        </div>
+	    {% endfor%}
+	</div>
+	<div class="row m-0">
+		<div class="col-12 pb-2">
+			<h2 class="mr-auto">{% blocktrans %}Available Box Container{% endblocktrans %}</h2>
+		</div>
+	</div>
+{% endif %}
+		        

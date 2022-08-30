@@ -1,0 +1,66 @@
+{% load i18n %}
+{% load staticfiles %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="10%">{% blocktrans %}Refund Date{% endblocktrans %}</th>
+                    	<th width="10%">{% blocktrans %}Supplier{% endblocktrans %}</th>
+                        <th width="8%">{% blocktrans %}Picture{% endblocktrans %}</th>
+                        <th width="10%">{% blocktrans %}Ref{% endblocktrans %}</th>
+                        <th width="15%">{% blocktrans %}Name{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Category{% endblocktrans %}</th>
+                        <th width="25%">{% blocktrans %}Description{% endblocktrans %}</th>
+                        <th width="12%">{% blocktrans %}Refund Qt{% endblocktrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	{% for item in brokens %}
+                		<tr>
+                            <td>{{ item.refund_date }}</td>
+                			<td>{{ item.supplier.name }}</td>
+                            <td class="text-center p-2">
+                                {% if item.stock.picture %}
+                                    <img src="{{item.stock.picture.url}}" alt="" style="max-width: 85px;max-height: 85px;"/>
+                                {% else %}
+                                    <i class="far fa-4x fa-image pl-1 pr-1" ></i>
+                                {% endif %}
+                            </td>
+                            <td>{{ item.stock.reference }}</td>
+                            <td>{{ item.stock.name }}</td>
+                            <td>{{ item.stock.category.name }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.quantity }} pcs</td>
+                        </tr>
+                	{% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if paginator.num_pages > 1 %}
+      {% include 'widgets/pagination.html' %}
+      <script type="text/javascript">
+        $(".page_link").on('click', function(){
+          $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: '{% url "ajax-list-refunds" %}',
+            data: {
+                'search_key': $("#search_box").val(),
+                'page': $(this).data('id'),
+                'selected_supplier': $("#sel_supplier").val().join(),
+                'selected_stock': $("#sel_stock").val().join(),
+                'start_date': start_date,
+                'end_date': end_date
+            },
+            type: 'POST',
+            success: function (data) {
+              $("#div_content").html(data);
+            }
+          });
+        });
+      </script>
+    {% endif %}
+    
+</div>

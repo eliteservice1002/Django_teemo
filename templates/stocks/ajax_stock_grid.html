@@ -1,0 +1,98 @@
+{% load i18n %}
+<style type="text/css">
+    .card{
+        /*height: 150px;*/
+        border: 1px solid !important;
+        -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+        box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+    }
+</style>
+<div class="row">
+    {% for stock in stocks %}
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 col-12">
+            <div class="card">
+                <div class="row m-0 pb-1 pt-2">
+                    <div class="col-12 pr-0">
+                        <a href="{% url 'up-stock' stock.id %}">
+                            <span>{{ stock.name }}</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-1">
+                        {% if stock.picture %}
+                            <img src="{{stock.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 58px;"/>
+                        {% else %}
+                            <i class="far fa-3x fa-image"></i>
+                        {% endif %}
+                    </div>
+                    <div class="col-8 pt-2">
+                        <div class="col-12 pr-0">
+                            <span style="font-size: 80%;">{{ stock.reference }}</span>
+                        </div>
+                        <div class="col-12 pr-0">
+                            <span style="font-size: 80%;">{{ stock.internal }}</span>
+                        </div>
+                        <div class="col-12 pr-0">
+                            {% if stock.quantity < stock.minium %}
+                                <span style="font-size: 80%;color:red;">Qt: {{ stock.quantity }} pcs</span>
+                            {% else %}
+                                <span style="font-size: 80%;">Qt: {{ stock.quantity }} pcs</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-1">
+                        <span style="font-size: 90%;">{% blocktrans %}Location{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-8 pl-2 pr-1">
+                        <span style="font-size: 90%;">{% if stock.location %}{{ stock.location.name }}{% endif %}</span>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-1">
+                        <span style="font-size: 90%;">{% blocktrans %}Size{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-8 pl-2 pr-1">
+                        <span style="font-size: 90%;">{{ stock.width }} * {{ stock.height }} * {{ stock.depth }} mm</span>
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-4 pl-2 pr-1">
+                        <span style="font-size: 90%;">{% blocktrans %}Weight{% endblocktrans %}:</span>
+                    </div>
+                    <div class="col-8 pl-2 pr-1">
+                        <span style="font-size: 90%;">{{ stock.weight }} g</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor%}
+    {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+        <script type="text/javascript">
+            $(".page_link").on('click', function(){
+                var selected_category = $("#sel_category").val().join();
+                $.ajax({
+                    headers: { "X-CSRFToken": '{{csrf_token}}' },
+                    url: '{% url "ajax-grid-stocks" %}',
+                    data: {
+                        'search_key': $("#search_box").val(),
+                        'page': $(this).data("id"),
+                        'selected_category': selected_category,
+                        'from_package': from_package,
+                        'to_package': to_package,
+                        'less': $("#chk_less_minium").prop('checked'),
+                        'greater': $("#chk_greater_minium").prop('checked')
+                    },
+                    type: 'POST',
+                    success: function (data) {
+                        $("#div_content").html(data);
+                        
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+</div>

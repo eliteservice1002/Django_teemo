@@ -1,0 +1,86 @@
+{% load i18n %}
+<style type="text/css">
+  .card{
+      /*height: 140px;*/
+      border: 1px solid !important;
+      -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+      box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.18);
+  }
+</style>
+<div class="row">
+  {% for command in commands %}
+    <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 col-12">
+      <div class="card">
+        <div class="row m-0 pb-1 pt-2">
+          <div class="col-8 pr-0 pl-1">
+              <a href="{% url 'update-command' command.id %}">
+                  <span>{{ command.group.name }}</span>
+              </a>
+          </div>
+          <div class="col-4 pr-0 pl-1">
+              {% if command.finished == 1 %}
+                <span class="badge badge-primary p-2">{% blocktrans %}In Progress{% endblocktrans %}</span>
+              {% elif command.finished == 2 %}
+                <span class="badge badge-danger p-2">{% blocktrans %}Paused{% endblocktrans %}</span>
+              {% elif command.finished == 3 %}
+                <span class="badge badge-success p-2">{% blocktrans %}Finished{% endblocktrans %}</span>
+              {% endif %}
+          </div>
+        </div>
+        <div class="row m-0">
+          <div class="col-4 pl-2 pr-1">
+              {% if command.group.picture %}
+                  <img src="{{command.group.picture.url}}" alt="" class="pt-2" style="max-width: 99%;max-height: 58px;"/>
+              {% else %}
+                  <i class="far fa-4x fa-image" ></i>
+              {% endif %}
+          </div>
+          <div class="col-8">
+              <div class="col-12 pr-0">
+                  <span style="font-size: 80%;">{{ command.group.reference }}</span>
+              </div>
+              <div class="col-12 pr-0">
+                  <span style="font-size: 80%;">{% blocktrans %}Qt{% endblocktrans %}: {{ command.quantity }} pcs</span>
+              </div>
+              <div class="col-12 pr-0">
+                  <span style="font-size: 80%;">{% blocktrans %}Worker{% endblocktrans %}: {{ command.worker }}</span>
+              </div>
+              <div class="col-12 pr-0">
+                  <span style="font-size: 80%;">{% blocktrans %}Date{% endblocktrans %}: {{ command.date|date:"yy-m-d" }}</span>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor%}
+  {% if paginator.num_pages > 1 %}
+        {% include 'widgets/pagination.html' %}
+        <script type="text/javascript">
+            $(".page_link").on('click', function(){
+                var selected_category = $("#sel_category").val().join();
+                var selected_work = $("#sel_worker").val().join();
+                $.ajax({
+                    headers: { "X-CSRFToken": '{{csrf_token}}' },
+                    url: '{% url "ajax-grid-commands" %}',
+                    data: {
+                        'search_key': $("#search_box").val(),
+                        'page': $(this).data("id"),
+                        'selected_category': selected_category,
+                        'selected_work': selected_work,
+                        'from_package': from_package,
+                        'to_package': to_package,
+                        'start_date': start_date,
+                        'end_date': end_date,
+                        'in_progress': $("#chk_less_minium").prop('checked'),
+                        'finished': $("#chk_greater_minium").prop('checked')
+                    },
+                    type: 'POST',
+                    success: function (data) {
+                        $("#div_content").html(data);
+                        
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+</div>

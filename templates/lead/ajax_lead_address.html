@@ -1,0 +1,45 @@
+{% load i18n %}
+
+{% for item in address %}
+    <div class="col-lg-2 col-md-4 col-sm-6 col-xs-6 col-12 p-2">
+        <div class="card child-card" style="height: 90px;">
+            <div class="row m-0">
+                <div class="col-10 pt-2 pb-2">
+                    <span>{{ item.address }}</span>
+                </div>
+            </div>
+			<div class="row m-0">
+                <div class="col-12 text-right">
+                    <a href="javascript:void(0);">
+                		<span class='btn_edit' data-id='{{item.id}}' data-address='{{item.address}}'><i class="fas fa-edit mr-2"></i></span>
+                	</a>
+                	<a href="javascript:void(0);">
+                    	<span class='btn_delete' data-id='{{item.id}}'><i class="fas fa-trash"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor%}
+
+<script type="text/javascript">
+	$(".btn_edit").on('click', function(){
+		$("#head_title").html("{% blocktrans %}Edit Address{% endblocktrans %}");
+		$("#add_id").val($(this).data('id'));
+		$("#address").val($(this).data('address'));
+		$("#addModal").modal();
+	});
+	$(".btn_delete").on('click', function(){
+		$.ajax({
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			url: '{% url "ajax-delete-lead-address" %}',
+			data: {
+				'del_id': $(this).data('id'),
+			},
+			type: 'POST',
+			success: function (data) {
+				get_address_data();
+			}
+		});
+	});
+</script>
